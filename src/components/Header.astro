@@ -34,6 +34,7 @@ import ThemeIcon from './ThemeIcon.astro';
           hamburger.classList.toggle('active');
           navOverlay.classList.toggle('active');
         });
+
         navOverlay.addEventListener('click', () => {
           nav.classList.remove('expanded');
           hamburger.classList.remove('active');
@@ -41,12 +42,16 @@ import ThemeIcon from './ThemeIcon.astro';
         });
       }
 
-      // Theme toggle
+      // Theme toggle with spinning animation
       if (themeToggle) {
         const themeIcon = themeToggle.querySelector('.theme-icon');
         if (!themeIcon) return;
 
         const setTheme = (theme) => {
+          // Add spin animation
+          themeToggle.classList.add('spin');
+          setTimeout(() => themeToggle.classList.remove('spin'), 500);
+
           if (theme === 'dark') {
             document.documentElement.classList.add('dark');
             themeIcon.textContent = '🌙';

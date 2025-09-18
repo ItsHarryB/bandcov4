@@ -81,7 +81,20 @@ a:hover, a:focus { color: #004999; }
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
-.nav-links.expanded a { opacity: 1; transform: translateY(0); }
+
+/* Staggered fade-in for mobile nav links */
+.nav-links.expanded a {
+  animation: fadeInUp 0.3s forwards;
+}
+.nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
+.nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
+.nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
+/* Add more nth-child delays if more links exist */
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .nav-links a:hover, .nav-links a:focus { background-color: rgba(0,0,0,0.05); }
 .nav-links a.active { color: #ffcc00; font-weight: bold; border-bottom: 2px solid #ffcc00; }
 
@@ -109,10 +122,19 @@ a:hover, a:focus { color: #004999; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
 }
 .theme-toggle:active { transform: scale(0.9); }
-.theme-toggle .theme-icon { display: inline-block; transition: transform 0.5s ease, color 0.5s ease; }
+
+/* Theme icon spinning */
+.theme-toggle.spin .theme-icon {
+  animation: spin 0.5s linear;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.theme-toggle .theme-icon {
+  display: inline-block;
+  transition: transform 0.5s ease, color 0.5s ease;
+}
 
 /* Dark mode */
 html.dark { background-color: #1b1b1b; color: #ffffff; }
