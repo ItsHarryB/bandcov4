@@ -31,12 +31,12 @@ import "../styles/global.css";
 
       <!-- Nav links -->
       <nav class="nav-links">
-       <a href="/">Home</a>
-      <a href="/enquiries/">Enquiries</a>
-     <a href="/about/">About Me</a>
-      <a href="/blog/">Blog</a>
-      <a href="/photography/">Photography</a>
-      <a href="/links/">Links</a>
+        <a href="/">Home</a>
+        <a href="/enquiries/">Enquiries</a>
+        <a href="/about/">About Me</a>
+        <a href="/blog/">Blog</a>
+        <a href="/photography/">Photography</a>
+        <a href="/links/">Links</a>
       </nav>
     </header>
 
@@ -64,7 +64,25 @@ import "../styles/global.css";
           const themeIcon = themeToggle.querySelector('.theme-icon');
           if (!themeIcon) return;
 
+          // Add CSS for spinning
+          const style = document.createElement('style');
+          style.textContent = `
+            .theme-icon.spin { 
+              display: inline-block;
+              animation: spin 0.5s linear;
+            }
+            @keyframes spin { 
+              0% { transform: rotate(0deg); } 
+              100% { transform: rotate(360deg); } 
+            }
+          `;
+          document.head.appendChild(style);
+
           function setTheme(theme) {
+            // Add spin animation
+            themeIcon.classList.add('spin');
+            setTimeout(() => themeIcon.classList.remove('spin'), 500); // match animation duration
+
             if (theme === 'dark') {
               document.documentElement.classList.add('dark');
               themeIcon.textContent = '🌙';
