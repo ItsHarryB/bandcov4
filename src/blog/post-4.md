@@ -1,11 +1,10 @@
 ---
-layout: ../../layouts/MarkdownPostLayout.astro
 title: My Fourth Blog Post
 author: Harry Brighton
 description: "This post will show up on its own!"
 image:
     url: "https://docs.astro.build/default-og-image.png"
-    alt: "The word astro against an illustration of planets and stars."
+    alt: "The word astro against an illustration of planets and stars." 
 pubDate: 18/09/2025
 tags: ["astro", "successes"]
 ---

@@ -4,13 +4,11 @@ import BackButton from '../components/BackButton.astro'; // adjust path as neede
 const { frontmatter } = Astro.props;
 ---
 <BaseLayout pageTitle={frontmatter.title}>
-        <BackButton parent={frontmatter.parent ?? '/blog'} label="Back to blog" />
-  <p><em>{frontmatter.description}</em></p>
-  <p>{frontmatter.pubDate.toString().slice(0,10)}</p>
-
-  <p>Written by: {frontmatter.author}</p>
-
-  <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
+        <BackButton parent={frontmatter.parent ?? '/blog'} label="Back to blog" /> 
+  <p>{frontmatter.pubDate.toLocaleDateString()}</p>
+    <p><em>{frontmatter.description}</em></p>
+    <p>Written by: {frontmatter.author}</p>
+    <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
 
   <div class="tags">
     {frontmatter.tags.map((tag: string) => (
