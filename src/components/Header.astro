@@ -48,9 +48,9 @@ import ThemeIcon from './ThemeIcon.astro';
         if (!themeIcon) return;
 
         const setTheme = (theme) => {
-          // Add spin animation
-          themeToggle.classList.add('spin');
-          setTimeout(() => themeToggle.classList.remove('spin'), 500);
+          // Trigger spin on the icon itself
+          themeIcon.classList.add('spin');
+          setTimeout(() => themeIcon.classList.remove('spin'), 500);
 
           if (theme === 'dark') {
             document.documentElement.classList.add('dark');

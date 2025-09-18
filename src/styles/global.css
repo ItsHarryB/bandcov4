@@ -132,7 +132,9 @@ a:hover, a:focus { color: #004999; }
 .theme-toggle.spin .theme-icon {
   animation: spin 0.5s linear;
 }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes spin { 
+  0% { transform: rotate(0deg); } 
+  100% { transform: rotate(360deg); } }
 
 .theme-toggle .theme-icon {
   display: inline-block;
