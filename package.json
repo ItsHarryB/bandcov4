@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.8",
+    "@astrojs/preact": "^4.1.1",
     "@fontsource-variable/work-sans": "^5.2.7",
     "@fontsource/work-sans": "^5.2.7",
-    "astro": "^5.13.7"
+    "astro": "^5.13.7",
+    "preact": "^10.27.2"
   },
   "devDependencies": {
     "wrangler": "^4.37.0"
