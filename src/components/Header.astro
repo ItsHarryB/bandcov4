@@ -14,7 +14,7 @@ import ThemeIcon from './ThemeIcon.astro';
   </div>
 
   <div class="site-title">
-    <a href="/">My Site</a>
+    <a href="/">TEST: Brighton and Co</a>
   </div>
 
   <ThemeIcon id="theme-toggle" class="theme-toggle" />
@@ -33,6 +33,7 @@ import ThemeIcon from './ThemeIcon.astro';
         hamburger.classList.toggle('active');
         navOverlay.classList.toggle('active');
       });
+
       navOverlay.addEventListener('click', () => {
         nav.classList.remove('expanded');
         hamburger.classList.remove('active');
@@ -58,16 +59,17 @@ import ThemeIcon from './ThemeIcon.astro';
           localStorage.setItem('theme', 'light');
         }
 
+        // Update hamburger line colors
         if (hamburger) {
           const lines = hamburger.querySelectorAll('.line');
-          lines.forEach(line => {
-            line.style.backgroundColor = theme === 'dark' ? '#ffffff' : '#0094b6';
-          });
+          lines.forEach(line => line.style.backgroundColor = theme === 'dark' ? '#ffffff' : '#0094b6');
         }
       };
 
+      // Initialize theme on page load
       setTheme(localStorage.getItem('theme') || 'light');
 
+      // Toggle theme on click
       themeToggle.addEventListener('click', () => {
         const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         setTheme(current === 'dark' ? 'light' : 'dark');
