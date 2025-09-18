@@ -18,14 +18,15 @@ import ThemeIcon from './ThemeIcon.astro';
   </div>
 
   <ThemeIcon id="theme-toggle" class="theme-toggle" />
-  <Navigation id="nav" class="nav-links" />
+  <Navigation id="nav" />
 
   <script type="module">
-    // Hamburger menu
     const hamburger = document.getElementById('hamburger');
     const navOverlay = document.getElementById('nav-overlay');
     const nav = document.getElementById('nav');
-    
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Hamburger toggle
     if (hamburger && nav && navOverlay) {
       hamburger.addEventListener('click', () => {
         nav.classList.toggle('expanded');
@@ -41,10 +42,9 @@ import ThemeIcon from './ThemeIcon.astro';
     }
 
     // Theme toggle
-    const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
       const themeIcon = themeToggle.querySelector('.theme-icon');
-      if (!themeIcon) return; // exit early if null
+      if (!themeIcon) return;
 
       const setTheme = (theme) => {
         if (theme === 'dark') {
@@ -58,8 +58,7 @@ import ThemeIcon from './ThemeIcon.astro';
         }
       };
 
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      setTheme(savedTheme);
+      setTheme(localStorage.getItem('theme') || 'light');
 
       themeToggle.addEventListener('click', () => {
         const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -82,7 +81,6 @@ import ThemeIcon from './ThemeIcon.astro';
           const target = id ? document.getElementById(id) : null;
           if (target) target.scrollIntoView({ behavior: 'smooth' });
 
-          // Close mobile menu
           if (nav.classList.contains('expanded')) {
             nav.classList.remove('expanded');
             hamburger?.classList.remove('active');
