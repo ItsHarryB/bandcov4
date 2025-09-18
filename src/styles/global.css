@@ -4,21 +4,23 @@ html {
   font-family: "Work Sans", sans-serif;
   color: #000000;
   scroll-behavior: smooth;
+  transition: background-color 0.5s ease, color 0.5s ease; /* smooth transition */
 }
 
 body {
   margin: 0 auto;
   width: 100%;
-  max-width: 100ch; /* increased to prevent cutting off content */
+  max-width: 100ch;
   padding: 1rem;
   line-height: 1.5;
+  transition: background-color 0.5s ease, color 0.5s ease; /* smooth transition */
 }
 
 * { box-sizing: border-box; }
 
 h1,h2,h3,h4,h5,h6 { margin: 1rem 0; color: inherit; }
 
-a { color: #0066cc; text-decoration: underline; }
+a { color: #0066cc; text-decoration: underline; transition: color 0.5s ease; }
 a:hover, a:focus { color: #004999; }
 
 /* Header, hamburger, nav */
@@ -29,23 +31,26 @@ a:hover, a:focus { color: #004999; }
   padding: 1rem;
   position: relative;
   z-index: 1000;
+  flex-wrap: nowrap;
 }
 
+/* Site title */
 .site-title {
-  flex-shrink: 0; /* prevent site title from shrinking */
+  flex-shrink: 0;
+  margin-right: 2rem;
 }
-
 .site-title a {
   text-decoration: none;
   color: inherit;
   font-weight: bold;
   font-size: 1.2rem;
-
-  white-space: nowrap; /* prevents wrapping */
-  overflow: hidden;    /* hides overflow if container is too small */
-  text-overflow: ellipsis; /* adds ... if it overflows */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.5s ease;
 }
 
+/* Hamburger menu */
 .hamburger {
   display: block;
   width: 40px;
@@ -59,6 +64,7 @@ a:hover, a:focus { color: #004999; }
   height: 5px;
   width: 100%;
   left: 0;
+  background-color: #0094b6;
   transition: all 0.3s ease;
 }
 .hamburger .line1 { top: 0; }
@@ -70,7 +76,6 @@ a:hover, a:focus { color: #004999; }
 
 /* Nav links */
 .nav-links {
-  flex-shrink: 1; /* allow nav to shrink so site title has space */
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
@@ -82,8 +87,9 @@ a:hover, a:focus { color: #004999; }
   color: #000000;
   text-align: center;
   z-index: 1000;
+  padding-left: 0;
 }
-.nav-links.expanded { max-height: 500px; }
+.nav-links.expanded { max-height: 600px; }
 .nav-links a {
   display: block;
   padding: 10px 0;
@@ -93,7 +99,7 @@ a:hover, a:focus { color: #004999; }
   text-decoration: none;
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.5s ease, background-color 0.5s ease;
 }
 
 /* Staggered fade-in for mobile nav links */
@@ -106,7 +112,6 @@ a:hover, a:focus { color: #004999; }
 .nav-links.expanded a:nth-child(4) { animation-delay: 0.20s; }
 .nav-links.expanded a:nth-child(5) { animation-delay: 0.25s; }
 .nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
-/* Add more nth-child delays if more links exist */
 
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0); }
@@ -142,7 +147,11 @@ a:hover, a:focus { color: #004999; }
 }
 .theme-toggle:active { transform: scale(0.9); }
 
-/* Theme icon spinning */
+.theme-toggle .theme-icon {
+  display: inline-block;
+  transition: transform 0.5s ease, color 0.5s ease;
+}
+
 .theme-toggle .theme-icon.spin {
   animation: spin 0.5s linear;
 }
@@ -151,13 +160,12 @@ a:hover, a:focus { color: #004999; }
   100% { transform: rotate(360deg); } 
 }
 
-.theme-toggle .theme-icon {
-  display: inline-block;
-  transition: transform 0.5s ease, color 0.5s ease;
-}
-
 /* Dark mode */
-html.dark { background-color: #1b1b1b; color: #ffffff; }
+html.dark { 
+  background-color: #1b1b1b; 
+  color: #ffffff; 
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
 html.dark a { color: #66aaff; }
 html.dark a:hover, html.dark a:focus { color: #99cfff; }
 html.dark .hamburger .line { background-color: #ffffff; }
@@ -166,26 +174,35 @@ html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: #
 html.dark .nav-overlay { background: rgba(255,255,255,0.1); }
 
 /* Desktop layout */
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 900px) {
   .hamburger { display: none; }
   .nav-links { 
     display: flex !important; 
     position: static; 
     flex-direction: row; 
     justify-content: flex-start; 
-    flex-wrap: wrap; /* allow links to wrap if too long */
+    flex-wrap: nowrap; 
     max-height: none; 
     background: none; 
+    gap: 16px; /* wider spacing so all links fit */
+    padding-left: 1rem; 
+    overflow: hidden; /* prevent horizontal scroll */
   }
+
   .nav-links a { 
     display: inline-block; 
-    padding: 0 10px; /* slightly smaller padding */
+    padding: 0 8px; /* enough spacing */
     opacity: 1; 
     transform: translateY(0); 
-    white-space: nowrap; /* prevent breaking unless wrapped via flex-wrap */
-    min-width: 80px; /* ensures clickable area */
-    overflow: hidden; 
+    white-space: nowrap; 
+    flex-shrink: 1; 
     text-overflow: ellipsis;
   }
+
+  .site-title {
+    flex-shrink: 0; 
+    margin-right: 1rem;
+  }
+
   .nav-overlay { display: none; }
 }
