@@ -89,6 +89,9 @@ a:hover, a:focus { color: #004999; }
 .nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
 .nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
 .nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
+.nav-links.expanded a:nth-child(4) { animation-delay: 0.15s; }
+.nav-links.expanded a:nth-child(5) { animation-delay: 0.15s; }
+.nav-links.expanded a:nth-child(6) { animation-delay: 0.15s; }
 /* Add more nth-child delays if more links exist */
 
 @keyframes fadeInUp {
