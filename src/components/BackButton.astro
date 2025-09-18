@@ -1,0 +1,34 @@
+---
+const { parent = '/blog', label = 'Back to posts' } = Astro.props;
+---
+<a
+  class="back-btn inline-flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2"
+  href={parent}
+  role="button"
+  aria-label={label}
+  data-parent={parent}
+>
+  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none">
+    <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span>{label}</span>
+</a>
+
+<script>
+  (function () {
+    const btn = document.querySelector('.back-btn[data-parent]');
+    if (!btn) return;
+
+    const parent = btn.getAttribute('data-parent');
+    const sameOriginReferrer = document.referrer && new URL(document.referrer).origin === location.origin;
+
+    btn.addEventListener('click', function (e) {
+      // If user has history and came from the same site → use history.back()
+      if ((history.length > 1 && sameOriginReferrer)) {
+        e.preventDefault();
+        history.back();
+      }
+      // else: let the anchor naturally take them to `parent`
+    });
+  })();
+</script>
