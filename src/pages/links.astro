@@ -1,23 +1,9 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 const pageTitle = "Links";
 ---
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>{pageTitle}</title>
-  </head>
-  <Header />
-<body>
+<BaseLayout>
     <h1>{pageTitle}</h1>
     <h2>Social Media -</h2>
     <p>When this page is operational, there will be links available.</p>
-    <Footer />
-
-   <script>
-    import "../scripts/menu.js";
-    </script>
-</body>
+</BaseLayout>
