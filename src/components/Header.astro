@@ -8,9 +8,9 @@ import ThemeIcon from './ThemeIcon.astro';
   <div class="nav-overlay" id="nav-overlay"></div>
 
   <div class="hamburger" id="hamburger">
-    <span class="line"></span>
-    <span class="line"></span>
-    <span class="line"></span>
+    <span class="line line1"></span>
+    <span class="line line2"></span>
+    <span class="line line3"></span>
   </div>
 
   <div class="site-title">
@@ -33,7 +33,6 @@ import ThemeIcon from './ThemeIcon.astro';
         hamburger.classList.toggle('active');
         navOverlay.classList.toggle('active');
       });
-
       navOverlay.addEventListener('click', () => {
         nav.classList.remove('expanded');
         hamburger.classList.remove('active');
@@ -50,11 +49,20 @@ import ThemeIcon from './ThemeIcon.astro';
         if (theme === 'dark') {
           document.documentElement.classList.add('dark');
           themeIcon.textContent = '🌙';
+          themeIcon.style.color = '#ffffff';
           localStorage.setItem('theme', 'dark');
         } else {
           document.documentElement.classList.remove('dark');
           themeIcon.textContent = '☀️';
+          themeIcon.style.color = '#0094b6';
           localStorage.setItem('theme', 'light');
+        }
+
+        if (hamburger) {
+          const lines = hamburger.querySelectorAll('.line');
+          lines.forEach(line => {
+            line.style.backgroundColor = theme === 'dark' ? '#ffffff' : '#0094b6';
+          });
         }
       };
 
