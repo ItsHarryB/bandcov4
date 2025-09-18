@@ -1,11 +1,11 @@
 /* ==========================
-   Base styles (light mode)
+   Base styles
 ========================== */
-
 html {
   background-color: #ffffff;
   font-family: "Work Sans", sans-serif;
   color: #000000;
+  scroll-behavior: smooth; /* smooth scroll */
 }
 
 body {
@@ -20,7 +20,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Headings */
 h1, h2, h3, h4, h5, h6 {
   color: inherit;
   margin: 1rem 0;
@@ -30,7 +29,6 @@ h1 {
   font-size: 2.5rem;
 }
 
-/* Links */
 a {
   color: #0066cc;
   text-decoration: underline;
@@ -42,17 +40,33 @@ a:focus {
 }
 
 /* ==========================
-   Nav & Hamburger
+   Header / Nav / Hamburger
 ========================== */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  position: relative;
+  background-color: inherit;
+  z-index: 1000;
+}
 
+.site-title a {
+  text-decoration: none;
+  font-weight: bold;
+  color: inherit;
+  font-size: 1.2rem;
+}
+
+/* Hamburger */
 .hamburger {
   display: block;
-  cursor: pointer;
-  z-index: 2000;
   width: 40px;
   height: 30px;
   position: relative;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  z-index: 2000;
 }
 
 .hamburger .line {
@@ -64,42 +78,21 @@ a:focus {
   transition: all 0.3s ease;
 }
 
-.hamburger .line:nth-child(1) {
-  top: 0;
-}
+.hamburger .line:nth-child(1) { top: 0; }
+.hamburger .line:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.hamburger .line:nth-child(3) { bottom: 0; }
 
-.hamburger .line:nth-child(2) {
-  top: 50%;
-  transform: translateY(-50%);
-}
+.hamburger.active .line:nth-child(1) { transform: rotate(45deg); top: 50%; }
+.hamburger.active .line:nth-child(2) { opacity: 0; }
+.hamburger.active .line:nth-child(3) { transform: rotate(-45deg); top: 50%; bottom: auto; }
 
-.hamburger .line:nth-child(3) {
-  bottom: 0;
-}
-
-/* Hamburger X animation */
-.hamburger.active .line:nth-child(1) {
-  transform: rotate(45deg);
-  top: 50%;
-}
-
-.hamburger.active .line:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger.active .line:nth-child(3) {
-  transform: rotate(-45deg);
-  top: 50%;
-  bottom: auto;
-}
-
-/* Nav links hidden by default with slide-down */
+/* Nav links */
 .nav-links {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
   position: absolute;
-  top: 4rem;
+  top: 100%;
   left: 0;
   width: 100%;
   background-color: #000000;
@@ -107,12 +100,10 @@ a:focus {
   z-index: 1000;
 }
 
-/* Show nav links */
 .nav-links.expanded {
   max-height: 500px;
 }
 
-/* Fade in nav links */
 .nav-links a {
   display: block;
   padding: 10px 0;
@@ -135,10 +126,60 @@ a:focus {
   background-color: #4e4e4e;
 }
 
+/* Active link highlight */
+.nav-links a.active {
+  color: #ffcc00;
+  font-weight: bold;
+  border-bottom: 2px solid #ffcc00;
+}
+
+/* Overlay */
+.nav-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 900;
+}
+
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  cursor: pointer;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
+}
+
+.theme-toggle .theme-icon {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+html.dark .theme-toggle .theme-icon {
+  transform: rotate(360deg);
+}
+
 /* ==========================
    Dark mode
 ========================== */
-
 html.dark {
   background-color: #1b1b1b;
   color: #ffffff;
@@ -159,4 +200,30 @@ html.dark .hamburger .line {
 
 html.dark .nav-links {
   background-color: #222222;
+}
+
+html.dark .nav-overlay {
+  background: rgba(255,255,255,0.1);
+}
+
+/* ==========================
+   Desktop layout
+========================== */
+@media screen and (min-width: 768px) {
+  .hamburger { display: none; }
+  .nav-links {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    max-height: none;
+    background: none;
+  }
+  .nav-links a {
+    display: inline-block;
+    padding: 0 15px;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .nav-overlay { display: none; }
 }
