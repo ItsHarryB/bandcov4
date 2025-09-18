@@ -9,7 +9,33 @@ body {
   max-width: 80ch;
   padding: 1rem;
   line-height: 1.5;
-  color:#000000
+  color: #000000; /* default (light mode) */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #000000; /* ensure headings follow */
+}
+
+a {
+  color: #0066cc; /* link color for light mode */
+  text-decoration: underline;
+}
+
+html.dark body {
+  color: #ffffff; /* dark mode override */
+}
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #ffffff; /* headings white */
+}
+
+html.dark a {
+  color: #0097dd; /* softer blue for readability */
 }
 
 * {
@@ -88,8 +114,4 @@ html.dark {
 
 .dark .nav-links a {
   color: #ffffff;
-}
-
-.dark.body {
-    color: #ffffff
 }
