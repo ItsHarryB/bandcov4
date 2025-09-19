@@ -42,13 +42,13 @@ import ThemeIcon from './ThemeIcon.astro';
         });
       }
 
-      // Theme toggle with spinning animation
+      // Theme toggle with spinning icon
       if (themeToggle) {
         const themeIcon = themeToggle.querySelector('.theme-icon');
         if (!themeIcon) return;
 
         const setTheme = (theme) => {
-          // Trigger spin on the icon itself
+          // Spin animation
           themeIcon.classList.add('spin');
           setTimeout(() => themeIcon.classList.remove('spin'), 500);
 
@@ -56,22 +56,16 @@ import ThemeIcon from './ThemeIcon.astro';
             document.documentElement.classList.add('dark');
             themeIcon.textContent = '🌙';
             themeIcon.style.color = '#ffffff';
-            if (hamburger) {
-              hamburger.querySelectorAll('.line').forEach(line => line.style.backgroundColor = '#ffffff');
-            }
             localStorage.setItem('theme', 'dark');
           } else {
             document.documentElement.classList.remove('dark');
             themeIcon.textContent = '☀️';
             themeIcon.style.color = '#0094b6';
-            if (hamburger) {
-              hamburger.querySelectorAll('.line').forEach(line => line.style.backgroundColor = '#0094b6');
-            }
             localStorage.setItem('theme', 'light');
           }
         };
 
-        // Initialize theme
+        // Initialize theme from localStorage
         setTheme(localStorage.getItem('theme') || 'light');
 
         themeToggle.addEventListener('click', () => {

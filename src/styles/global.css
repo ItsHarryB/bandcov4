@@ -32,13 +32,13 @@ a:hover, a:focus { color: #004999; }
   position: relative;
   z-index: 1000;
   flex-wrap: nowrap;
-  background-color: #0094b6; /* unified header color */
+  background-color: #0094b6; /* light mode header */
 }
 
 .site-title { flex-shrink: 0; margin-right: 2rem; }
 .site-title a {
   text-decoration: none;
-  color: #ffffff; /* readable on header */
+  color: #ffffff; /* readable on light blue header */
   font-weight: bold;
   font-size: 1.2rem;
   white-space: nowrap;
@@ -61,7 +61,7 @@ a:hover, a:focus { color: #004999; }
   height: 5px;
   width: 100%;
   left: 0;
-  background-color: #ffffff; /* lines always white on header */
+  background-color: #ffffff; /* always white */
   transition: all 0.3s ease;
 }
 .hamburger .line1 { top: 0; }
@@ -80,8 +80,8 @@ a:hover, a:focus { color: #004999; }
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: #0094b6; /* matches header */
-  color: #ffffff; /* readable links */
+  background-color: #0094b6; /* matches light mode header */
+  color: #ffffff;
   text-align: center;
   z-index: 1000;
   padding-left: 0;
@@ -228,9 +228,11 @@ html.dark {
 
 html.dark a { color: #66aaff; }
 html.dark a:hover, html.dark a:focus { color: #99cfff; }
+html.dark .site-header { background-color: #00495f; } /* dark mode header */
+html.dark .site-title a { color: #ffffff; }
 html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #222222; color: #ffffff; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: #4e4e4e; }
+html.dark .nav-links { background-color: #00495f; color: #ffffff; }
+html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); }
 html.dark .nav-overlay { background: rgba(255,255,255,0.1); }
 html.dark .social-link { background: #333; color: #ddd; }
 html.dark .social-link:hover { color: #fff; }
@@ -268,7 +270,6 @@ html.dark .footer-meta { color: #aaa; }
     position: relative;
   }
 
-  /* Hamburger top-left */
   .hamburger {
     position: absolute;
     top: 1rem;
@@ -287,7 +288,7 @@ html.dark .footer-meta { color: #aaa; }
     align-items: center;
     gap: 0.5rem;
     transition: max-height 0.3s ease-out;
-    background-color: #0094b6; /* matches header */
+    background-color: #0094b6; /* light mode nav */
     color: #ffffff;
   }
 
@@ -322,7 +323,7 @@ html.dark .footer-meta { color: #aaa; }
     white-space: nowrap;
     flex-shrink: 1;
     text-overflow: ellipsis;
-    color: #ffffff; /* header links white */
+    color: #ffffff; /* white on light header */
   }
   .site-title { margin-right: 1rem; }
   .nav-overlay { display: none; }
