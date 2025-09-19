@@ -48,7 +48,6 @@ import ThemeIcon from './ThemeIcon.astro';
         if (!themeIcon) return;
 
         const setTheme = (theme) => {
-          // Spin animation
           themeIcon.classList.add('spin');
           setTimeout(() => themeIcon.classList.remove('spin'), 500);
 
@@ -56,11 +55,25 @@ import ThemeIcon from './ThemeIcon.astro';
             document.documentElement.classList.add('dark');
             themeIcon.textContent = '🌙';
             themeIcon.style.color = '#ffffff';
+
+            // Ensure hamburger lines are white in dark mode
+            hamburger?.querySelectorAll('.line').forEach(line => line.style.backgroundColor = '#ffffff');
+
+            // Ensure nav links are white in dark mode
+            nav?.querySelectorAll('a').forEach(link => link.style.color = '#ffffff');
+
             localStorage.setItem('theme', 'dark');
           } else {
             document.documentElement.classList.remove('dark');
             themeIcon.textContent = '☀️';
-            themeIcon.style.color = '#0094b6';
+            themeIcon.style.color = '#ffffff';
+
+            // Ensure hamburger lines are white in light mode
+            hamburger?.querySelectorAll('.line').forEach(line => line.style.backgroundColor = '#ffffff');
+
+            // Ensure nav links are white in light mode
+            nav?.querySelectorAll('a').forEach(link => link.style.color = '#ffffff');
+
             localStorage.setItem('theme', 'light');
           }
         };
