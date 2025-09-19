@@ -12,7 +12,7 @@ export default function Footer() {
         transition: "background-color 0.5s ease, color 0.5s ease",
       }}
     >
-      {/* Sitemap */}
+      {/* Sitemap link */}
       <div style={{ marginBottom: "1rem" }}>
         <a
           href="/sitemap-index.xml"
@@ -22,7 +22,7 @@ export default function Footer() {
         </a>
       </div>
 
-      {/* Social icons */}
+      {/* Social media links */}
       <div
         style={{
           marginBottom: "1rem",
@@ -39,7 +39,7 @@ export default function Footer() {
         />
       </div>
 
-      {/* Footer info */}
+      {/* Copyright / info */}
       <div style={{ fontSize: "0.875rem", color: "#666" }}>
         TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.0.1 / 19/09/2025
       </div>

@@ -1,39 +1,41 @@
-.social-link {
+/* Social icon base */
+.social-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
   text-decoration: none;
   transition: background 0.3s, color 0.3s, transform 0.2s;
+  position: relative;
 }
 
-.social-link:hover {
+/* Dark mode background for social icons */
+html.dark .social-icon {
+  background: #333;
+  color: #ddd;
+}
+
+/* Light mode background */
+html:not(.dark) .social-icon {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* Hover effects per platform */
+.social-icon[data-platform="Twitter"]:hover {
+  background: #1DA1F2;
+  color: #fff;
   transform: translateY(-2px);
 }
-
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-/* Dark mode */
-.social-link.dark { background: #333; color: #ddd; }
-.social-link.dark:hover { color: #fff; }
-
-/* Screen reader only */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
+.social-icon[data-platform="GitHub"]:hover {
+  background: #24292f;
+  color: #fff;
+  transform: translateY(-2px);
 }
-
-.icon { stroke-width: 1.8; }
+.social-icon[data-platform="LinkedIn"]:hover {
+  background: #0A66C2;
+  color: #fff;
+  transform: translateY(-2px);
+}
