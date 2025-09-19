@@ -223,6 +223,7 @@ html.dark {
   color: #ffffff;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
+
 html.dark a { color: #66aaff; }
 html.dark a:hover, html.dark a:focus { color: #99cfff; }
 html.dark .hamburger .line { background-color: #ffffff; }
@@ -231,14 +232,12 @@ html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: #
 html.dark .nav-overlay { background: rgba(255,255,255,0.1); }
 html.dark .social-link { background: #333; color: #ddd; }
 html.dark .social-link:hover { color: #fff; }
-html.dark .site-footer { background-color: #222; color: #ddd; }
-html.dark .footer-section ul li a {
-  color: #66aaff;
-}
 
-html.dark .footer-meta {
-  color: #999;
-}
+/* Dark mode footer headings and meta */
+html.dark .footer-section h4 { color: #fff; }
+html.dark .footer-section ul li a { color: #66aaff; }
+html.dark .footer-section ul li a:hover { color: #99cfff; }
+html.dark .footer-meta { color: #999; }
 
 /* Responsive footer columns */
 @media (max-width: 800px) {

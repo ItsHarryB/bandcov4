@@ -13,7 +13,8 @@ export default function Footer() {
         <div className="footer-section footer-left">
           <p>
             &copy; {new Date().getFullYear()} TEST: Brighton and Co. <br />
-          All rights reserved.</p>
+            All rights reserved.
+          </p>
         </div>
 
         {/* Middle Column: Social Links */}
