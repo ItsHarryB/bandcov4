@@ -1,6 +1,6 @@
 import React from "react";
 import Social from "./Social.jsx";
-import "../styles/global.css"; // Make sure your global.css is imported
+import "../styles/global.css"; // Make sure global.css is imported
 
 export default function Footer() {
   return (
