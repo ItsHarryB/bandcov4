@@ -11,7 +11,8 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   adapter: cloudflare(),
   site: 'https://test.brightonandco.co.uk',
-  integrations: [preact(),     
+  // @ts-ignore
+  integrations: [react(),preact(),     
     sitemap({
       // configuration options
     }),

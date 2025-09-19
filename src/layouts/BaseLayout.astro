@@ -46,7 +46,7 @@ import "../styles/global.css";
       <slot />
     </main>
 
-    <!-- Footer component (React) -->
+    <!-- React Footer: hydrate on client -->
     <Footer client:load />
 
     <script type="module">
@@ -67,7 +67,7 @@ import "../styles/global.css";
           const themeIcon = themeToggle.querySelector('.theme-icon');
           if (!themeIcon) return;
 
-          // Inject spinning CSS for toggle
+          // Spinning animation for theme toggle
           const style = document.createElement('style');
           style.textContent = `
             .theme-icon.spin { display: inline-block; animation: spin 0.5s linear; }
@@ -98,7 +98,7 @@ import "../styles/global.css";
             }
           }
 
-          // Apply saved theme on load
+          // Initialize saved theme
           const savedTheme = localStorage.getItem('theme') || 'light';
           setTheme(savedTheme);
 
