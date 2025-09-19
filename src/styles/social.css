@@ -8,45 +8,22 @@
   background: #f0f0f0;
   color: #333;
   text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  margin-right: 0.5rem;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
 }
 
 .social-link:hover {
   transform: translateY(-2px);
 }
 
-.social-link .icon {
-  stroke-width: 1.8;
-}
+.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
+.social-link.github:hover { background: #24292f; color: #fff; }
+.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
 
-/* Brand colors on hover */
-.social-link.twitter:hover {
-  background: #1da1f2;
-  color: #fff;
-}
+/* Dark mode */
+.social-link.dark { background: #333; color: #ddd; }
+.social-link.dark:hover { color: #fff; }
 
-.social-link.github:hover {
-  background: #24292f;
-  color: #fff;
-}
-
-.social-link.linkedin:hover {
-  background: #0a66c2;
-  color: #fff;
-}
-
-/* Dark mode base */
-html.dark .social-link {
-  background: #333;
-  color: #ddd;
-}
-
-html.dark .social-link:hover {
-  color: #fff;
-}
-
-/* Screen reader only text */
+/* Screen reader only */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -54,7 +31,9 @@ html.dark .social-link:hover {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   white-space: nowrap;
   border: 0;
 }
+
+.icon { stroke-width: 1.8; }
