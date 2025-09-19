@@ -1,36 +1,17 @@
 import React from "react";
 import Social from "./Social.jsx";
+import "../styles/global.css";
 
 export default function Footer() {
   return (
-    <footer
-      style={{
-        padding: "2rem 1rem",
-        backgroundColor: "#f8f8f8",
-        color: "#333",
-        textAlign: "center",
-        transition: "background-color 0.5s ease, color 0.5s ease",
-      }}
-    >
-      {/* Sitemap link */}
-      <div style={{ marginBottom: "1rem" }}>
-        <a
-          href="/sitemap-index.xml"
-          style={{ color: "inherit", textDecoration: "underline" }}
-        >
-          Sitemap
-        </a>
+    <footer className="site-footer">
+      {/* Sitemap */}
+      <div className="footer-sitemap">
+        <a href="/sitemap-index.xml">Sitemap</a>
       </div>
 
-      {/* Social media links */}
-      <div
-        style={{
-          marginBottom: "1rem",
-          display: "flex",
-          justifyContent: "center",
-          gap: "1rem",
-        }}
-      >
+      {/* Social icons */}
+      <div className="footer-social">
         <Social platform="Twitter" username="ItsHarryB" />
         <Social platform="GitHub" username="ItsHarryB_" />
         <Social
@@ -39,8 +20,8 @@ export default function Footer() {
         />
       </div>
 
-      {/* Copyright / info */}
-      <div style={{ fontSize: "0.875rem", color: "#666" }}>
+      {/* Footer info */}
+      <div className="footer-info">
         TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.0.1 / 19/09/2025
       </div>
     </footer>
