@@ -8,25 +8,28 @@ import "../styles/global.css";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TEST: Brighton and Co</title>
-
-    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="icon" href="/favicon.png" type="image/png" />
   </head>
   <body>
     <header class="site-header">
+      <!-- Hamburger -->
       <div class="hamburger">
         <span class="line line1"></span>
         <span class="line line2"></span>
         <span class="line line3"></span>
       </div>
 
+      <!-- Site title -->
       <div class="site-title">
         <a href="/">TEST: Brighton and Co</a>
       </div>
 
+      <!-- Theme toggle -->
       <button id="theme-toggle" class="theme-toggle">
         <span class="theme-icon"></span>
       </button>
 
+      <!-- Nav links -->
       <nav class="nav-links">
         <a href="/">Home</a>
         <a href="/enquiries/">Enquiries</a>
@@ -41,7 +44,7 @@ import "../styles/global.css";
       <slot />
     </main>
 
-    <!-- React Footer: hydrate only on client -->
+    <!-- Footer: only hydrated on client to avoid SSR hooks issues -->
     <Footer client:load />
 
     <script type="module">
@@ -58,10 +61,11 @@ import "../styles/global.css";
 
         const themeToggle = document.getElementById("theme-toggle");
         if (!themeToggle) return;
+
         const themeIcon = themeToggle.querySelector(".theme-icon");
         if (!themeIcon) return;
 
-        // Spinning animation style
+        // Add spinning animation for toggle
         const style = document.createElement("style");
         style.textContent = `
           .theme-icon.spin { display: inline-block; animation: spin 0.5s linear; }
@@ -79,18 +83,18 @@ import "../styles/global.css";
             document.documentElement.classList.add("dark");
             themeIcon.textContent = "🌙";
             themeIcon.style.color = "#ffffff";
-            hamburgerLines.forEach((line) => (line.style.backgroundColor = "#ffffff"));
+            hamburgerLines.forEach(line => (line.style.backgroundColor = "#ffffff"));
             localStorage.setItem("theme", "dark");
           } else {
             document.documentElement.classList.remove("dark");
             themeIcon.textContent = "☀️";
             themeIcon.style.color = "#0094b6";
-            hamburgerLines.forEach((line) => (line.style.backgroundColor = "#0094b6"));
+            hamburgerLines.forEach(line => (line.style.backgroundColor = "#0094b6"));
             localStorage.setItem("theme", "light");
           }
         }
 
-        // Apply saved theme
+        // Initialize theme on load
         setTheme(localStorage.getItem("theme") || "light");
 
         themeToggle.addEventListener("click", () => {

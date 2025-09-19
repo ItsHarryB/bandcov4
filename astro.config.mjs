@@ -7,6 +7,8 @@ import preact from '@astrojs/preact';
 
 import sitemap from '@astrojs/sitemap';
 
+import react from '@astrojs/react'
+
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare(),
