@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Twitter, Github, Linkedin } from "lucide-react";
-import "./social.css";
 
 export default function Social({ platform, username, url }) {
   const [isDark, setIsDark] = useState(false);
@@ -10,8 +9,12 @@ export default function Social({ platform, username, url }) {
     const observer = new MutationObserver(() => {
       setIsDark(document.documentElement.classList.contains("dark"));
     });
+
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    setIsDark(document.documentElement.classList.contains("dark")); // initialize
+
+    // Initialize state
+    setIsDark(document.documentElement.classList.contains("dark"));
+
     return () => observer.disconnect();
   }, []);
 
@@ -39,7 +42,7 @@ export default function Social({ platform, username, url }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={platform}
-      className={`social-link ${brandClass} ${isDark ? "dark" : ""}`}
+      className={`social-link ${brandClass}`}
     >
       {Icon && <Icon className="icon" size={20} />}
       <span className="sr-only">{platform}</span>

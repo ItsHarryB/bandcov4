@@ -4,7 +4,7 @@ html {
   font-family: "Work Sans", sans-serif;
   color: #000000;
   scroll-behavior: smooth;
-  transition: background-color 0.5s ease, color 0.5s ease; /* smooth transition */
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 body {
@@ -13,7 +13,7 @@ body {
   max-width: 100ch;
   padding: 1rem;
   line-height: 1.5;
-  transition: background-color 0.5s ease, color 0.5s ease; /* smooth transition */
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 * { box-sizing: border-box; }
@@ -151,7 +151,6 @@ a:hover, a:focus { color: #004999; }
   display: inline-block;
   transition: transform 0.5s ease, color 0.5s ease;
 }
-
 .theme-toggle .theme-icon.spin {
   animation: spin 0.5s linear;
 }
@@ -159,6 +158,26 @@ a:hover, a:focus { color: #004999; }
   0% { transform: rotate(0deg); } 
   100% { transform: rotate(360deg); } 
 }
+
+/* Social links styling (Option 1: CSS inside global.css) */
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  color: #333;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  margin-right: 0.5rem;
+}
+.social-link .icon { stroke-width: 1.8; }
+.social-link:hover { transform: translateY(-2px); }
+.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
+.social-link.github:hover { background: #24292f; color: #fff; }
+.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
 
 /* Dark mode */
 html.dark { 
@@ -172,6 +191,8 @@ html.dark .hamburger .line { background-color: #ffffff; }
 html.dark .nav-links { background-color: #222222; color: #ffffff; }
 html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: #4e4e4e; }
 html.dark .nav-overlay { background: rgba(255,255,255,0.1); }
+html.dark .social-link { background: #333; color: #ddd; }
+html.dark .social-link:hover { color: #fff; }
 
 /* Desktop layout */
 @media screen and (min-width: 900px) {
@@ -184,14 +205,14 @@ html.dark .nav-overlay { background: rgba(255,255,255,0.1); }
     flex-wrap: nowrap; 
     max-height: none; 
     background: none; 
-    gap: 16px; /* wider spacing so all links fit */
+    gap: 16px;
     padding-left: 1rem; 
-    overflow: hidden; /* prevent horizontal scroll */
+    overflow: hidden;
   }
 
   .nav-links a { 
     display: inline-block; 
-    padding: 0 8px; /* enough spacing */
+    padding: 0 8px; 
     opacity: 1; 
     transform: translateY(0); 
     white-space: nowrap; 
