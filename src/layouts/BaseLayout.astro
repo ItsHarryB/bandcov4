@@ -8,30 +8,24 @@ import "../styles/global.css";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TEST: Brighton and Co</title>
-
-    <!-- Favicon -->
     <link rel="icon" href="/favicon.png" type="image/png">
   </head>
   <body>
     <header class="site-header">
-      <!-- Hamburger -->
       <div class="hamburger">
         <span class="line line1"></span>
         <span class="line line2"></span>
         <span class="line line3"></span>
       </div>
 
-      <!-- Site title -->
       <div class="site-title">
         <a href="/">TEST: Brighton and Co</a>
       </div>
 
-      <!-- Theme toggle -->
       <button id="theme-toggle" class="theme-toggle">
         <span class="theme-icon"></span>
       </button>
 
-      <!-- Nav links -->
       <nav class="nav-links">
         <a href="/">Home</a>
         <a href="/enquiries/">Enquiries</a>
@@ -46,28 +40,27 @@ import "../styles/global.css";
       <slot />
     </main>
 
-    <!-- Preact Footer: hydrate on client -->
+    <!-- React Footer: client hydration -->
     <Footer client:load />
 
     <script type="module">
-      document.addEventListener("DOMContentLoaded", () => {
-        const hamburger = document.querySelector(".hamburger");
-        const nav = document.querySelector(".nav-links");
-        const themeToggle = document.getElementById("theme-toggle");
-        const themeIcon = themeToggle?.querySelector(".theme-icon");
-
-        // Hamburger toggle
+      document.addEventListener('DOMContentLoaded', () => {
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('.nav-links');
         if (hamburger && nav) {
-          hamburger.addEventListener("click", () => {
-            nav.classList.toggle("expanded");
-            hamburger.classList.toggle("active");
+          hamburger.addEventListener('click', () => {
+            nav.classList.toggle('expanded');
+            hamburger.classList.toggle('active');
           });
         }
 
-        if (!themeToggle || !themeIcon) return;
+        const themeToggle = document.getElementById('theme-toggle');
+        if (!themeToggle) return;
 
-        // Inject spinning animation for theme toggle
-        const style = document.createElement("style");
+        const themeIcon = themeToggle.querySelector('.theme-icon');
+        if (!themeIcon) return;
+
+        const style = document.createElement('style');
         style.textContent = `
           .theme-icon.spin { display: inline-block; animation: spin 0.5s linear; }
           @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -75,31 +68,34 @@ import "../styles/global.css";
         document.head.appendChild(style);
 
         function setTheme(theme) {
-          themeIcon.classList.add("spin");
-          setTimeout(() => themeIcon.classList.remove("spin"), 500);
+          themeIcon.classList.add('spin');
+          setTimeout(() => themeIcon.classList.remove('spin'), 500);
 
-          if (theme === "dark") {
-            document.documentElement.classList.add("dark");
-            themeIcon.textContent = "🌙";
-            themeIcon.style.color = "#ffffff";
-            hamburger?.querySelectorAll(".line").forEach(line => line.style.backgroundColor = "#ffffff");
-            localStorage.setItem("theme", "dark");
+          if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+            themeIcon.textContent = '🌙';
+            themeIcon.style.color = '#ffffff';
+            if (hamburger) {
+              hamburger.querySelectorAll('.line').forEach(line => line.style.backgroundColor = '#ffffff');
+            }
+            localStorage.setItem('theme', 'dark');
           } else {
-            document.documentElement.classList.remove("dark");
-            themeIcon.textContent = "☀️";
-            themeIcon.style.color = "#0094b6";
-            hamburger?.querySelectorAll(".line").forEach(line => line.style.backgroundColor = "#0094b6");
-            localStorage.setItem("theme", "light");
+            document.documentElement.classList.remove('dark');
+            themeIcon.textContent = '☀️';
+            themeIcon.style.color = '#0094b6';
+            if (hamburger) {
+              hamburger.querySelectorAll('.line').forEach(line => line.style.backgroundColor = '#0094b6');
+            }
+            localStorage.setItem('theme', 'light');
           }
         }
 
-        // Initialize saved theme
-        setTheme(localStorage.getItem("theme") || "light");
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
 
-        // Toggle theme on click
-        themeToggle.addEventListener("click", () => {
-          const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
-          setTheme(current === "dark" ? "light" : "dark");
+        themeToggle.addEventListener('click', () => {
+          const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+          setTheme(current === 'dark' ? 'light' : 'dark');
         });
       });
     </script>

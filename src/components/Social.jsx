@@ -1,24 +1,19 @@
-import { useEffect, useState } from "preact/compat";
+import React, { useEffect, useState } from "react";
 import { Twitter, Github, Linkedin } from "lucide-react";
 
 export default function Social({ platform, username, url }) {
   const [isDark, setIsDark] = useState(false);
 
-  // Detect dark mode changes
+  // Detect dark mode on client
   useEffect(() => {
     const updateDarkMode = () => {
       setIsDark(document.documentElement.classList.contains("dark"));
     };
 
-    // Initial check
-    updateDarkMode();
+    updateDarkMode(); // initial check
 
-    // Observe class changes on <html>
     const observer = new MutationObserver(updateDarkMode);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
     return () => observer.disconnect();
   }, []);
@@ -61,6 +56,7 @@ export default function Social({ platform, username, url }) {
         color: baseColor,
         textDecoration: "none",
         transition: "background 0.3s, color 0.3s, transform 0.2s",
+        position: "relative",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = hoverColors[platform] || "#000";
@@ -84,9 +80,7 @@ export default function Social({ platform, username, url }) {
         clip: "rect(0,0,0,0)",
         whiteSpace: "nowrap",
         border: 0,
-      }}>
-        {platform}
-      </span>
+      }}>{platform}</span>
     </a>
   );
 }
