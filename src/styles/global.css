@@ -150,7 +150,15 @@ a:hover, a:focus { color: #004999; }
   color: #ffffff !important;
 }
 
-.nav-links a.active { color: #ffcc00; font-weight: bold; border-bottom: 2px solid #ffcc00; }
+/* Active link styling for desktop and mobile */
+.nav-links a.active {
+  background-color: #000000;  /* black box */
+  color: #ffffff !important;   /* white text inside the black box */
+  font-weight: bold;
+  border-radius: 6px;          /* optional rounded corners */
+  padding: 0.5rem 1rem;        /* adjust spacing inside the box */
+}
+
 
 /* Overlay */
 .nav-overlay {
