@@ -150,14 +150,22 @@ a:hover, a:focus { color: #004999; }
   color: #ffffff !important;
 }
 
-/* Active link styling for desktop and mobile */
+/* Active link styling - black button */
 .nav-links a.active {
-  background-color: #000000;  /* black box */
-  color: #ffffff !important;   /* white text inside the black box */
+  background-color: #000000;   /* black box */
+  color: #ffffff !important;   /* white text */
   font-weight: bold;
-  border-radius: 6px;          /* optional rounded corners */
-  padding: 0.5rem 1rem;        /* adjust spacing inside the box */
+  border-radius: 6px;
+  padding: 0.5rem 1rem;        /* spacing inside button */
 }
+
+/* Optional: same hover effect for consistency */
+.nav-links a.active:hover,
+.nav-links a.active:focus {
+  background-color: #222222;   /* slightly darker on hover */
+  color: #ffffff !important;
+}
+
 
 
 /* Overlay */

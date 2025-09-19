@@ -1,33 +1,23 @@
 ---
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/enquiries/", label: "Enquiries" },
-  { href: "/about/", label: "About Me" },
-  { href: "/blog/", label: "Blog" },
-  { href: "/photography/", label: "Photography" },
-  { href: "/links/", label: "Links" },
+  { href: '/', label: 'Home' },
+  { href: '/enquiries/', label: 'Enquiries' },
+  { href: '/about/', label: 'About Me' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/photography/', label: 'Photography' },
+  { href: '/links/', label: 'Links' }
 ];
 
-// Get the current path
+// Get current page URL
 const currentPath = Astro.url.pathname;
-
-// Helper to normalize paths for comparison
-function normalize(path: string) {
-  return path.endsWith("/") ? path : path + "/";
-}
-
-// Helper to check if a link is active
-function isActive(href: string) {
-  return normalize(href) === normalize(currentPath);
-}
 ---
 <nav class="nav-links" id={Astro.props.id}>
-  {links.map(link => (
-    <a
-      href={link.href}
-      class={isActive(link.href) ? "active" : ""}
-    >
-      {link.label}
-    </a>
-  ))}
+  {links.map(link => {
+    const isActive = currentPath === link.href;
+    return (
+      <a href={link.href} class={isActive ? 'active' : ''}>
+        {link.label}
+      </a>
+    );
+  })}
 </nav>
