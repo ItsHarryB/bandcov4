@@ -14,8 +14,7 @@
     "@fontsource-variable/work-sans": "^5.2.7",
     "@fontsource/work-sans": "^5.2.7",
     "astro": "^5.13.8",
-    "preact": "^10.27.2",
-    "swup": "^4.8.2"
+    "preact": "^10.27.2"
   },
   "devDependencies": {
     "wrangler": "^4.37.0"
