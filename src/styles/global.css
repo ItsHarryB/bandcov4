@@ -25,6 +25,10 @@ a:hover, a:focus { color: #004999; }
 
 /* Header */
 .site-header {
+  width: 100vw;      /* full viewport width */
+  max-width: 100%;   /* override any body constraints */
+  padding: 1rem 2rem; /* optional: more horizontal padding */
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,7 +36,7 @@ a:hover, a:focus { color: #004999; }
   position: relative;
   z-index: 1000;
   flex-wrap: nowrap;
-  background-color: #0094b6; /* light mode header */
+  background-color: #0094b6;
   height: 60px;
 }
 
@@ -74,6 +78,8 @@ a:hover, a:focus { color: #004999; }
 
 /* Navigation links */
 .nav-links {
+  justify-content: flex-start; /* keep links in a row */
+  flex: 1;                     /* take up remaining header space */
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
@@ -96,12 +102,13 @@ a:hover, a:focus { color: #004999; }
   padding: 0.75rem 1rem;
   font-weight: bold;
   text-transform: uppercase;
-  color: #ffffff !important; /* force visibility on light header */
+  color: #ffffff !important;
   text-decoration: none;
   opacity: 0;
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease, color 0.5s ease, background-color 0.3s ease;
   box-sizing: border-box;
+  border-radius: 6px;
 }
 
 .nav-links.expanded a {
@@ -117,9 +124,9 @@ a:hover, a:focus { color: #004999; }
 
 @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-.nav-links a:hover, .nav-links a:focus {
+.nav-links a:hover,
+.nav-links a:focus {
   background-color: rgba(255,255,255,0.2);
-  border-radius: 6px;
   color: #ffffff !important;
 }
 
@@ -249,8 +256,9 @@ html.dark .hamburger .line { background-color: #ffffff; }
 
 /* Dark mode nav links */
 html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 6px; }
+html.dark .nav-links a { color: #ffffff !important; }
+html.dark .nav-links a:hover,
+html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 6px; }
 
 /* Dark mode footer */
 html.dark .site-footer { background-color: #222; color: #ddd; }
@@ -276,10 +284,10 @@ html.dark .footer-meta { color: #aaa; }
     align-items: stretch; gap: 0.5rem; transition: max-height 0.3s ease-out;
     background-color: #0094b6;
   }
-  .nav-links a { text-align: left; padding: 0.75rem 1rem; width: 100%; }
+  .nav-links a { text-align: left; padding: 0.75rem 1rem; width: 100%; opacity: 1; transform: translateY(0); }
 }
 
-/* Desktop layout for header/nav */
+/* Desktop layout for header/nav with visibility fix */
 @media screen and (min-width: 900px) {
   .hamburger { display: none; }
   .nav-links {
@@ -290,21 +298,24 @@ html.dark .footer-meta { color: #aaa; }
     flex-wrap: nowrap;
     max-height: none;
     background: none;
-    gap: 16px;
+    gap: 8px;
     padding-left: 1rem;
     overflow: hidden;
     height: 100%;
   }
   .nav-links a {
+    white-space: nowrap; /* prevents "About Me" from breaking to two lines */
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    padding: 0 4px;
     height: 100%;
-    color: #ffffff !important; /* force visibility */
+    color: #ffffff !important;
     text-decoration: none;
     border-radius: 6px;
-    transition: background-color 0.3s ease;
+    opacity: 1 !important;        /* FIX: make links visible */
+    transform: translateY(0) !important; /* FIX: remove animation offset */
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   .nav-links a:hover,
   .nav-links a:focus {
@@ -313,4 +324,13 @@ html.dark .footer-meta { color: #aaa; }
   }
   .site-title { margin-right: 1rem; }
   .nav-overlay { display: none; }
+}
+
+/* Dark mode desktop nav links visibility fix */
+@media screen and (min-width: 900px) {
+  html.dark .nav-links a {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
 }
