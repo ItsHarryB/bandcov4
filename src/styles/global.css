@@ -61,7 +61,7 @@ a:hover, a:focus { color: #004999; }
   height: 5px;
   width: 100%;
   left: 0;
-  background-color: #ffffff; /* visible on blue header */
+  background-color: #ffffff; /* lines always white on header */
   transition: all 0.3s ease;
 }
 .hamburger .line1 { top: 0; }
