@@ -4,16 +4,20 @@ import { Twitter, Github, Linkedin } from "lucide-react";
 export default function Social({ platform, username, url }) {
   const [isDark, setIsDark] = useState(false);
 
-  // Detect dark mode on client
   useEffect(() => {
     const updateDarkMode = () => {
       setIsDark(document.documentElement.classList.contains("dark"));
     };
 
-    updateDarkMode(); // initial check
+    // Initial check
+    updateDarkMode();
 
+    // Observe class changes on <html>
     const observer = new MutationObserver(updateDarkMode);
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -56,7 +60,6 @@ export default function Social({ platform, username, url }) {
         color: baseColor,
         textDecoration: "none",
         transition: "background 0.3s, color 0.3s, transform 0.2s",
-        position: "relative",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.background = hoverColors[platform] || "#000";
@@ -70,17 +73,21 @@ export default function Social({ platform, username, url }) {
       }}
     >
       {Icon && <Icon size={20} strokeWidth={1.8} />}
-      <span style={{
-        position: "absolute",
-        width: "1px",
-        height: "1px",
-        padding: 0,
-        margin: "-1px",
-        overflow: "hidden",
-        clip: "rect(0,0,0,0)",
-        whiteSpace: "nowrap",
-        border: 0,
-      }}>{platform}</span>
+      <span
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
+      >
+        {platform}
+      </span>
     </a>
   );
 }
