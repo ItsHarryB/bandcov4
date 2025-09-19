@@ -12,7 +12,7 @@ export default defineConfig({
   adapter: cloudflare(),
   site: 'https://test.brightonandco.co.uk',
   // @ts-ignore
-  integrations: [,preact(),     
+  integrations: [react(),preact(),     
     sitemap({
       // configuration options
     }),
