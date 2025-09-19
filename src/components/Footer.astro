@@ -2,8 +2,124 @@
 import Social from './Social.astro';
 ---
 
+<footer class="site-footer">
+  <!-- Sitemap link for crawlers -->
+  <link rel="sitemap" href="/sitemap-index.xml" />
 
-<footer>
-  <Social platform="Twitter" username="ItsHarryB" />
-  <Social platform="GitHub" username="ItsHarryB_" />
+  <div class="footer-container">
+    <!-- Left: Copyright -->
+    <div class="footer-section">
+      <p>&copy; {new Date().getFullYear()} Brighton and Co. All rights reserved.</p>
+    </div>
+
+    <!-- Middle: Social Media -->
+    <div class="footer-section">
+      <h4>Follow Me</h4>
+      <div class="social-links">
+        <Social platform="Twitter" username="ItsHarryB" />
+        <Social platform="GitHub" username="ItsHarryB_" />
+      </div>
+    </div>
+
+    <!-- Right: Sitemap -->
+    <div class="footer-section">
+      <h4>Sitemap</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/enquiries/">Enquiries</a></li>
+        <li><a href="/about/">About Me</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/photography/">Photography</a></li>
+        <li><a href="/links/">Links</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Footer Meta -->
+  <div class="footer-meta">
+    <p>TEST: Brighton and Co Website - Made by Harry Brighton | Version 0.0.1 / 19/09/2025</p>
+  </div>
 </footer>
+
+<style>
+  .site-footer {
+    margin-top: 3rem;
+    padding: 2rem 1rem;
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    font-size: 0.9rem;
+    color: #333;
+  }
+
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .footer-section {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .footer-section h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #000;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 0.3rem;
+  }
+
+  .footer-section ul li a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+
+  .footer-section ul li a:hover {
+    text-decoration: underline;
+  }
+
+  .footer-meta {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  /* Dark mode */
+  html.dark .site-footer {
+    background: #1b1b1b;
+    border-top: 1px solid #333;
+    color: #ccc;
+  }
+
+  html.dark .footer-section h4 {
+    color: #fff;
+  }
+
+  html.dark .footer-section ul li a {
+    color: #66aaff;
+  }
+
+  html.dark .footer-section ul li a:hover {
+    color: #99cfff;
+  }
+
+  html.dark .footer-meta {
+    color: #999;
+  }
+</style>

@@ -5,8 +5,15 @@ import cloudflare from '@astrojs/cloudflare';
 
 import preact from '@astrojs/preact';
 
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare(),
-  integrations: [preact()]
+  site: 'https://test.brightonandco.co.uk',
+  integrations: [preact(),     
+    sitemap({
+      // configuration options
+    }),
+  ],
 });
