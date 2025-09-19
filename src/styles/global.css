@@ -23,6 +23,26 @@ h1,h2,h3,h4,h5,h6 { margin: 1rem 0; color: inherit; }
 a { color: #0066cc; text-decoration: underline; transition: color 0.5s ease; }
 a:hover, a:focus { color: #004999; }
 
+/* Always horizontally center */
+.page-center {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* spacing between elements */
+  align-items: center; /* horizontal centering for flex children */
+}
+
+/* Optional vertical centering */
+.vert-center {
+  justify-content: center; /* vertical centering */
+  min-height: 60vh;        /* optional: takes at least 60% of viewport height */
+}
+
+/* All h1 inside layout-content are horizontally centered */
+.layout-content h1 {
+  text-align: center;
+}
+
 /* Header */
 .site-header {
   width: 100vw;      /* full viewport width */

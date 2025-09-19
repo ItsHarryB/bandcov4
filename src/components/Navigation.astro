@@ -1,10 +1,33 @@
 ---
+const { id } = Astro.props;
+const currentPath = Astro.url.pathname; // current page URL
+
+const links = [
+  { href: "/", text: "Home" },
+  { href: "/enquiries/", text: "Enquiries" },
+  { href: "/about/", text: "About Me" },
+  { href: "/blog/", text: "Blog" },
+  { href: "/photography/", text: "Photography" },
+  { href: "/links/", text: "Links" },
+];
+
+// Helper to normalize paths (remove trailing slash)
+const normalize = (path: string) => path.replace(/\/$/, "");
+
+// Helper to determine if a link is active or a parent of current path
+const isActive = (linkHref: string) => {
+  const normLink = normalize(linkHref);
+  const normCurrent = normalize(currentPath);
+  return normLink === normCurrent || normCurrent.startsWith(normLink + "/");
+};
 ---
-<nav class="nav-links" id={Astro.props.id}>
-    <a href="/">Home</a>
-    <a href="/enquiries/">Enquiries</a>
-    <a href="/about/">About Me</a>
-    <a href="/blog/">Blog</a>
-    <a href="/photography/">Photography</a>
-    <a href="/links/">Links</a>
+<nav class="nav-links" id={id}>
+  {links.map(link => (
+    <a
+      href={link.href}
+      class={isActive(link.href) ? "active" : ""}
+    >
+      {link.text}
+    </a>
+  ))}
 </nav>
