@@ -32,13 +32,13 @@ a:hover, a:focus { color: #004999; }
   position: relative;
   z-index: 1000;
   flex-wrap: nowrap;
+  background-color: #0094b6; /* unified header color */
 }
 
-/* Site title */
 .site-title { flex-shrink: 0; margin-right: 2rem; }
 .site-title a {
   text-decoration: none;
-  color: inherit;
+  color: #ffffff; /* readable on header */
   font-weight: bold;
   font-size: 1.2rem;
   white-space: nowrap;
@@ -61,7 +61,7 @@ a:hover, a:focus { color: #004999; }
   height: 5px;
   width: 100%;
   left: 0;
-  background-color: #0094b6;
+  background-color: #ffffff; /* visible on blue header */
   transition: all 0.3s ease;
 }
 .hamburger .line1 { top: 0; }
@@ -80,8 +80,8 @@ a:hover, a:focus { color: #004999; }
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
-  color: #000000;
+  background-color: #0094b6; /* matches header */
+  color: #ffffff; /* readable links */
   text-align: center;
   z-index: 1000;
   padding-left: 0;
@@ -92,7 +92,7 @@ a:hover, a:focus { color: #004999; }
   padding: 10px 0;
   font-weight: bold;
   text-transform: uppercase;
-  color: inherit;
+  color: #ffffff;
   text-decoration: none;
   opacity: 0;
   transform: translateY(-10px);
@@ -109,7 +109,7 @@ a:hover, a:focus { color: #004999; }
 .nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
 @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-.nav-links a:hover, .nav-links a:focus { background-color: rgba(0,0,0,0.05); }
+.nav-links a:hover, .nav-links a:focus { background-color: rgba(255,255,255,0.2); }
 .nav-links a.active { color: #ffcc00; font-weight: bold; border-bottom: 2px solid #ffcc00; }
 
 /* Overlay */
@@ -176,8 +176,8 @@ a:hover, a:focus { color: #004999; }
 }
 
 .footer-section {
-  flex: 1;
-  min-width: 200px;
+  flex: 1 1 200px;
+  min-width: 150px;
 }
 
 .footer-section h4 {
@@ -207,7 +207,9 @@ a:hover, a:focus { color: #004999; }
 
 .social-links {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
 }
 
 .footer-meta {
@@ -226,41 +228,70 @@ html.dark {
 
 html.dark a { color: #66aaff; }
 html.dark a:hover, html.dark a:focus { color: #99cfff; }
+html.dark .hamburger .line { background-color: #ffffff; }
+html.dark .nav-links { background-color: #222222; color: #ffffff; }
+html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: #4e4e4e; }
+html.dark .nav-overlay { background: rgba(255,255,255,0.1); }
+html.dark .social-link { background: #333; color: #ddd; }
+html.dark .social-link:hover { color: #fff; }
 
-html.dark .site-footer {
-  background-color: #222;
-  color: #ddd;
-}
-
+/* Dark mode footer */
+html.dark .site-footer { background-color: #222; color: #ddd; }
 html.dark .footer-section h4 { color: #fff; }
 html.dark .footer-section ul li a { color: #66aaff; }
 html.dark .footer-section ul li a:hover { color: #99cfff; }
 html.dark .footer-meta { color: #aaa; }
 
-html.dark .social-link { background: #333; color: #ddd; }
-html.dark .social-link:hover { color: #fff; }
-
 /* Responsive footer columns */
 @media (max-width: 800px) {
-  .footer-container { flex-direction: column; gap: 1.5rem; }
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .footer-section {
+    flex: 1 1 100%;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
 }
 
-/* Mobile header centering */
+/* Mobile header adjustments */
 @media screen and (max-width: 900px) {
   .site-header {
     justify-content: center;
     text-align: center;
+    position: relative;
+  }
+
+  /* Hamburger top-left */
+  .hamburger {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
   }
 
   .nav-links {
-    position: static;
-    width: auto;
-    max-height: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    transition: max-height 0.3s ease-out;
+    background-color: #0094b6; /* matches header */
+    color: #ffffff;
   }
+
+  .nav-links.expanded { max-height: 600px; }
 
   .nav-links a {
     padding: 0.5rem 0;
@@ -291,6 +322,7 @@ html.dark .social-link:hover { color: #fff; }
     white-space: nowrap;
     flex-shrink: 1;
     text-overflow: ellipsis;
+    color: #ffffff; /* header links white */
   }
   .site-title { margin-right: 1rem; }
   .nav-overlay { display: none; }
