@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "preact";
 import { Twitter, Github, Linkedin } from "lucide-react";
 import "../styles/global.css";
 
