@@ -150,21 +150,22 @@ a:hover, a:focus { color: #004999; }
   color: #ffffff !important;
 }
 
-/* Active link styling - black button */
+/* Active link styling for both desktop and mobile */
 .nav-links a.active {
-  background-color: #000000;   /* black box */
-  color: #ffffff !important;   /* white text */
+  background-color: #000000; /* black button */
+  color: #ffffff !important; /* ensure text is visible */
   font-weight: bold;
   border-radius: 6px;
-  padding: 0.5rem 1rem;        /* spacing inside button */
+  padding: 0.5rem 1rem; /* optional: extra padding for button look */
 }
 
-/* Optional: same hover effect for consistency */
+/* Optional: hover effect for active link */
 .nav-links a.active:hover,
 .nav-links a.active:focus {
-  background-color: #222222;   /* slightly darker on hover */
+  background-color: #333333; /* slightly lighter black on hover */
   color: #ffffff !important;
 }
+
 
 
 
