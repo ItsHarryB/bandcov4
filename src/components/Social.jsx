@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "preact/compat";
 import { Twitter, Github, Linkedin } from "lucide-react";
 
 export default function Social({ platform, username, url }) {
@@ -84,7 +84,9 @@ export default function Social({ platform, username, url }) {
         clip: "rect(0,0,0,0)",
         whiteSpace: "nowrap",
         border: 0,
-      }}>{platform}</span>
+      }}>
+        {platform}
+      </span>
     </a>
   );
 }

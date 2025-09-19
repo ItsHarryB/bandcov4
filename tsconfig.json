@@ -2,14 +2,13 @@
   "extends": "astro/tsconfigs/strict",
   "include": [
     ".astro/types.d.ts",
-    "src/**/*"
+    "**/*"
   ],
   "exclude": [
-    "dist",
-    "**/Footer.astro"   // Ignore missing Astro files
+    "dist"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "preact"
   }
 }
