@@ -32,7 +32,7 @@ export default function Footer() {
 
         {/* Right Column: Sitemap */}
         <div className="footer-section footer-right">
-          <h4>Sitemap:</h4>
+          <h4>Quick Links:</h4>
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/enquiries/">Enquiries</a></li>
