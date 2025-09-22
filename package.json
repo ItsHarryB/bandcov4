@@ -12,7 +12,6 @@
     "@astrojs/cloudflare": "^12.6.8",
     "@astrojs/react": "^4.3.1",
     "@astrojs/sitemap": "^3.6.0",
-    "@fontsource-variable/work-sans": "^5.2.7",
     "@fontsource/raleway": "^5.2.8",
     "astro": "^5.13.8",
     "lucide-preact": "^0.544.0",
