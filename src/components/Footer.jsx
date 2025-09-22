@@ -47,7 +47,7 @@ export default function Footer() {
       {/* Footer Meta */}
       <div className="footer-meta">
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.0.1 / 19/09/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.1.0 / 22/09/2025
         </p>
       </div>
     </footer>
