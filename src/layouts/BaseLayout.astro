@@ -20,7 +20,10 @@ import "../styles/global.css";
       </div>
 
       <div class="site-title">
-        <a href="/">TEST: Brighton and Co</a>
+        <a href="/" class="site-logo-link">
+          <img src="/favicon.png" alt="Site Logo" />
+          <span>TEST: Brighton and Co</span>
+        </a>
       </div>
 
       <button id="theme-toggle" class="theme-toggle">
@@ -94,6 +97,25 @@ import "../styles/global.css";
           themeToggle.addEventListener("click", () => {
             const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
             setTheme(current === "dark" ? "light" : "dark");
+          });
+        }
+
+        // Active link highlighting
+        if (nav) {
+          const navLinks = nav.querySelectorAll("a");
+          const currentPath = window.location.pathname;
+          navLinks.forEach((link) => {
+            const linkPath = new URL(link.href).pathname;
+            if (linkPath === currentPath) link.classList.add("active");
+            else link.classList.remove("active");
+
+            link.addEventListener("click", () => {
+              if (nav.classList.contains("expanded")) {
+                nav.classList.remove("expanded");
+                hamburger?.classList.remove("active");
+                navOverlay?.classList.remove("active");
+              }
+            });
           });
         }
       });
