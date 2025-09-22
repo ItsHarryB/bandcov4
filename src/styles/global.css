@@ -17,23 +17,12 @@ body {
   transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 1rem 0;
-  color: inherit;
-}
+h1,h2,h3,h4,h5,h6 { margin: 1rem 0; color: inherit; }
 
-a {
-  color: #0066cc;
-  text-decoration: underline;
-  transition: color 0.5s ease;
-}
-a:hover, a:focus {
-  color: #004999;
-}
+a { color: #0066cc; text-decoration: underline; transition: color 0.5s ease; }
+a:hover, a:focus { color: #004999; }
 
 /* ===============================
    Layout Helpers
@@ -46,10 +35,7 @@ a:hover, a:focus {
   text-align: center;
 }
 
-.vert-center {
-  justify-content: center;
-  min-height: 60vh;
-}
+.vert-center { justify-content: center; min-height: 60vh; }
 
 .layout-content {
   margin: 0 auto;
@@ -57,17 +43,15 @@ a:hover, a:focus {
   max-width: 100ch;
   padding: 1rem;
 }
-.layout-content h1 {
-  text-align: center;
-}
+.layout-content h1 { text-align: center; }
 
 /* ===============================
    Header Styles
    =============================== */
 .site-header {
-  width: 100vw;               /* ensures full viewport width */
+  width: 100vw;
   max-width: 100%;
-  padding: 0 1rem;            /* aligns internal content with main layout */
+  padding: 0 1rem;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -148,10 +132,11 @@ a:hover, a:focus {
 }
 .nav-links.expanded { max-height: 600px; }
 
+/* Smaller nav buttons & hover highlights */
 .nav-links a {
   display: block;
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.4rem 0.8rem; /* reduced padding */
   font-weight: bold;
   text-transform: uppercase;
   color: #ffffff !important;
@@ -160,10 +145,9 @@ a:hover, a:focus {
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease, color 0.5s ease, background-color 0.3s ease;
   box-sizing: border-box;
-  border-radius: 6px;
+  border-radius: 4px; /* smaller corners */
 }
 .nav-links.expanded a { animation: fadeInUp 0.3s forwards; }
-
 .nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
 .nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
 .nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
@@ -175,6 +159,7 @@ a:hover, a:focus {
 
 .nav-links a:hover, .nav-links a:focus {
   background-color: rgba(255,255,255,0.2);
+  border-radius: 4px; /* match smaller size */
   color: #ffffff !important;
 }
 
@@ -182,8 +167,8 @@ a:hover, a:focus {
   background-color: #000000;
   color: #ffffff !important;
   font-weight: bold;
-  border-radius: 6px;
-  padding: 0.5rem 1rem;
+  border-radius: 4px;  /* smaller corners */
+  padding: 0.4rem 0.8rem; /* match smaller size */
 }
 .nav-links a.active:hover, .nav-links a.active:focus {
   background-color: #333333;
@@ -224,7 +209,7 @@ a:hover, a:focus {
 .site-footer {
   width: 100vw;
   max-width: 100%;
-  padding: 2rem 1rem;       /* aligns footer edges with main content */
+  padding: 2rem 1rem;
   background-color: #f8f8f8;
   border-top: 1px solid #ddd;
   font-size: 0.9rem;
@@ -256,20 +241,11 @@ a:hover, a:focus {
   color: #000;
 }
 
-.footer-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+.footer-section ul { list-style: none; padding: 0; margin: 0; }
 
-.footer-section ul li {
-  margin-bottom: 0.3rem;
-}
+.footer-section ul li { margin-bottom: 0.3rem; }
 
-.footer-section ul li a {
-  color: #0066cc;
-  text-decoration: none;
-}
+.footer-section ul li a { color: #0066cc; text-decoration: none; }
 
 .footer-section ul li a:hover { text-decoration: underline; }
 
@@ -321,7 +297,7 @@ html.dark .site-title a { color: #ffffff; }
 html.dark .hamburger .line { background-color: #ffffff; }
 html.dark .nav-links { background-color: #004166; color: #ffffff; }
 html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 6px; }
+html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
 html.dark .site-footer { background-color: #222; color: #ddd; }
 html.dark .footer-section h4 { color: #fff; }
 html.dark .footer-section ul li a { color: #66aaff; }
@@ -371,11 +347,11 @@ html.dark .footer-meta { color: #aaa; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
+    padding: 0 4px;   /* tightly spaced on desktop */
     height: 100%;
     color: #ffffff !important;
     text-decoration: none;
-    border-radius: 6px;
+    border-radius: 4px; /* smaller button shape */
     opacity: 1 !important;
     transform: translateY(0) !important;
     transition: background-color 0.3s ease, color 0.3s ease;
