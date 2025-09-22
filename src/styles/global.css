@@ -1,7 +1,7 @@
 /* Base styles */
 html {
   background-color: #ffffff;
-  font-family: "RalewayVariable", sans-serif;
+  font-family: "Raleway Variable", sans-serif;
   color: #000000;
   scroll-behavior: smooth;
   transition: background-color 0.5s ease, color 0.5s ease;
