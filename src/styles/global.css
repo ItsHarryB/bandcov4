@@ -98,29 +98,52 @@ a:hover, a:focus { color: var(--link-hover); }
 
 /* Hamburger Menu */
 .hamburger {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 40px;
   height: 30px;
-  position: relative;
   cursor: pointer;
+  position: relative;
   z-index: 2000;
   background: none;
   border: none;
+  padding: 0;
 }
+
 .hamburger .line {
-  position: absolute;
-  height: 5px;
+  height: 4px;
   width: 100%;
-  left: 0;
   background-color: #ffffff;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }
-.hamburger .line1 { top: 0; }
-.hamburger .line2 { top: 50%; transform: translateY(-50%); }
-.hamburger .line3 { bottom: 0; }
-.hamburger.active .line1 { transform: rotate(45deg) translateY(10px); }
-.hamburger.active .line2 { opacity: 0; }
-.hamburger.active .line3 { transform: rotate(-45deg) translateY(-10px); }
+
+/* Active X state */
+.hamburger.active .line1,
+.hamburger.active .line3 {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform-origin: center;
+  transition: transform 0.3s ease;  /* tighter control over animation */
+}
+
+.hamburger.active .line1 {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.hamburger.active .line3 {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.hamburger.active .line2 {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+
 
 /* Navigation Links */
 .nav-links {
