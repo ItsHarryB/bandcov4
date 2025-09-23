@@ -11,13 +11,18 @@ const links = [
 
 export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
-  const [currentPath, setCurrentPath] = useState("/");
+  const [currentPath, setCurrentPath] = useState("");
+
+  // Normalize paths to handle trailing slashes
+  const normalizePath = (path) => path.replace(/\/$/, "") || "/";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setCurrentPath(window.location.pathname);
     }
   }, []);
+
+  const path = normalizePath(currentPath);
 
   return (
     <>
@@ -37,7 +42,7 @@ export default function Navigation() {
       <nav className={`nav-links ${expanded ? "expanded" : ""}`} aria-label="Main navigation">
         <ul>
           {links.map((link) => {
-            const isActive = currentPath === link.href;
+            const isActive = path === normalizePath(link.href);
             return (
               <li key={link.href}>
                 <a
@@ -53,7 +58,7 @@ export default function Navigation() {
         </ul>
       </nav>
 
-      {/* Optional overlay */}
+      {/* Navigation Overlay */}
       <div
         className={`nav-overlay ${expanded ? "active" : ""}`}
         onClick={() => setExpanded(false)}

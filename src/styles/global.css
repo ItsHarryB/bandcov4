@@ -1,18 +1,9 @@
 /* ===============================
    Theme Variables
    =============================== */
-:root {
-  --bg: #ffffff;
-  --fg: #000000;
-  --primary: #0094b6;
-  --primary-dark: #004166;
-  --link: #0066cc;
-  --link-hover: #004999;
-}
-
 html {
-  background-color: var(--bg);
-  color: var(--fg);
+  background-color: #ffffff;
+  color: #000000;
   font-family: "Raleway Variable", sans-serif;
   scroll-behavior: smooth;
   transition: background-color 0.5s ease, color 0.5s ease;
@@ -66,7 +57,7 @@ a:hover, a:focus { color: var(--link-hover); }
   position: relative;
   z-index: 1000;
   flex-wrap: nowrap;
-  background-color: var(--primary);
+  background-color: #0094b6;
   height: 60px;
 }
 
@@ -161,7 +152,7 @@ a:hover, a:focus { color: var(--link-hover); }
   top: 100%;
   left: 0;
   width: 100%;
-  background-color: var(--primary);
+  background-color: #0094b6;
   color: #ffffff;
   text-align: center;
   z-index: 1000;
@@ -311,7 +302,7 @@ a:hover, a:focus { color: var(--link-hover); }
 
 /* Hover state */
 .footer-right ul li a:hover {
-  color: #000000; /* text contrast on highlight */
+  color: #0094b6; /* text contrast on highlight */
 }
 
 .footer-right ul li a:hover::after {
@@ -356,22 +347,23 @@ a:hover, a:focus { color: var(--link-hover); }
    Dark Mode
    =============================== */
 html.dark {
-  background-color: var(--bg);
-  color: var(--fg);
+  background-color: #1b1b1b;
+  color: #ffffff;
   transition: background-color 0.5s ease, color 0.5s ease;
 }
-
-html.dark .site-header { background-color: var(--primary); }
+html.dark a { color: #66aaff; }
+html.dark a:hover, html.dark a:focus { color: #99cfff; }
+html.dark .site-header { background-color: #004166; }
 html.dark .site-title a { color: #ffffff; }
 html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: var(--primary); color: #ffffff; }
+html.dark .nav-links { background-color: #004166; color: #ffffff; }
 html.dark .nav-links a { color: #ffffff !important; }
 html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { background-color: #222; color: #ddd; }
-html.dark .footer-section h4 { color: #fff; }
-html.dark .footer-section ul li a { color: var(--link); }
-html.dark .footer-section ul li a:hover { color: var(--link-hover); }
-html.dark .footer-meta { color: #aaa; }
+html.dark .site-footer { background-color: #222; color: #7b7b7b; }
+html.dark .footer-section h4 { color: #ffffff; }
+html.dark .footer-section ul li a { color: #7b7b7b; }
+html.dark .footer-section ul li a:hover { color: #0078be; }
+html.dark .footer-meta { color: #696969; }
 
 /* ===============================
    Responsive Styles
@@ -406,7 +398,7 @@ html.dark .footer-meta { color: #aaa; }
     flex-wrap: nowrap;
     max-height: none;
     background: none;
-    gap: 8px;
+    gap: 4px;
     padding-left: 1rem;
     overflow: hidden;
     height: 100%;
@@ -416,7 +408,7 @@ html.dark .footer-meta { color: #aaa; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
+    padding: 0 2px;
     height: 100%;
     color: #ffffff !important;
     text-decoration: none;
