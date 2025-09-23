@@ -112,11 +112,12 @@ a:hover, a:focus { color: var(--link-hover); }
 }
 
 .hamburger .line {
-  height: 4px;
+  height: 3px; /* slightly thinner for elegance */
   width: 100%;
   background-color: #ffffff;
   border-radius: 2px;
-  transition: all 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.2s ease;
+  transform-origin: center;
 }
 
 /* Active X state */
@@ -125,23 +126,27 @@ a:hover, a:focus { color: var(--link-hover); }
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100%;
-  transform-origin: center;
-  transition: transform 0.3s ease;  /* tighter control over animation */
 }
 
 .hamburger.active .line1 {
-  transform: translateY(-50%) rotate(45deg);
-}
-
-.hamburger.active .line3 {
-  transform: translateY(-50%) rotate(-45deg);
+  transform: translateY(-50%) rotate(45deg) scaleX(1.05);
 }
 
 .hamburger.active .line2 {
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease 0.15s; /* delayed fade for smoother animation */
 }
+
+.hamburger.active .line3 {
+  transform: translateY(-50%) rotate(-45deg) scaleX(1.05);
+}
+
+/* Optional hover effect */
+.hamburger:hover .line1,
+.hamburger:hover .line3 {
+  transform: scaleX(1.1);
+}
+
 
 
 
@@ -279,7 +284,40 @@ a:hover, a:focus { color: var(--link-hover); }
 
 .footer-section ul li a { color: var(--link); text-decoration: none; }
 
-.footer-section ul li a:hover { text-decoration: underline; }
+
+/* Quick Links default styling */
+.footer-right ul li a {
+  color: #838383;
+  text-decoration: none; /* remove underline */
+  position: relative;
+  padding: 2px 4px;
+  transition: color 0.3s ease;
+}
+
+/* Sliding highlight */
+.footer-right ul li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 100%;
+  background-color: #ffffff; /* highlight color */
+  opacity: 0.15; /* subtle effect */
+  transition: width 0.3s ease;
+  z-index: -1; /* behind text */
+  border-radius: 2px;
+}
+
+/* Hover state */
+.footer-right ul li a:hover {
+  color: #000000; /* text contrast on highlight */
+}
+
+.footer-right ul li a:hover::after {
+  width: 100%; /* slide in highlight fully */
+}
+
 
 /* Social links as circular buttons */
 .social-links {
