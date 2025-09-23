@@ -7,17 +7,22 @@ import ThemeIcon from './ThemeIcon.astro';
 <header class="site-header">
   <div class="nav-overlay" id="nav-overlay"></div>
 
-  <div class="hamburger" id="hamburger">
+  <button 
+    class="hamburger" 
+    id="hamburger"
+    aria-label="Toggle navigation menu"
+    aria-expanded="false"
+  >
     <span class="line line1"></span>
     <span class="line line2"></span>
     <span class="line line3"></span>
-  </div>
+  </button>
 
   <div class="site-title">
     <a href="/">TEST: Brighton and Co</a>
   </div>
 
-  <ThemeIcon id="theme-toggle" class="theme-toggle" />
+  <ThemeIcon id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" />
   <Navigation id="nav" />
 
   <script type="module">
@@ -30,6 +35,9 @@ import ThemeIcon from './ThemeIcon.astro';
       // ---------- Hamburger toggle ----------
       if (hamburger && nav && navOverlay) {
         hamburger.addEventListener('click', () => {
+          const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+          hamburger.setAttribute('aria-expanded', String(!expanded));
+
           nav.classList.toggle('expanded');
           hamburger.classList.toggle('active');
           navOverlay.classList.toggle('active');
@@ -39,6 +47,7 @@ import ThemeIcon from './ThemeIcon.astro';
           nav.classList.remove('expanded');
           hamburger.classList.remove('active');
           navOverlay.classList.remove('active');
+          hamburger.setAttribute('aria-expanded', 'false');
         });
       }
 
@@ -62,7 +71,9 @@ import ThemeIcon from './ThemeIcon.astro';
           localStorage.setItem('theme', theme);
         };
 
-        setTheme(localStorage.getItem('theme') || 'light');
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
 
         themeToggle.addEventListener('click', () => {
           const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
@@ -70,25 +81,27 @@ import ThemeIcon from './ThemeIcon.astro';
         });
       }
 
-      // ---------- Active link highlighting based on current URL ----------
+      // ---------- Active link highlighting ----------
       if (nav) {
         const navLinks = nav.querySelectorAll('a');
         const currentPath = window.location.pathname;
 
         navLinks.forEach(link => {
           const linkPath = new URL(link.href).pathname;
+
           if (linkPath === currentPath) {
-            link.classList.add('active');
+            link.setAttribute('aria-current', 'page');
           } else {
-            link.classList.remove('active');
+            link.removeAttribute('aria-current');
           }
 
-          // Close mobile menu when a link is clicked
+          // Close menu on link click (mobile only)
           link.addEventListener('click', () => {
             if (nav.classList.contains('expanded')) {
               nav.classList.remove('expanded');
               hamburger?.classList.remove('active');
               navOverlay?.classList.remove('active');
+              hamburger?.setAttribute('aria-expanded', 'false');
             }
           });
         });
