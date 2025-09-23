@@ -109,7 +109,7 @@ a:hover, a:focus { color: var(--link-hover); }
 }
 .hamburger .line {
   position: absolute;
-  height: 5px;
+  height: 4x;
   width: 100%;
   left: 0;
   background-color: #ffffff;
@@ -118,9 +118,20 @@ a:hover, a:focus { color: var(--link-hover); }
 .hamburger .line1 { top: 0; }
 .hamburger .line2 { top: 50%; transform: translateY(-50%); }
 .hamburger .line3 { bottom: 0; }
-.hamburger.active .line1 { transform: rotate(45deg) translateY(10px); }
-.hamburger.active .line2 { opacity: 0; }
-.hamburger.active .line3 { transform: rotate(-45deg) translateY(-10px); }
+.hamburger.active .line1 {
+  top: 50%;
+  transform: rotate(45deg) translateY(-50%);
+}
+
+.hamburger.active .line2 {
+  opacity: 0;
+}
+
+.hamburger.active .line3 {
+  top: 50%;
+  transform: rotate(-45deg) translateY(-50%) scaleX(1.1);
+  bottom: auto; /* reset bottom */
+}
 
 /* Navigation Links */
 .nav-links {
