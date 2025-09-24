@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from "react";
+import "../styles/blog.css";
 
 interface Post {
   id: string;
   data: {
     title: string;
-    pubDate: Date;
-    description: string;
+    description?: string;
+    image?: { url: string; alt: string };
     category?: string;
     tags: string[];
-    image?: { url: string; alt?: string };
+    pubDate: Date;
   };
 }
 
@@ -18,67 +19,75 @@ interface CategoryFiltersProps {
 }
 
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, allPosts }) => {
-  const [filter, setFilter] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const filteredPosts =
-    filter === 'All'
-      ? allPosts
-      : allPosts.filter((p) => p.data.category === filter);
+  // Filter posts by category
+  const filteredPosts = selectedCategory
+    ? allPosts.filter((p) => p.data.category === selectedCategory)
+    : allPosts;
+
+  // IntersectionObserver for fade-in effect
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const cards = containerRef.current.querySelectorAll(".blog-card.fade-in");
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [filteredPosts]); // re-run when filtered posts change
 
   return (
-    <>
-      {/* Category Buttons */}
+    <div className="blog-section">
+      {/* Category buttons */}
       <div className="category-buttons">
         <button
-          className={filter === 'All' ? 'active' : ''}
-          onClick={() => setFilter('All')}
+          onClick={() => setSelectedCategory(null)}
+          className={!selectedCategory ? "active" : ""}
         >
           All
         </button>
         {categories.map((cat) => (
           <button
             key={cat}
-            className={filter === cat ? 'active' : ''}
-            onClick={() => setFilter(cat)}
+            onClick={() => setSelectedCategory(cat)}
+            className={selectedCategory === cat ? "active" : ""}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      {/* Posts Grid */}
-      <div className="posts-grid">
+      {/* Blog cards */}
+      <div className="blog-cards" ref={containerRef}>
         {filteredPosts.map((post) => (
-          <a href={`/posts/${post.id}/`} className="post-card" key={post.id}>
+          <div key={post.id} className="blog-card fade-in">
             {post.data.image && (
-              <div className="post-image-wrapper">
-                <img
-                  src={post.data.image.url}
-                  alt={post.data.image.alt ?? ''}
-                />
+              <div className="card-image">
+                <img src={post.data.image.url} alt={post.data.image.alt} />
               </div>
             )}
-
-            <div className="post-content">
-              {post.data.category && (
-                <p className="post-category">{post.data.category}</p>
-              )}
-              <h3>{post.data.title}</h3>
-              <p className="post-date">{post.data.pubDate.toLocaleDateString()}</p>
-              <p className="post-description">{post.data.description}</p>
-
-              <div className="post-tags">
-                {post.data.tags.map((tag) => (
-                  <span className="tag" key={tag}>{tag}</span>
-                ))}
-              </div>
-
-              <p className="read-more">Read more →</p>
-            </div>
-          </a>
+            <h3>{post.data.title}</h3>
+            {post.data.description && <p>{post.data.description}</p>}
+            <a href={`/posts/${post.id}/`} className="read-more">
+              Read more →
+            </a>
+          </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 

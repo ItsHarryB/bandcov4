@@ -1,44 +1,171 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import BackButton from '../components/BackButton.astro';
-import OptionalImage from '../components/OptionalImage.astro';
-
 const { frontmatter } = Astro.props;
 ---
 <BaseLayout pageTitle={frontmatter.title}>
-  <BackButton parent={frontmatter.parent ?? '/blog'} label="Back to blog" /> 
-  <p>{frontmatter.pubDate.toLocaleDateString()}</p>
-  <p><em>{frontmatter.description}</em></p>
-  <p>Written by: {frontmatter.author}</p>
+  <div class="post-container">
+    <!-- Back button -->
+    <BackButton parent="/blog" label="Back to blog" />
 
-  {/* Render the image only if it exists */}
-  <OptionalImage image={frontmatter.image} width="400" />
+    <!-- Post title -->
+    <h1 class="fade-in">{frontmatter.title}</h1>
 
-  <div class="tags">
-    {frontmatter.tags.map((tag: string) => (
-      <p class="tag"><a href={`/tags/${tag}`}>{tag}</a></p>
-    ))}
+    <!-- Meta info -->
+    <p class="post-meta fade-in">
+      {frontmatter.pubDate.toLocaleDateString()} • Written by {frontmatter.author}
+    </p>
+
+    <!-- Description -->
+    {frontmatter.description && (
+      <p class="post-description fade-in">{frontmatter.description}</p>
+    )}
+
+    <!-- Optional image -->
+    {frontmatter.image && (
+      <div class="post-image fade-in">
+        <img src={frontmatter.image.url} alt={frontmatter.image.alt} />
+      </div>
+    )}
+
+    <!-- Tags -->
+    <div class="tags fade-in">
+      {frontmatter.tags.map((tag: string) => (
+        <p class="tag"><a href={`/tags/${tag}`}>{tag}</a></p>
+      ))}
+    </div>
+
+    <!-- Post content slot -->
+    <slot class="fade-in" />
   </div>
-
-  <slot />
 </BaseLayout>
 
 <style>
-  a {
-    color: #00539F;
+/* ================= Post Container ================= */
+.post-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #f8fcfd;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+html.dark .post-container {
+  background-color: #222;
+  color: #fff;
+}
+
+/* ================= Headings & Meta ================= */
+.post-container h1 {
+  margin-bottom: 0.5rem;
+}
+
+.post-meta {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+html.dark .post-meta {
+  color: #aaa;
+}
+
+.post-description {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* ================= Images ================= */
+.post-image img {
+  width: 100%;
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, filter 0.3s ease, opacity 0.6s;
+}
+
+.post-image img:hover {
+  transform: scale(1.02);
+}
+
+html.dark .post-image img {
+  filter: brightness(0.95);
+}
+
+/* ================= Tags ================= */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag a {
+  background-color: #e0f0f8;
+  color: #0078be;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.tag a:hover {
+  background-color: #c0e4f2;
+  transform: translateY(-1px);
+}
+
+html.dark .tag a {
+  background-color: #003c57;
+  color: #a1d1f0;
+}
+
+html.dark .tag a:hover {
+  background-color: #005080;
+  color: #fff;
+}
+
+/* ================= Fade-in Animations ================= */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  will-change: opacity, transform;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 600px) {
+  .post-container {
+    padding: 1rem;
   }
 
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
+  .post-image img {
+    height: auto;
   }
-
-  .tag {
-    margin: 0.25em;
-    border: dotted 1px #a1a1a1;
-    border-radius: .5em;
-    padding: .5em 1em;
-    font-size: 1.15em;
-    background-color: #F8FCFD;
-  }
+}
 </style>
+
+<script type="module">
+  // Observe elements with the .fade-in class
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+</script>

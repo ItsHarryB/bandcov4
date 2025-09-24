@@ -2,10 +2,11 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CategoryFilters from "../components/CategoryFilters.tsx";
+import "../styles/blog.css";
 
 const pageTitle = "Website Development Log";
 
-// Sort posts by pubDate descending
+// Get all blog posts and sort by pubDate descending
 const allPosts = (await getCollection("blog"))
   .filter((post) => post.data.pubDate)
   .sort(
@@ -13,12 +14,10 @@ const allPosts = (await getCollection("blog"))
       new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
   );
 
-// Extract unique categories, filtering out undefined
+// Extract unique categories
 const categories = Array.from(
   new Set(
-    allPosts
-      .map((p) => p.data.category)
-      .filter((cat): cat is string => Boolean(cat))
+    allPosts.map((p) => p.data.category).filter((cat): cat is string => Boolean(cat))
   )
 );
 ---
@@ -28,6 +27,6 @@ const categories = Array.from(
   </div>
   <h2>{pageTitle}</h2>
 
-  <!-- React Island for category filters and post cards -->
+  <!-- React Island handles category filtering and post cards -->
   <CategoryFilters client:load categories={categories} allPosts={allPosts} />
 </BaseLayout>

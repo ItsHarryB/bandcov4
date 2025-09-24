@@ -3,6 +3,7 @@ title: 'Blog Post 5: Getting the Formatting Right'
 description: 'Fifth post of web development log, detailing formatting of the site.'
 author: 'Harry Brighton'
 pubDate: 24/09/2025
+category: "Astro Tutorials"
 tags: ["astro", "blogging"]
 ---
 This is the fifth post on this blog.
