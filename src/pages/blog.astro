@@ -60,7 +60,7 @@ const allPosts = (await getCollection("blog"))
   text-decoration: none;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.2s, box-shadow 0.2s, background-color 0.5s, color 0.5s;
-  min-height: 450px; /* equal heights */
+  min-height: 450px;
 }
 
 .post-card:hover {
@@ -71,6 +71,8 @@ const allPosts = (await getCollection("blog"))
 .post-image-wrapper {
   width: 100%;
   overflow: hidden;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
 }
 
 .post-image-wrapper img {
@@ -78,6 +80,15 @@ const allPosts = (await getCollection("blog"))
   height: 200px;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.post-card:hover .post-image-wrapper img {
+  transform: scale(1.05);
+}
+
+html.dark .post-card:hover .post-image-wrapper img {
+  filter: brightness(0.95);
 }
 
 .post-content {
@@ -110,12 +121,26 @@ const allPosts = (await getCollection("blog"))
   padding: 0.25rem 0.5rem;
   background: #e0f0f8;
   border-radius: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.tag:hover {
+  background-color: #c0e4f2; /* light mode hover color */
+  transform: translateY(-1px);
 }
 
 .read-more {
   margin-top: auto;
   font-weight: bold;
   color: #00539F;
+  transition: color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.read-more:hover {
+  color: #0078be; /* light mode hover color */
+  transform: translateX(3px); /* slight movement to the right */
 }
 
 /* ================= Dark Mode ================= */
@@ -137,12 +162,17 @@ html.dark .tag {
   color: #a1d1f0;
 }
 
+html.dark .tag:hover {
+  background-color: #005080; /* dark mode hover color */
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
 html.dark .read-more {
   color: #66aaff;
 }
 
-/* Ensure images stay visually consistent in dark mode */
-html.dark .post-image-wrapper img {
-  filter: brightness(0.9);
+html.dark .read-more:hover {
+  color: #99cfff; /* dark mode hover color */
+  transform: translateX(3px);
 }
-</style>
