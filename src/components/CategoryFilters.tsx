@@ -20,14 +20,17 @@ interface CategoryFiltersProps {
 
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, allPosts }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Filter posts by category
-  const filteredPosts = selectedCategory
-    ? allPosts.filter((p) => p.data.category === selectedCategory)
-    : allPosts;
+  // Filter posts by category and tag
+  const filteredPosts = allPosts.filter((p) => {
+    if (selectedCategory && p.data.category !== selectedCategory) return false;
+    if (selectedTag && !p.data.tags.includes(selectedTag)) return false;
+    return true;
+  });
 
-  // IntersectionObserver for fade-in effect
+  // IntersectionObserver for fade-in animation
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -47,7 +50,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, allPosts 
     cards.forEach((card) => observer.observe(card));
 
     return () => observer.disconnect();
-  }, [filteredPosts]); // re-run when filtered posts change
+  }, [filteredPosts]);
 
   return (
     <div className="blog-section">
@@ -62,7 +65,10 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, allPosts 
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(cat)}
+            onClick={() => {
+              setSelectedCategory(cat);
+              setSelectedTag(null); // reset tag filter when category changes
+            }}
             className={selectedCategory === cat ? "active" : ""}
           >
             {cat}
@@ -74,13 +80,33 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, allPosts 
       <div className="blog-cards" ref={containerRef}>
         {filteredPosts.map((post) => (
           <div key={post.id} className="blog-card fade-in">
+            {/* Image */}
             {post.data.image && (
               <div className="card-image">
                 <img src={post.data.image.url} alt={post.data.image.alt} />
               </div>
             )}
+
+            {/* Title & Description */}
             <h3>{post.data.title}</h3>
             {post.data.description && <p>{post.data.description}</p>}
+
+            {/* Tags as buttons (like category buttons) */}
+            {post.data.tags.length > 0 && (
+              <div className="category-buttons post-tags">
+                {post.data.tags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => setSelectedTag(tag)}
+                    className={selectedTag === tag ? "active" : ""}
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Read more link */}
             <a href={`/posts/${post.id}/`} className="read-more">
               Read more →
             </a>

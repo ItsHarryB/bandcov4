@@ -21,8 +21,11 @@ body {
 
 h1,h2,h3,h4,h5,h6 { margin: 1rem 0; color: inherit; }
 
-a { color: var(--link); text-decoration: underline; transition: color 0.5s ease; }
-a:hover, a:focus { color: var(--link-hover); }
+/* Remove forced width/block from buttons and links globally */
+button, a {
+  display: inline-block;
+  width: auto;
+}
 
 /* ===============================
    Layout Helpers
