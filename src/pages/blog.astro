@@ -1,21 +1,29 @@
 ---
 import { getCollection } from "astro:content";
-import BaseLayout from '../layouts/BaseLayout.astro';
-import BlogPost from '../components/BlogPost.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BlogPost from "../components/BlogPost.astro";
 
-const pageTitle = "Website Devlopment Log";
-const allPosts = await getCollection("blog");
+const pageTitle = "Website Development Log";
+
+// Sort by `pubDate` instead of `date`
+const allPosts = (await getCollection("blog"))
+  .filter((post) => post.data.pubDate)
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
+  );
 ---
 <BaseLayout>
-<div class="page-center">
+  <div class="page-center">
     <h1>Blog</h1>
-</div>
-    <h2>{pageTitle} -</h2>
-    <ul>
-        {
-            allPosts.map((post) => (
-                <BlogPost url={`/posts/${post.id}/`} title={post.data.title} />
-         )) 
-        }
-    </ul>
+  </div>
+  <h2>{pageTitle} -</h2>
+  <ul>
+    {allPosts.map((post) => (
+      <BlogPost
+        url={`/posts/${post.id}/`}
+        title={post.data.title}
+      />
+    ))}
+  </ul>
 </BaseLayout>

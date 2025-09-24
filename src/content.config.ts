@@ -18,10 +18,12 @@ const blog = defineCollection({
       }),
     description: z.string(),
     author: z.string(),
-    image: z.object({
-      url: z.string(),
-      alt: z.string(),
-    }),
+    image: z
+      .object({
+        url: z.string(),
+        alt: z.string(),
+      })
+      .optional(), // 👈 now optional
     tags: z.array(z.string()),
   }),
 });

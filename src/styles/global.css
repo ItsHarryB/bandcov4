@@ -55,10 +55,10 @@ a:hover, a:focus { color: var(--link-hover); }
   align-items: center;
   justify-content: space-between;
   position: relative;
-  z-index: 1000;
+  z-index: 800;
   flex-wrap: nowrap;
   background-color: #0094b6;
-  height: 60px;
+  height: 50px;
 }
 
 /* Site Title + Logo */
@@ -137,9 +137,6 @@ a:hover, a:focus { color: var(--link-hover); }
 .hamburger:hover .line3 {
   transform: scaleX(1.1);
 }
-
-
-
 
 /* Navigation Links */
 .nav-links {
