@@ -1,7 +1,7 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import OptionalImage from "../components/OptionalImage.astro";
+import { getCollection } from "astro:content";
+import CategoryFilters from "../components/CategoryFilters.tsx";
 
 const pageTitle = "Website Development Log";
 
@@ -11,6 +11,14 @@ const allPosts = (await getCollection("blog"))
     (a, b) =>
       new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
   );
+
+const categories = Array.from(
+  new Set(
+    allPosts
+      .map((p) => p.data.category)
+      .filter((cat): cat is string => Boolean(cat)) // type guard
+  )
+);
 ---
 <BaseLayout>
   <div class="page-center">
@@ -18,36 +26,114 @@ const allPosts = (await getCollection("blog"))
   </div>
   <h2>{pageTitle}</h2>
 
-  <div class="posts-grid">
-    {allPosts.map((post) => (
-      <a href={`/posts/${post.id}/`} class="post-card">
-        {post.data.image && (
-          <div class="post-image-wrapper">
-            <OptionalImage image={post.data.image} />
-          </div>
-        )}
-        <div class="post-content">
-          <h3>{post.data.title}</h3>
-          <p class="post-date">{post.data.pubDate.toLocaleDateString()}</p>
-          <p class="post-description">{post.data.description}</p>
-          <div class="post-tags">
-            {post.data.tags.map(tag => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-          <p class="read-more">Read more →</p>
-        </div>
-      </a>
-    ))}
-  </div>
+  <!-- Render the CategoryFilters island -->
+  <CategoryFilters client:load categories={categories} allPosts={allPosts} />
 </BaseLayout>
 
+
+<!-- Astro Island for client-side filtering -->
+<script type="module">
+  import { h } from 'preact';
+  import { useState } from 'preact/hooks';
+  import OptionalImage from '../components/OptionalImage.astro';
+
+  export default function CategoryFilters({ categories, allPosts }) {
+    const [filter, setFilter] = useState('All');
+
+    const filteredPosts =
+      filter === 'All'
+        ? allPosts
+        : allPosts.filter((p) => p.data.category === filter);
+
+    return (
+      <>
+        <div class="category-buttons">
+          <button class={filter === 'All' ? 'active' : ''} onClick={() => setFilter('All')}>All</button>
+          {categories.map((cat) => (
+            <button class={filter === cat ? 'active' : ''} onClick={() => setFilter(cat)}>
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div class="posts-grid">
+          {filteredPosts.map((post) => (
+            <a href={`/posts/${post.id}/`} class="post-card">
+              {post.data.image && (
+                <div class="post-image-wrapper">
+                  <OptionalImage image={post.data.image} />
+                </div>
+              )}
+              <div class="post-content">
+                <p class="post-category">{post.data.category}</p>
+                <h3>{post.data.title}</h3>
+                <p class="post-date">{post.data.pubDate.toLocaleDateString()}</p>
+                <p class="post-description">{post.data.description}</p>
+                <div class="post-tags">
+                  {post.data.tags.map(tag => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+                <p class="read-more">Read more →</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </>
+    );
+  }
+</script>
+
 <style>
+/* ================= Category Buttons ================= */
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0 2rem 0;
+}
+
+.category-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #e0f0f8;
+  color: #0078be;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.category-buttons button:hover {
+  background-color: #c0e4f2;
+  transform: translateY(-1px);
+}
+
+.category-buttons button.active {
+  background-color: #0078be;
+  color: #ffffff;
+}
+
+html.dark .category-buttons button {
+  background-color: #003c57;
+  color: #a1d1f0;
+}
+
+html.dark .category-buttons button:hover {
+  background-color: #005080;
+  color: #ffffff;
+}
+
+html.dark .category-buttons button.active {
+  background-color: #66aaff;
+  color: #000;
+}
+
+/* ================= Posts Grid & Cards ================= */
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin-top: 2rem;
 }
 
 .post-card {
@@ -99,15 +185,33 @@ html.dark .post-card:hover .post-image-wrapper img {
   flex-grow: 1;
 }
 
+.post-category {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #0078be;
+}
+
+html.dark .post-category {
+  color: #66aaff;
+}
+
 .post-date {
   font-size: 0.9rem;
   color: #555;
+}
+
+html.dark .post-date {
+  color: #cccccc;
 }
 
 .post-description {
   font-size: 1rem;
   color: #333;
   flex-grow: 1;
+}
+
+html.dark .post-description {
+  color: #dddddd;
 }
 
 .post-tags {
@@ -126,8 +230,18 @@ html.dark .post-card:hover .post-image-wrapper img {
 }
 
 .tag:hover {
-  background-color: #c0e4f2; /* light mode hover color */
+  background-color: #c0e4f2;
   transform: translateY(-1px);
+}
+
+html.dark .tag {
+  background-color: #003c57;
+  color: #a1d1f0;
+}
+
+html.dark .tag:hover {
+  background-color: #005080;
+  color: #ffffff;
 }
 
 .read-more {
@@ -139,33 +253,8 @@ html.dark .post-card:hover .post-image-wrapper img {
 }
 
 .read-more:hover {
-  color: #0078be; /* light mode hover color */
-  transform: translateX(3px); /* slight movement to the right */
-}
-
-/* ================= Dark Mode ================= */
-html.dark .post-card {
-  background-color: #222;
-  color: #ffffff;
-}
-
-html.dark .post-date {
-  color: #cccccc;
-}
-
-html.dark .post-description {
-  color: #dddddd;
-}
-
-html.dark .tag {
-  background-color: #003c57;
-  color: #a1d1f0;
-}
-
-html.dark .tag:hover {
-  background-color: #005080; /* dark mode hover color */
-  color: #ffffff;
-  transform: translateY(-1px);
+  color: #0078be;
+  transform: translateX(3px);
 }
 
 html.dark .read-more {
@@ -173,6 +262,12 @@ html.dark .read-more {
 }
 
 html.dark .read-more:hover {
-  color: #99cfff; /* dark mode hover color */
+  color: #99cfff;
   transform: translateX(3px);
 }
+
+html.dark .post-card {
+  background-color: #222;
+  color: #ffffff;
+}
+</style>
