@@ -1,0 +1,6 @@
+---
+const { image, width } = Astro.props;
+---
+{image && (
+  <img src={image.url} alt={image.alt} width={width ?? "300"} />
+)}

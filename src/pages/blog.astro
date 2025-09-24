@@ -1,11 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import BlogPost from "../components/BlogPost.astro";
+import OptionalImage from "../components/OptionalImage.astro";
 
 const pageTitle = "Website Development Log";
 
-// Sort by `pubDate` instead of `date`
 const allPosts = (await getCollection("blog"))
   .filter((post) => post.data.pubDate)
   .sort(
@@ -17,13 +16,133 @@ const allPosts = (await getCollection("blog"))
   <div class="page-center">
     <h1>Blog</h1>
   </div>
-  <h2>{pageTitle} -</h2>
-  <ul>
+  <h2>{pageTitle}</h2>
+
+  <div class="posts-grid">
     {allPosts.map((post) => (
-      <BlogPost
-        url={`/posts/${post.id}/`}
-        title={post.data.title}
-      />
+      <a href={`/posts/${post.id}/`} class="post-card">
+        {post.data.image && (
+          <div class="post-image-wrapper">
+            <OptionalImage image={post.data.image} />
+          </div>
+        )}
+        <div class="post-content">
+          <h3>{post.data.title}</h3>
+          <p class="post-date">{post.data.pubDate.toLocaleDateString()}</p>
+          <p class="post-description">{post.data.description}</p>
+          <div class="post-tags">
+            {post.data.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+          <p class="read-more">Read more →</p>
+        </div>
+      </a>
     ))}
-  </ul>
+  </div>
 </BaseLayout>
+
+<style>
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8fcfd;
+  color: #000000;
+  border-radius: 1rem;
+  overflow: hidden;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.5s, color 0.5s;
+  min-height: 450px; /* equal heights */
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.post-image-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.post-image-wrapper img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.post-content {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.post-date {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.post-description {
+  font-size: 1rem;
+  color: #333;
+  flex-grow: 1;
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.tag {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background: #e0f0f8;
+  border-radius: 0.5rem;
+}
+
+.read-more {
+  margin-top: auto;
+  font-weight: bold;
+  color: #00539F;
+}
+
+/* ================= Dark Mode ================= */
+html.dark .post-card {
+  background-color: #222;
+  color: #ffffff;
+}
+
+html.dark .post-date {
+  color: #cccccc;
+}
+
+html.dark .post-description {
+  color: #dddddd;
+}
+
+html.dark .tag {
+  background-color: #003c57;
+  color: #a1d1f0;
+}
+
+html.dark .read-more {
+  color: #66aaff;
+}
+
+/* Ensure images stay visually consistent in dark mode */
+html.dark .post-image-wrapper img {
+  filter: brightness(0.9);
+}
+</style>

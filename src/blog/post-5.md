@@ -1,9 +1,6 @@
 ---
 title: 'Blog Post 5: Getting the Formatting Right'
 description: 'Fifth post of web development log, detailing formatting of the site.'
-image:
-    url: "https://1drv.ms/i/c/4fd6be6c32a36f11/Eb5RyxbfvYlNmkxlyMds8vsBcjNVy7od68maJf4A-XdfeA?e=EoHQn7"
-    alt: "Website logo favicon and TEST Brighton and Co"
 author: 'Harry Brighton'
 pubDate: 24/09/2025
 tags: ["astro", "blogging"]
