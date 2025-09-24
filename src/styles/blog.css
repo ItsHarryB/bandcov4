@@ -4,6 +4,7 @@
   flex-wrap: wrap;
   gap: 0.5rem;
   margin: 1rem 0 2rem 0;
+  justify-content: center;
 }
 
 .category-buttons button {
@@ -14,7 +15,7 @@
   color: #0078be;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, color 0.3s;
 }
 
 .category-buttons button:hover {
@@ -43,13 +44,14 @@ html.dark .category-buttons button.active {
 }
 
 /* ================= Posts Grid & Cards ================= */
-.posts-grid {
+.posts-grid, .blog-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-.post-card {
+.post-card, .blog-card {
   display: flex;
   flex-direction: column;
   background-color: #f8fcfd;
@@ -59,37 +61,44 @@ html.dark .category-buttons button.active {
   text-decoration: none;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: transform 0.2s, box-shadow 0.2s, background-color 0.5s, color 0.5s;
-  min-height: 450px;
+  min-height: 350px;
+  padding: 1rem;
 }
 
-.post-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+.post-card:hover, .blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
 }
 
-.post-image-wrapper {
+html.dark .post-card, html.dark .blog-card {
+  background-color: #222;
+  color: #ffffff;
+}
+
+.post-image-wrapper, .blog-card img {
   width: 100%;
-  overflow: hidden;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
 }
 
 .post-image-wrapper img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
+  height: 180px;
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.post-card:hover .post-image-wrapper img {
+.post-card:hover .post-image-wrapper img,
+.blog-card:hover img {
   transform: scale(1.05);
 }
 
-html.dark .post-card:hover .post-image-wrapper img {
+html.dark .post-card:hover .post-image-wrapper img,
+html.dark .blog-card:hover img {
   filter: brightness(0.95);
 }
 
-.post-content {
-  padding: 1rem;
+/* Post content */
+.post-content, .blog-card > div {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -125,7 +134,7 @@ html.dark .post-description {
   color: #dddddd;
 }
 
-.post-tags {
+.post-tags, .blog-card .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
@@ -155,6 +164,7 @@ html.dark .tag:hover {
   color: #ffffff;
 }
 
+/* Read more link */
 .read-more {
   margin-top: auto;
   font-weight: bold;
@@ -172,64 +182,7 @@ html.dark .read-more {
   color: #66aaff;
 }
 
-html.dark .post-card {
-  background-color: #222;
-  color: #ffffff;
-}
-/* ================= Responsive Adjustments ================= */
-@media (max-width: 600px) {
-  .post-card {
-    min-height: auto;
-  }
-
-  .post-image-wrapper img {
-    height: 180px;
-  }
-}
-
-blog-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.blog-card {
-  background-color: #f8fcfd;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s, background-color 0.5s;
-}
-
-html.dark .blog-card {
-  background-color: #222;
-  color: #fff;
-}
-
-.blog-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 25px rgba(0,0,0,0.12);
-}
-
-.blog-card img {
-  width: 100%;
-  border-radius: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.blog-card .read-more {
-  text-decoration: none;
-  font-weight: bold;
-  color: #0078be;
-  transition: color 0.3s;
-}
-
-.blog-card .read-more:hover {
-  color: #005080;
-}
-
-/* Fade-in animation */
+/* ================= Fade-in Animation ================= */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
@@ -241,37 +194,14 @@ html.dark .blog-card {
   transform: translateY(0);
 }
 
-/* Category buttons */
-.category-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-}
+/* ================= Responsive Adjustments ================= */
+@media (max-width: 600px) {
+  .post-card, .blog-card {
+    min-height: auto;
+    padding: 0.8rem;
+  }
 
-.category-buttons button {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  background-color: #e0f0f8;
-  color: #0078be;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.category-buttons button.active,
-.category-buttons button:hover {
-  background-color: #0078be;
-  color: #fff;
-}
-
-html.dark .category-buttons button {
-  background-color: #003c57;
-  color: #a1d1f0;
-}
-
-html.dark .category-buttons button.active,
-html.dark .category-buttons button:hover {
-  background-color: #005080;
-  color: #fff;
+  .post-image-wrapper img, .blog-card img {
+    height: 150px;
+  }
 }
