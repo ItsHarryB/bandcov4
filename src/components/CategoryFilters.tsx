@@ -1,118 +1,70 @@
-import React, { useState, useEffect, useRef } from "react";
-import "../styles/blog.css";
-
-interface Post {
-  id: string;
-  data: {
-    title: string;
-    description?: string;
-    image?: { url: string; alt: string };
-    category?: string;
-    tags: string[];
-    pubDate: Date;
-  };
-}
+import React, { useState } from "react";
 
 interface CategoryFiltersProps {
   categories: string[];
-  allPosts: Post[];
+  tags: string[];
+  onFilterChange: (selectedCategories: string[], selectedTags: string[]) => void;
 }
 
-const CategoryFilters: React.FC<CategoryFiltersProps> = ({ categories, allPosts }) => {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+const CategoryFilters: React.FC<CategoryFiltersProps> = ({
+  categories,
+  tags,
+  onFilterChange,
+}) => {
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // Filter posts by category and tag
-  const filteredPosts = allPosts.filter((p) => {
-    if (selectedCategory && p.data.category !== selectedCategory) return false;
-    if (selectedTag && !p.data.tags.includes(selectedTag)) return false;
-    return true;
-  });
+  const toggleCategory = (category: string) => {
+    const updated = selectedCategories.includes(category)
+      ? selectedCategories.filter((c) => c !== category)
+      : [...selectedCategories, category];
+    setSelectedCategories(updated);
+    onFilterChange(updated, selectedTags);
+  };
 
-  // IntersectionObserver for fade-in animation
-  useEffect(() => {
-    if (!containerRef.current) return;
+  const toggleTag = (tag: string) => {
+    const updated = selectedTags.includes(tag)
+      ? selectedTags.filter((t) => t !== tag)
+      : [...selectedTags, tag];
+    setSelectedTags(updated);
+    onFilterChange(selectedCategories, updated);
+  };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const cards = containerRef.current.querySelectorAll(".blog-card.fade-in");
-    cards.forEach((card) => observer.observe(card));
-
-    return () => observer.disconnect();
-  }, [filteredPosts]);
+  const handleReset = () => {
+    setSelectedCategories([]);
+    setSelectedTags([]);
+    onFilterChange([], []);
+  };
 
   return (
-    <div className="blog-section">
-      {/* Category buttons */}
+    <div className="filters-row">
       <div className="category-buttons">
-        <button
-          onClick={() => setSelectedCategory(null)}
-          className={!selectedCategory ? "active" : ""}
-        >
-          All
-        </button>
-        {categories.map((cat) => (
+        {categories.map((category) => (
           <button
-            key={cat}
-            onClick={() => {
-              setSelectedCategory(cat);
-              setSelectedTag(null); // reset tag filter when category changes
-            }}
-            className={selectedCategory === cat ? "active" : ""}
+            key={category}
+            onClick={() => toggleCategory(category)}
+            className={selectedCategories.includes(category) ? "active" : ""}
           >
-            {cat}
+            {category}
           </button>
         ))}
       </div>
 
-      {/* Blog cards */}
-      <div className="blog-cards" ref={containerRef}>
-        {filteredPosts.map((post) => (
-          <div key={post.id} className="blog-card fade-in">
-            {/* Image */}
-            {post.data.image && (
-              <div className="card-image">
-                <img src={post.data.image.url} alt={post.data.image.alt} />
-              </div>
-            )}
-
-            {/* Title & Description */}
-            <h3>{post.data.title}</h3>
-            {post.data.description && <p>{post.data.description}</p>}
-
-            {/* Tags as buttons (like category buttons) */}
-            {post.data.tags.length > 0 && (
-              <div className="category-buttons post-tags">
-                {post.data.tags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => setSelectedTag(tag)}
-                    className={selectedTag === tag ? "active" : ""}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Read more link */}
-            <a href={`/posts/${post.id}/`} className="read-more">
-              Read more →
-            </a>
-          </div>
+      <div className="tag-buttons">
+        {tags.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => toggleTag(tag)}
+            className={selectedTags.includes(tag) ? "active" : ""}
+          >
+            {tag}
+          </button>
         ))}
       </div>
+
+      <button className="reset-button" onClick={handleReset}>
+        &#x2715; Reset All Filters
+      </button>
     </div>
   );
 };

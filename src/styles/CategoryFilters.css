@@ -1,0 +1,50 @@
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.category-buttons button,
+.tag-buttons button,
+.reset-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, color 0.3s;
+}
+
+.category-buttons button.active,
+.tag-buttons button.active {
+  background-color: #0078be;
+  color: #ffffff;
+}
+
+.category-buttons button:hover,
+.tag-buttons button:hover,
+.reset-button:hover {
+  background-color: #c0e4f2;
+  transform: translateY(-1px);
+}
+
+.reset-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+html.dark .category-buttons button,
+html.dark .tag-buttons button,
+html.dark .reset-button {
+  background-color: #003c57;
+  color: #a1d1f0;
+}
+
+html.dark .category-buttons button.active,
+html.dark .tag-buttons button.active,
+html.dark .reset-button:hover {
+  background-color: #66aaff;
+  color: #000;
+}
