@@ -125,18 +125,24 @@ html.dark .post-description {
 }
 
 /* ================= Tags ================= */
-.post-tags, .blog-card .tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
+.post-tags,
+.blog-card .tags {
+  display: flex !important;       /* force flex layout */
+  flex-direction: row !important;
+  flex-wrap: wrap;                /* allow wrapping */
+  gap: 0.4rem;                    /* spacing between tags */
   justify-content: flex-start;
+  align-items: flex-start;        /* align top to remove vertical gaps */
+  overflow-x: auto;
 }
 
 .tag {
-  display: inline-flex;       /* shrink to content */
-  width: auto;                /* override global width */
-  white-space: nowrap;
-  padding: 0.5rem 1rem;      /* match category buttons */
+  display: inline-flex !important; /* shrink to content, prevent block layout */
+  flex: 0 0 auto !important;                  /* prevent stretching */
+  width: auto !important;          /* override global widths */
+  max-width: max-content;          
+  white-space: nowrap;             /* prevent breaking */
+  padding: 0.4rem 0.8rem;
   font-size: 0.8rem;
   font-weight: bold;
   border-radius: 0.5rem;
@@ -159,6 +165,14 @@ html.dark .tag {
 html.dark .tag:hover {
   background-color: #005080;
   color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.post-tags > .tag:first-child {
+  margin-left: 0;
+}
+.post-tags > .tag:last-child {
+  margin-right: 0;
 }
 
 /* ================= Read More ================= */
