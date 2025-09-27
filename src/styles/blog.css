@@ -51,6 +51,7 @@ html.dark .category-buttons button.active {
   margin-top: 2rem;
 }
 
+/* ================= Post / Blog Card ================= */
 .post-card, .blog-card {
   display: flex;
   flex-direction: column;
@@ -59,16 +60,28 @@ html.dark .category-buttons button.active {
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.5s, color 0.5s;
+  transition: transform 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+              box-shadow 0.25s ease,
+              background-color 0.5s,
+              color 0.5s;
   min-height: 450px;
   padding: 1rem;
+  text-decoration: none;
 }
 
 .post-card:hover, .blog-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+  animation: hoverPop 0.25s ease-out forwards;
 }
 
+@keyframes hoverPop {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-6px); }
+  100% { transform: translateY(-6px); }
+}
+
+/* Dark Mode for Cards */
 html.dark .post-card, html.dark .blog-card {
   background-color: #222;
   color: #fff;
@@ -80,7 +93,7 @@ html.dark .post-card, html.dark .blog-card {
   border-radius: 0.75rem;
   object-fit: cover;
   margin-bottom: 0.5rem;
-  transition: none; /* remove image scaling */
+  transition: none;
 }
 
 .post-image-wrapper img {
@@ -127,21 +140,21 @@ html.dark .post-description {
 /* ================= Tags ================= */
 .post-tags,
 .blog-card .tags {
-  display: flex !important;       /* force flex layout */
+  display: flex !important;
   flex-direction: row !important;
-  flex-wrap: wrap;                /* allow wrapping */
-  gap: 0.4rem;                    /* spacing between tags */
+  flex-wrap: wrap;
+  gap: 0.4rem;
   justify-content: flex-start;
-  align-items: flex-start;        /* align top to remove vertical gaps */
+  align-items: flex-start;
   overflow-x: auto;
 }
 
 .tag {
-  display: inline-flex !important; /* shrink to content, prevent block layout */
-  flex: 0 0 auto !important;                  /* prevent stretching */
-  width: auto !important;          /* override global widths */
-  max-width: max-content;          
-  white-space: nowrap;             /* prevent breaking */
+  display: inline-flex !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: max-content;
+  white-space: nowrap;
   padding: 0.4rem 0.8rem;
   font-size: 0.8rem;
   font-weight: bold;
