@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import type { CollectionEntry } from "astro:content";
-import "../styles/categoryfilters.css"; // plain CSS import
+import "../styles/categoryfilters.css"; //  plain CSS works
 
 interface CategoryFiltersProps {
   categories?: string[];
