@@ -1,8 +1,7 @@
 import React, { useState, useMemo } from "react";
 import type { CollectionEntry } from "astro:content";
+import "../styles/categoryfilters.css"; // plain CSS import
 
-// Use absolute import
-import styles from "/src/styles/categoryfilters.module.css";
 interface CategoryFiltersProps {
   categories?: string[];
   tags?: string[];
@@ -17,23 +16,27 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
+  // Toggle category
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
+  // Toggle tag
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
+  // Reset filters
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedTags([]);
   };
 
+  // Compute filtered posts
   const filteredPosts = useMemo(() => {
     return allPosts.filter((post) => {
       const matchesCategory =
@@ -48,13 +51,14 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="category-filters">
-      {/* Reset button + category buttons aligned */}
-      <div className="filter-controls">
+      <div className="filters-row">
+        {/* Reset button on the left */}
         <button className="reset-filters" onClick={resetFilters}>
           Reset All Filters
         </button>
 
-        <div className="category-buttons-wrapper">
+        {/* Category buttons */}
+        <div className="category-buttons">
           {categories.map((category) => (
             <button
               key={category}
@@ -95,11 +99,15 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
               )}
               <div className="post-content">
                 <h3>{post.data.title}</h3>
-                <p className="post-date">{post.data.pubDate.toLocaleDateString()}</p>
+                <p className="post-date">
+                  {post.data.pubDate.toLocaleDateString()}
+                </p>
                 <p className="post-description">{post.data.description}</p>
                 <div className="post-tags">
                   {post.data.tags.map((tag) => (
-                    <span key={tag} className="tag">{tag}</span>
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
                   ))}
                 </div>
                 <p className="read-more">Read more →</p>
