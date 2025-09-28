@@ -1,6 +1,8 @@
 import React, { useState, useMemo } from "react";
 import type { CollectionEntry } from "astro:content";
-import "../styles/categoryfilters.css";
+
+// Use absolute import
+import "/src/styles/categoryfilters.css";
 
 interface CategoryFiltersProps {
   categories?: string[];
