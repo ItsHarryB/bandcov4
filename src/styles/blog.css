@@ -1,3 +1,4 @@
+@import "./categoryfilters.css";
 /* ================= Category Buttons ================= */
 .category-buttons {
   display: flex;
