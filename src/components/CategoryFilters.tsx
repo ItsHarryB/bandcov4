@@ -5,7 +5,7 @@ import "../styles/categoryfilters.css";
 interface CategoryFiltersProps {
   categories?: string[];
   tags?: string[];
-  allPosts: CollectionEntry<"blog">[]; // required now
+  allPosts: CollectionEntry<"blog">[];
 }
 
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({
@@ -50,76 +50,74 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   }, [allPosts, selectedCategories, selectedTags]);
 
   return (
-<div className="category-filters">
-  {/* Top controls: reset button + categories */}
-  <div className="filter-controls">
-    {(selectedCategories.length > 0 || selectedTags.length > 0) && (
-      <button className="reset-filters" onClick={resetFilters}>
-        Reset All Filters
-      </button>
-    )}
-
-    <div className="category-buttons">
-      {categories.map((category) => (
+    <div className="category-filters">
+      {/* Filter controls: Reset + Categories */}
+      <div className="filter-controls">
         <button
-          key={category}
-          onClick={() => toggleCategory(category)}
-          className={selectedCategories.includes(category) ? "active" : ""}
+          className="reset-filters"
+          onClick={resetFilters}
+          disabled={selectedCategories.length === 0 && selectedTags.length === 0}
         >
-          {category}
+          Reset All Filters
         </button>
-      ))}
+
+        <div className="category-buttons">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => toggleCategory(category)}
+              className={selectedCategories.includes(category) ? "active" : ""}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tag buttons */}
+      <div className="tag-buttons">
+        {tags?.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => toggleTag(tag)}
+            className={selectedTags.includes(tag) ? "active" : ""}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
+
+      {/* Blog posts grid */}
+      <div className="posts-grid">
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((post) => (
+            <a key={post.id} href={`/posts/${post.id}/`} className="post-card">
+              {post.data.image && (
+                <div className="post-image-wrapper">
+                  <img
+                    src={post.data.image.url}
+                    alt={post.data.image.alt || post.data.title}
+                  />
+                </div>
+              )}
+              <div className="post-content">
+                <h3>{post.data.title}</h3>
+                <p className="post-date">{post.data.pubDate.toLocaleDateString()}</p>
+                <p className="post-description">{post.data.description}</p>
+                <div className="post-tags">
+                  {post.data.tags.map((tag) => (
+                    <span key={tag} className="tag">{tag}</span>
+                  ))}
+                </div>
+                <p className="read-more">Read more →</p>
+              </div>
+            </a>
+          ))
+        ) : (
+          <p className="no-results">No posts match your filters.</p>
+        )}
+      </div>
     </div>
-  </div>
-
-  {/* Tag buttons */}
-  <div className="tag-buttons">
-    {tags?.map((tag) => (
-      <button
-        key={tag}
-        onClick={() => toggleTag(tag)}
-        className={selectedTags.includes(tag) ? "active" : ""}
-      >
-        {tag}
-      </button>
-    ))}
-  </div>
-
-  {/* Blog posts grid */}
-  <div className="posts-grid">
-    {filteredPosts.length > 0 ? (
-      filteredPosts.map((post) => (
-        <a key={post.id} href={`/posts/${post.id}/`} className="post-card">
-          {post.data.image && (
-            <div className="post-image-wrapper">
-              <img
-                src={post.data.image.url}
-                alt={post.data.image.alt || post.data.title}
-              />
-            </div>
-          )}
-          <div className="post-content">
-            <h3>{post.data.title}</h3>
-            <p className="post-date">
-              {post.data.pubDate.toLocaleDateString()}
-            </p>
-            <p className="post-description">{post.data.description}</p>
-            <div className="post-tags">
-              {post.data.tags.map((tag) => (
-                <span key={tag} className="tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <p className="read-more">Read more →</p>
-          </div>
-        </a>
-      ))
-    ) : (
-      <p className="no-results">No posts match your filters.</p>
-    )}
-  </div>
-</div>
   );
 };
 

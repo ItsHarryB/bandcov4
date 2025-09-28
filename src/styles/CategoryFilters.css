@@ -59,34 +59,53 @@ html.dark .tag-buttons button.active {
   color: #000;
 }
 
-/* ================= Reset Button ================= */
-.reset-filters {
-  margin-top: 0.5rem;
-  padding: 0.5rem 1.2rem;
-  border: 1px solid #0078be;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
-  color: #0078be;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+/* Container for reset + category buttons */
+.filter-controls {
+  display: flex;
+  align-items: center; /* align reset button vertically with categories */
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
 }
 
-.reset-filters:hover {
-  background-color: #0078be;
-  color: #ffffff;
+/* Category buttons styling */
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Reset button styling */
+.reset-filters {
+  padding: 0.5rem 1rem; /* match category button padding */
+  border: none;
+  border-radius: 0.5rem; /* same rounding as category buttons */
+  background-color: #ff3b3b; /* always red in light mode */
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  height: 2.25rem; /* match typical category button height */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reset-filters:disabled {
+  background-color: #ccc;
+  cursor: default;
+}
+
+.reset-filters:hover:not(:disabled) {
   transform: translateY(-1px);
 }
 
-/* ================= Dark Mode for Reset Button ================= */
+/* Dark mode */
 html.dark .reset-filters {
-  background-color: #003c57;
-  color: #a1d1f0;
-  border: 1px solid #66aaff;
+  background-color: #a83232; /* dark red */
+  color: #fff;
 }
 
-html.dark .reset-filters:hover {
-  background-color: #66aaff;
-  color: #003c57;
+html.dark .reset-filters:hover:not(:disabled) {
   transform: translateY(-1px);
 }
