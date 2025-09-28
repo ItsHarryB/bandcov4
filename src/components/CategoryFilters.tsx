@@ -1,77 +1,125 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import type { CollectionEntry } from "astro:content";
 import "../styles/categoryfilters.css";
 
 interface CategoryFiltersProps {
   categories?: string[];
   tags?: string[];
-  onFilterChange?: (selectedCategories: string[], selectedTags: string[]) => void;
+  allPosts: CollectionEntry<"blog">[]; // required now
 }
 
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   categories = [],
   tags = [],
-  onFilterChange,
+  allPosts,
 }) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // Toggle category selection
+  // Toggle category
   const toggleCategory = (category: string) => {
-    const updated = selectedCategories.includes(category)
-      ? selectedCategories.filter((c) => c !== category)
-      : [...selectedCategories, category];
-    setSelectedCategories(updated);
-    onFilterChange?.(updated, selectedTags);
+    setSelectedCategories((prev) =>
+      prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
+    );
   };
 
-  // Toggle tag selection
+  // Toggle tag
   const toggleTag = (tag: string) => {
-    const updated = selectedTags.includes(tag)
-      ? selectedTags.filter((t) => t !== tag)
-      : [...selectedTags, tag];
-    setSelectedTags(updated);
-    onFilterChange?.(selectedCategories, updated);
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
   };
 
-  // Reset all filters
+  // Reset filters
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedTags([]);
-    onFilterChange?.([], []);
   };
 
+  // Compute filtered posts
+  const filteredPosts = useMemo(() => {
+    return allPosts.filter((post) => {
+      const matchesCategory =
+        selectedCategories.length === 0 ||
+        (post.data.category && selectedCategories.includes(post.data.category));
+      const matchesTags =
+        selectedTags.length === 0 ||
+        post.data.tags.some((t) => selectedTags.includes(t));
+      return matchesCategory && matchesTags;
+    });
+  }, [allPosts, selectedCategories, selectedTags]);
+
   return (
-    <div className="category-filters">
-      <div className="category-buttons">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => toggleCategory(category)}
-            className={selectedCategories.includes(category) ? "active" : ""}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+<div className="category-filters">
+  {/* Top controls: reset button + categories */}
+  <div className="filter-controls">
+    {(selectedCategories.length > 0 || selectedTags.length > 0) && (
+      <button className="reset-filters" onClick={resetFilters}>
+        Reset All Filters
+      </button>
+    )}
 
-      <div className="tag-buttons">
-        {tags.map((tag) => (
-          <button
-            key={tag}
-            onClick={() => toggleTag(tag)}
-            className={selectedTags.includes(tag) ? "active" : ""}
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
-
-      {(selectedCategories.length > 0 || selectedTags.length > 0) && (
-        <button className="reset-filters" onClick={resetFilters}>
-          Reset All Filters
+    <div className="category-buttons">
+      {categories.map((category) => (
+        <button
+          key={category}
+          onClick={() => toggleCategory(category)}
+          className={selectedCategories.includes(category) ? "active" : ""}
+        >
+          {category}
         </button>
-      )}
+      ))}
     </div>
+  </div>
+
+  {/* Tag buttons */}
+  <div className="tag-buttons">
+    {tags?.map((tag) => (
+      <button
+        key={tag}
+        onClick={() => toggleTag(tag)}
+        className={selectedTags.includes(tag) ? "active" : ""}
+      >
+        {tag}
+      </button>
+    ))}
+  </div>
+
+  {/* Blog posts grid */}
+  <div className="posts-grid">
+    {filteredPosts.length > 0 ? (
+      filteredPosts.map((post) => (
+        <a key={post.id} href={`/posts/${post.id}/`} className="post-card">
+          {post.data.image && (
+            <div className="post-image-wrapper">
+              <img
+                src={post.data.image.url}
+                alt={post.data.image.alt || post.data.title}
+              />
+            </div>
+          )}
+          <div className="post-content">
+            <h3>{post.data.title}</h3>
+            <p className="post-date">
+              {post.data.pubDate.toLocaleDateString()}
+            </p>
+            <p className="post-description">{post.data.description}</p>
+            <div className="post-tags">
+              {post.data.tags.map((tag) => (
+                <span key={tag} className="tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <p className="read-more">Read more →</p>
+          </div>
+        </a>
+      ))
+    ) : (
+      <p className="no-results">No posts match your filters.</p>
+    )}
+  </div>
+</div>
   );
 };
 

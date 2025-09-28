@@ -46,11 +46,26 @@ html.dark .category-buttons button.active {
 /* ================= Posts Grid & Cards ================= */
 .posts-grid, .blog-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
+  margin: 2rem auto 0 auto;
   margin-top: 2rem;
+  max-width: 1200px; /* roughly two columns wide */
+  padding: 0 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 800px) {
+  .posts-grid {
+    grid-template-columns: 1fr; /* single column on small screens */
+  }
 }
 
+@media (min-width: 701px) {
+  .posts-grid {
+    grid-template-columns: repeat(3, 1fr); /* two columns on larger screens */
+  }
+}
 /* ================= Post / Blog Card ================= */
 .post-card, .blog-card {
   display: flex;
@@ -93,16 +108,19 @@ html.dark .post-card, html.dark .blog-card {
 }
 
 /* ================= Card Image ================= */
-.post-image-wrapper, .blog-card img {
+.post-image-wrapper {
   width: 100%;
+  overflow: hidden;             /* hide overflow but keep centered crop */
   border-radius: 0.75rem;
-  object-fit: cover;
-  margin-bottom: 0.5rem;
-  transition: none;
 }
 
 .post-image-wrapper img {
-  height: 180px;
+  display: block;
+  width: 100%;                  /* fill container width */
+  height: 200px;                /* fixed height for consistency */
+  object-fit: cover;            /* fill container, crop excess */
+  object-position: center;      /* center the crop horizontally and vertically */
+  transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 /* ================= Card Content ================= */
@@ -239,3 +257,49 @@ html.dark .read-more:hover {
     height: 150px;
   }
 }
+/* Flex container for reset button + categories */
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap; /* allow wrapping on small screens */
+}
+
+/* Reset button style */
+.reset-filters {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: #ff6666;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.reset-filters:hover {
+  background-color: #ff4c4c;
+  transform: translateY(-1px);
+}
+
+/* Category buttons (flex container already exists) */
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-start; /* left-align */
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .filter-controls {
+    justify-content: flex-start; /* align to left */
+  }
+
+  .reset-filters {
+    flex-shrink: 0; /* prevent shrinking too small */
+    margin-bottom: 0.5rem; /* small spacing if wrapped */
+  }
+}
+
