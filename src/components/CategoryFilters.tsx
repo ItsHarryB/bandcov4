@@ -5,7 +5,7 @@ import "../styles/categoryfilters.css";
 interface CategoryFiltersProps {
   categories?: string[];
   tags?: string[];
-  allPosts: CollectionEntry<"blog">[];
+  allPosts: CollectionEntry<"blog">[]; // required
 }
 
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({
@@ -51,13 +51,9 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="category-filters">
-      {/* Filter controls: Reset + Categories */}
+      {/* Reset + Category Buttons */}
       <div className="filter-controls">
-        <button
-          className="reset-filters"
-          onClick={resetFilters}
-          disabled={selectedCategories.length === 0 && selectedTags.length === 0}
-        >
+        <button className="reset-filters" onClick={resetFilters}>
           Reset All Filters
         </button>
 
@@ -75,17 +71,19 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
       </div>
 
       {/* Tag buttons */}
-      <div className="tag-buttons">
-        {tags?.map((tag) => (
-          <button
-            key={tag}
-            onClick={() => toggleTag(tag)}
-            className={selectedTags.includes(tag) ? "active" : ""}
-          >
-            {tag}
-          </button>
-        ))}
-      </div>
+      {tags && tags.length > 0 && (
+        <div className="tag-buttons">
+          {tags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => toggleTag(tag)}
+              className={selectedTags.includes(tag) ? "active" : ""}
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+      )}
 
       {/* Blog posts grid */}
       <div className="posts-grid">
@@ -102,11 +100,15 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
               )}
               <div className="post-content">
                 <h3>{post.data.title}</h3>
-                <p className="post-date">{post.data.pubDate.toLocaleDateString()}</p>
+                <p className="post-date">
+                  {post.data.pubDate.toLocaleDateString()}
+                </p>
                 <p className="post-description">{post.data.description}</p>
                 <div className="post-tags">
                   {post.data.tags.map((tag) => (
-                    <span key={tag} className="tag">{tag}</span>
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
                   ))}
                 </div>
                 <p className="read-more">Read more →</p>
