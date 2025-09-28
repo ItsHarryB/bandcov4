@@ -51,7 +51,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="category-filters">
-      {/* Reset + Category Buttons */}
+      {/* Reset + Category buttons in a single flex row */}
       <div className="filter-controls">
         <button className="reset-filters" onClick={resetFilters}>
           Reset All Filters
@@ -71,7 +71,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
       </div>
 
       {/* Tag buttons */}
-      {tags && tags.length > 0 && (
+      {tags?.length > 0 && (
         <div className="tag-buttons">
           {tags.map((tag) => (
             <button
@@ -100,15 +100,11 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
               )}
               <div className="post-content">
                 <h3>{post.data.title}</h3>
-                <p className="post-date">
-                  {post.data.pubDate.toLocaleDateString()}
-                </p>
+                <p className="post-date">{post.data.pubDate.toLocaleDateString()}</p>
                 <p className="post-description">{post.data.description}</p>
                 <div className="post-tags">
                   {post.data.tags.map((tag) => (
-                    <span key={tag} className="tag">
-                      {tag}
-                    </span>
+                    <span key={tag} className="tag">{tag}</span>
                   ))}
                 </div>
                 <p className="read-more">Read more →</p>
