@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import type { CollectionEntry } from "astro:content";
+import "../styles/categoryfilters.css"; // all lowercase
 
 interface CategoryFiltersProps {
   categories?: string[];
