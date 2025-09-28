@@ -16,6 +16,7 @@
   border: none;
   font-weight: bold;
   height: 40px;
+  width: 140px; /* fixed width */
   cursor: pointer;
   flex-shrink: 0;
   display: inline-flex;
@@ -30,7 +31,7 @@
 
 /* Dark mode for reset button */
 html.dark .reset-filters {
-  background-color: #cc3333;
+  background-color: #cc3333; /* darker red in dark mode */
   color: #ffffff;
 }
 
@@ -38,16 +39,25 @@ html.dark .reset-filters:hover {
   background-color: #e64d4d;
 }
 
+/* ================= Filters Row ================= */
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  align-items: center; /* vertical alignment */
+}
+
 /* ================= Category Buttons Wrapper ================= */
 .category-buttons-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  flex-grow: 1; /* take remaining horizontal space */
+  align-items: center; /* vertically center buttons */
 }
 
 /* Individual Category Buttons */
-.category-buttons-wrapper button {
+.category-buttons-wrapper button:not(.reset-filters) {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: none;
@@ -62,31 +72,32 @@ html.dark .reset-filters:hover {
   color: #0078be;           /* light mode text */
 }
 
-.category-buttons-wrapper button:hover {
+.category-buttons-wrapper button:not(.reset-filters):hover {
   background-color: #c0e4f2;
   transform: translateY(-1px);
 }
 
-.category-buttons-wrapper button.active {
+.category-buttons-wrapper button:not(.reset-filters).active {
   background-color: #0078be;
   color: #ffffff;
 }
 
-/* Dark Mode for Category Buttons */
-html.dark .category-buttons-wrapper button {
+/* Dark mode for category buttons */
+html.dark .category-buttons-wrapper button:not(.reset-filters) {
   background-color: #003c57;
   color: #a1d1f0;
 }
 
-html.dark .category-buttons-wrapper button:hover {
+html.dark .category-buttons-wrapper button:not(.reset-filters):hover {
   background-color: #005080;
   color: #ffffff;
 }
 
-html.dark .category-buttons-wrapper button.active {
+html.dark .category-buttons-wrapper button:not(.reset-filters).active {
   background-color: #66aaff;
   color: #000;
 }
+
 
 /* ================= Tag Buttons ================= */
 .tag-buttons {
