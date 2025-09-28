@@ -5,7 +5,7 @@ import "../styles/categoryfilters.css";
 interface CategoryFiltersProps {
   categories?: string[];
   tags?: string[];
-  allPosts: CollectionEntry<"blog">[]; // required
+  allPosts: CollectionEntry<"blog">[];
 }
 
 const CategoryFilters: React.FC<CategoryFiltersProps> = ({
@@ -16,27 +16,23 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-  // Toggle category
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
   };
 
-  // Toggle tag
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
   };
 
-  // Reset filters
   const resetFilters = () => {
     setSelectedCategories([]);
     setSelectedTags([]);
   };
 
-  // Compute filtered posts
   const filteredPosts = useMemo(() => {
     return allPosts.filter((post) => {
       const matchesCategory =
@@ -51,13 +47,13 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="category-filters">
-      {/* Reset + Category buttons in a single flex row */}
+      {/* Reset button + category buttons aligned */}
       <div className="filter-controls">
         <button className="reset-filters" onClick={resetFilters}>
           Reset All Filters
         </button>
 
-        <div className="category-buttons">
+        <div className="category-buttons-wrapper">
           {categories.map((category) => (
             <button
               key={category}
@@ -71,19 +67,17 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
       </div>
 
       {/* Tag buttons */}
-      {tags?.length > 0 && (
-        <div className="tag-buttons">
-          {tags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => toggleTag(tag)}
-              className={selectedTags.includes(tag) ? "active" : ""}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-      )}
+      <div className="tag-buttons">
+        {tags?.map((tag) => (
+          <button
+            key={tag}
+            onClick={() => toggleTag(tag)}
+            className={selectedTags.includes(tag) ? "active" : ""}
+          >
+            {tag}
+          </button>
+        ))}
+      </div>
 
       {/* Blog posts grid */}
       <div className="posts-grid">

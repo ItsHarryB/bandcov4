@@ -1,77 +1,94 @@
-/* Flex container for reset + category buttons */
+/* ================= Filter Controls Container ================= */
 .filter-controls {
   display: flex;
-  align-items: center;  /* vertical alignment */
-  gap: 0.5rem;          /* space between reset and categories */
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
   margin-bottom: 1rem;
 }
 
-/* Reset button */
+/* ================= Reset Button ================= */
 .reset-filters {
+  background-color: #ff4d4d; /* always red in light mode */
+  color: #ffffff;
   padding: 0.5rem 1rem;
-  border: none;
   border-radius: 0.5rem;
-  background-color: #ff4d4f; /* always red in light mode */
-  color: #fff;
+  border: none;
   font-weight: bold;
+  height: 40px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
 }
 
 .reset-filters:hover {
-  background-color: #ff7875;
-  transform: translateY(-1px);
+  background-color: #ff6666;
 }
 
-/* Dark mode */
+/* Dark mode for reset button */
 html.dark .reset-filters {
-  background-color: #ff7875;
-  color: #000;
+  background-color: #cc3333;
+  color: #ffffff;
 }
 
 html.dark .reset-filters:hover {
-  background-color: #ff4d4f;
+  background-color: #e64d4d;
 }
 
-/* Category Buttons */
-.category-buttons {
+/* ================= Category Buttons Wrapper ================= */
+.category-buttons-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+  flex-grow: 1; /* take remaining horizontal space */
 }
 
-.category-buttons button {
+/* Individual Category Buttons */
+.category-buttons-wrapper button {
   padding: 0.5rem 1rem;
-  border: none;
   border-radius: 0.5rem;
-  background-color: #e0f0f8;
-  color: #0078be;
+  border: none;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, color 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  background-color: #e0f0f8; /* light mode background */
+  color: #0078be;           /* light mode text */
 }
 
-.category-buttons button:hover {
+.category-buttons-wrapper button:hover {
   background-color: #c0e4f2;
   transform: translateY(-1px);
 }
 
-.category-buttons button.active {
+.category-buttons-wrapper button.active {
   background-color: #0078be;
-  color: #fff;
+  color: #ffffff;
 }
 
-html.dark .category-buttons button {
+/* Dark Mode for Category Buttons */
+html.dark .category-buttons-wrapper button {
   background-color: #003c57;
   color: #a1d1f0;
 }
 
-html.dark .category-buttons button:hover {
+html.dark .category-buttons-wrapper button:hover {
   background-color: #005080;
-  color: #fff;
+  color: #ffffff;
 }
 
-/* Tag Buttons */
+html.dark .category-buttons-wrapper button.active {
+  background-color: #66aaff;
+  color: #000;
+}
+
+/* ================= Tag Buttons ================= */
 .tag-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -80,14 +97,19 @@ html.dark .category-buttons button:hover {
 }
 
 .tag-buttons button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: auto;
+  max-width: max-content;
+  white-space: nowrap;
   padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: bold;
   border-radius: 0.5rem;
-  border: none;
   background-color: #e0f0f8;
   color: #0078be;
-  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.2s, color 0.3s;
 }
 
 .tag-buttons button:hover {
@@ -95,11 +117,7 @@ html.dark .category-buttons button:hover {
   transform: translateY(-1px);
 }
 
-.tag-buttons button.active {
-  background-color: #0078be;
-  color: #fff;
-}
-
+/* Dark Mode Tags */
 html.dark .tag-buttons button {
   background-color: #003c57;
   color: #a1d1f0;
@@ -107,5 +125,5 @@ html.dark .tag-buttons button {
 
 html.dark .tag-buttons button:hover {
   background-color: #005080;
-  color: #fff;
+  color: #ffffff;
 }
