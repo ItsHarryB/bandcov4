@@ -33,6 +33,7 @@ html.dark .social-link {
 /* Optional: specific tweak for Other Links */
 .social-cards-grid.other-links {
   gap: 0rem; /* match social cards or even smaller */
+  
 }
 
 
@@ -83,10 +84,15 @@ html.dark .social-card {
 @media (max-width: 480px) {
   .social-cards-grid {
     grid-template-columns: 1fr; /* stack vertically */
-    gap: 0.8rem;                /* tighter vertical spacing on mobile */
+    gap: 1rem;                /* tighter vertical spacing on mobile */
   }
-
+  .social-cards-grid.other-links {
+    grid-template-columns: 1fr; /* stack vertically */
+    gap: 1rem; /* match social cards or even smaller */
+  }
   .social-card {
+    grid-template-columns: 1fr; /* stack vertically */
+    gap: 0.8rem;
     max-width: 100%;
     padding: 1rem 1.2rem;       /* match spacing on mobile */
   }
