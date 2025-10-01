@@ -370,42 +370,54 @@ html.dark .nav-links a[aria-current="page"]:focus {
 
 .footer-section ul li a { color: var(--link); text-decoration: none; }
 
-/* Center the theme toggle in the footer */
+/* ===============================
+   Footer Theme Toggle
+   =============================== */
 .footer-toggle {
   display: flex;
-  justify-content: center; /* center horizontally */
-  margin: 1rem 0;          /* spacing above/below */
+  justify-content: center;   /* center horizontally */
+  margin: 1.5rem 0;          /* space above/below */
   width: 100%;
 }
 
-/* Optional: fine-tune the button size and hover effect */
-.theme-toggle {
-  font-size: 1.5rem;
+.footer-toggle .theme-toggle {
+  font-size: 1.5rem;           /* slightly larger for visibility */
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease;
-}
-.theme-toggle:hover {
-  transform: scale(1.15) rotate(5deg); /* subtle hover effect */
-}
-.theme-toggle:active {
-  transform: scale(1.2); /* click feedback */
+  transition: transform 0.2s ease, color 0.3s ease;
 }
 
-.theme-icon {
+.footer-toggle .theme-toggle:hover {
+  transform: scale(1.2);
+}
+
+.footer-toggle .theme-toggle:active {
+  transform: scale(1.0);
+}
+
+.footer-toggle .theme-icon {
   display: inline-block;
   transition: transform 0.5s ease, color 0.5s ease;
 }
-.theme-icon.spin {
+
+.footer-toggle .theme-icon.spin {
   animation: spin 0.5s linear;
 }
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .footer-toggle .theme-toggle {
+    font-size: 1.7rem;  /* slightly smaller on narrow screens */
+  }
 }
 
 
