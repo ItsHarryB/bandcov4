@@ -22,7 +22,7 @@ export default function Social({ platform, username, url, iconOnly = false }) {
     return () => observer.disconnect();
   }, []);
 
-  // Determine the URL
+  // Determine URL
   let link = "#";
   switch (platform) {
     case "Twitter": link = username ? `https://twitter.com/${username}` : "#"; break;
@@ -33,7 +33,7 @@ export default function Social({ platform, username, url, iconOnly = false }) {
     default: break;
   }
 
-  // Determine the icon
+  // Determine Icon
   let Icon = null;
   switch (platform) {
     case "Twitter": Icon = Twitter; break;
@@ -56,19 +56,17 @@ export default function Social({ platform, username, url, iconOnly = false }) {
         setScale(referenceWidth / currentWidth);
       };
       updateScale();
-
       const resizeObserver = new ResizeObserver(updateScale);
       resizeObserver.observe(iconRef.current.parentElement);
       resizeObserver.observe(referenceRef.current.parentElement);
-
       return () => resizeObserver.disconnect();
     }
   }, [platform]);
 
   const iconStyle = platform === "Instagram" ? { transform: `scale(${scale})` } : {};
 
-  // Render only the icon for footers
   if (iconOnly) {
+    // For footer or standalone icon usage
     return (
       <a
         href={link}
@@ -83,13 +81,13 @@ export default function Social({ platform, username, url, iconOnly = false }) {
     );
   }
 
-  // Render full card (default)
+  // Full card clickable
   return (
     <a
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="social-card"
+      className={`social-card ${platformClass} ${isDark ? "dark" : ""}`}
       data-platform={platformClass}
     >
       {platform === "Instagram" && (
@@ -101,27 +99,8 @@ export default function Social({ platform, username, url, iconOnly = false }) {
         </span>
       )}
 
-      <div
-        className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
-        ref={iconRef}
-        data-platform={platformClass}
-      >
+      <div className={`social-link ${platformClass}`} ref={iconRef}>
         {Icon && <Icon size={24} strokeWidth={1.8} style={iconStyle} />}
-        <span
-          style={{
-            position: "absolute",
-            width: "1px",
-            height: "1px",
-            padding: 0,
-            margin: "-1px",
-            overflow: "hidden",
-            clip: "rect(0,0,0,0)",
-            whiteSpace: "nowrap",
-            border: 0,
-          }}
-        >
-          {platform}
-        </span>
       </div>
 
       <span className="social-label">{platform}</span>
