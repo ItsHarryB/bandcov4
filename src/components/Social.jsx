@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Twitter, Github, Linkedin, Instagram, Cloud } from "lucide-react";
+import { TbBrandVinted } from "react-icons/tb"; // Vinted icon
+import { SiEbay } from "react-icons/si";       // eBay icon
 import "../styles/social.css";
 
 export default function Social({ platform, username, url, iconOnly = false }) {
@@ -28,6 +30,8 @@ export default function Social({ platform, username, url, iconOnly = false }) {
     case "LinkedIn": link = url || (username ? `https://www.linkedin.com/in/${username}/` : "#"); break;
     case "Instagram": link = username ? `https://instagram.com/${username}` : "#"; break;
     case "Bluesky": link = username ? `https://${username}` : "#"; break;
+    case "Vinted": link = url || "#"; break;
+    case "eBay": link = username ? `https://www.ebay.co.uk/usr/${username}` : "#"; break;
     default: break;
   }
 
@@ -39,13 +43,14 @@ export default function Social({ platform, username, url, iconOnly = false }) {
     case "LinkedIn": Icon = Linkedin; break;
     case "Instagram": Icon = Instagram; break;
     case "Bluesky": Icon = Cloud; break;
+    case "Vinted": Icon = TbBrandVinted; break; // Official Vinted icon
+    case "eBay": Icon = SiEbay; break;         // Official eBay icon
     default: break;
   }
 
   const platformClass = platform.toLowerCase();
 
   if (iconOnly) {
-    // For footer or standalone icon usage
     return (
       <a
         href={link}
@@ -54,30 +59,12 @@ export default function Social({ platform, username, url, iconOnly = false }) {
         className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
         data-platform={platformClass}
       >
-        {Icon && <Icon size={24} strokeWidth={1.8} />}
+        {Icon && <Icon size={24} />}
       </a>
     );
   }
 
   // Full card clickable
-  if (platform === "Instagram") {
-    // Special structure to fix double-tap
-    return (
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`social-card instagram ${isDark ? "dark" : ""}`}
-        data-platform="instagram"
-        style={{ touchAction: "manipulation" }} // ensures direct tap on mobile
-      >
-        {Icon && <Icon size={24} strokeWidth={1.8} className="social-link" />}
-        <span className="social-label">{platform}</span>
-      </a>
-    );
-  }
-
-  // Other platforms: keep previous structure
   return (
     <a
       href={link}
@@ -87,7 +74,7 @@ export default function Social({ platform, username, url, iconOnly = false }) {
       data-platform={platformClass}
     >
       <div className={`social-link ${platformClass}`}>
-        {Icon && <Icon size={24} strokeWidth={1.8} />}
+        {Icon && <Icon size={24} />}
       </div>
       <span className="social-label">{platform}</span>
     </a>

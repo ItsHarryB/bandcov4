@@ -4,13 +4,17 @@ import Social from '../components/Social.jsx';
 
 const pageTitle = "Links";
 
-// Always include `url`, set to null if not used
 const socials = [
-  { platform: "Twitter", username: "ItsHarryB_", url: null },
-  { platform: "GitHub", username: "ItsHarryB", url: null },
-  { platform: "LinkedIn", username: null, url: "https://www.linkedin.com/in/harry-brighton-8a2b971a4/" },
-  { platform: "Instagram", username: "ItsHarryB_", url: null },
-  { platform: "Bluesky", username: "harryb1.bsky.social", url: null }
+  { platform: "Twitter", username: "ItsHarryB" },
+  { platform: "LinkedIn", url: "https://www.linkedin.com/in/harry-brighton-8a2b971a4/" },
+  { platform: "Instagram", username: "ItsHarryB_" },
+  { platform: "Bluesky", username: "harryb1.bsky.social" }
+];
+
+const otherLinks = [
+  { platform: "GitHub", username: "ItsHarryB" },
+  { platform: "Vinted", url: "https://www.vinted.co.uk/member/272494517" },
+  { platform: "eBay", username: "itsharryb" }
 ];
 ---
 <BaseLayout>
@@ -18,9 +22,19 @@ const socials = [
     <h1>{pageTitle}</h1>
   </div>
 
+  <!-- Social Media Links -->
+  <h2>Social Media</h2>
   <div class="social-cards-grid">
     {socials.map((s) => (
       <Social platform={s.platform} username={s.username} url={s.url} />
+    ))}
+  </div>
+
+  <!-- Other Links -->
+  <h2>Other Links</h2>
+  <div class="social-cards-grid other-links">
+    {otherLinks.map((l) => (
+      <Social platform={l.platform} username={l.username} url={l.url} />
     ))}
   </div>
 </BaseLayout>

@@ -19,7 +19,81 @@ html.dark .social-link {
   color: #ddd;
 }
 
-/* Hover / active platform colors */
+
+/* --- Social / Other Links Cards Grid --- */
+.social-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0rem; /* smaller gap between cards */
+  justify-items: center;
+  margin-top: 2rem;
+  padding: 0 2rem; /* reduce side padding if desired */
+}
+
+/* Optional: specific tweak for Other Links */
+.social-cards-grid.other-links {
+  gap: 0rem; /* match social cards or even smaller */
+}
+
+
+/* --- Individual Card --- */
+.social-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--card-bg, #fff);
+  color: var(--card-color, #333);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 160px;    /* consistent card width */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.3s;
+  text-decoration: none; /* entire card clickable */
+}
+
+/* Dark mode cards */
+html.dark .social-card {
+  background: #1c1c1c;
+  color: #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Card hover / tap effect */
+.social-card:hover,
+.social-card:active {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Label below icon */
+.social-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Ensure spacing of icon inside card */
+.social-card .social-link {
+  margin-bottom: 0.5rem;
+}
+
+/* --- Mobile Adjustments --- */
+@media (max-width: 480px) {
+  .social-cards-grid {
+    grid-template-columns: 1fr; /* stack vertically */
+    gap: 0.8rem;                /* tighter vertical spacing on mobile */
+  }
+
+  .social-card {
+    max-width: 100%;
+    padding: 1rem 1.2rem;       /* match spacing on mobile */
+  }
+}
+
+
+/* Platform hover colors applied when the card is hovered */
 .social-card.twitter:hover .social-link,
 .social-card.twitter:active .social-link {
   background: #1DA1F2;
@@ -41,22 +115,11 @@ html.dark .social-link {
   transform: translateY(-3px) scale(1.05);
 }
 
-/* Instagram: remove transform from hover/active to prevent double-tap */
-.social-card.instagram:hover,
-.social-card.instagram:active {
-  transform: translateY(-5px); /* keep card animation */
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-/* Icon coloring for Instagram still works via .social-link inside card */
-.social-card.instagram .social-link {
-  transition: background 0.3s, color 0.3s;
-}
-
-.social-card.instagram .social-link:hover,
-.social-card.instagram .social-link:active {
+.social-card.instagram:hover .social-link,
+.social-card.instagram:active .social-link {
   background: #E1306C;
   color: #fff;
+  transform: translateY(-3px) scale(1.05);
 }
 
 .social-card.bluesky:hover .social-link,
@@ -66,67 +129,17 @@ html.dark .social-link {
   transform: translateY(-3px) scale(1.05);
 }
 
-/* Social cards grid */
-.social-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1.5rem;
-  justify-items: center;
-  margin-top: 2rem;
-  padding: 0 1rem;
+/* Other Links hover colors */
+.social-card.vinted:hover .social-link,
+.social-card.vinted:active .social-link {
+  background: #007782; /* Vinted green */
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
 }
 
-/* Individual social card */
-.social-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: var(--card-bg, #fff);
-  color: var(--card-color, #333);
-  border-radius: 1rem;
-  padding: 1rem;
-  width: 100%;
-  max-width: 180px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s, box-shadow 0.3s;
-  text-decoration: none; /* entire card clickable */
-}
-
-/* Dark mode card */
-html.dark .social-card {
-  background: #1c1c1c;
-  color: #ddd;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-/* Card hover/tap effect */
-.social-card:hover,
-.social-card:active {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-/* Label below icon */
-.social-label {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-align: center;
-}
-
-/* Ensure spacing of icon inside card */
-.social-card .social-link {
-  margin-bottom: 0.5rem;
-}
-
-/* Mobile adjustments */
-@media (max-width: 480px) {
-  .social-cards-grid {
-    grid-template-columns: 1fr; /* stack vertically */
-    gap: 1rem;
-  }
-  .social-card {
-    max-width: 100%;
-    padding: 1rem 1.2rem;
-  }
+.social-card.ebay:hover .social-link,
+.social-card.ebay:active .social-link {
+  background: #0064d2; /* eBay blue */
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
 }
