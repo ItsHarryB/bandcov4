@@ -21,26 +21,45 @@ html.dark .social-link {
 
 /* Hover / active platform colors */
 .social-card.twitter:hover .social-link,
-.social-card.twitter:active .social-link { background: #1DA1F2; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card.twitter:active .social-link {
+  background: #1DA1F2;
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
+}
 
 .social-card.github:hover .social-link,
-.social-card.github:active .social-link { background: #24292f; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card.github:active .social-link {
+  background: #24292f;
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
+}
 
 .social-card.linkedin:hover .social-link,
-.social-card.linkedin:active .social-link { background: #0A66C2; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card.linkedin:active .social-link {
+  background: #0A66C2;
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
+}
 
-/* Instagram fix: prevent double-tap issue on mobile */
+/* Instagram fix: prevent double-tap issue on iOS Safari */
 .social-card.instagram:hover .social-link,
 .social-card.instagram:active .social-link {
   background: #E1306C;
   color: #fff;
-  transform: none; /* no hover transform to avoid double-tap */
+  transform: none; /* remove hover transform to avoid double-tap */
+}
+
+.social-card.instagram {
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: manipulation; /* ensures tap goes straight to link */
 }
 
 .social-card.bluesky:hover .social-link,
-.social-card.bluesky:active .social-link { background: #1DA1F2; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card.bluesky:active .social-link {
+  background: #1DA1F2;
+  color: #fff;
+  transform: translateY(-3px) scale(1.05);
+}
 
 /* Social cards grid */
 .social-cards-grid {
