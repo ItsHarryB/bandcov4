@@ -61,6 +61,7 @@ button, a {
   z-index: 800;
   height: 50px;
   background-color: #0094b6;
+  gap: 0.5rem;
 }
 
 /* Site Title + Logo */
@@ -68,7 +69,8 @@ button, a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0;
+  flex-shrink: 1;            /* allow shrinking on narrow screens */
+  min-width: 0;              /* enable text truncation */
 }
 .site-title img {
   width: 32px;
