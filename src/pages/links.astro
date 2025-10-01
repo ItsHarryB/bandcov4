@@ -19,7 +19,10 @@ const socials = [
 
   <div class="social-cards-grid">
     {socials.map((s) => (
-      <div class="social-card">
+      <div
+        class="social-card"
+        data-platform={s.platform.toLowerCase()}
+      >
         <Social platform={s.platform} username={s.username} url={s.url} />
         <span class="social-label">{s.platform}</span>
       </div>

@@ -19,37 +19,12 @@ html.dark .social-link {
   color: #ddd;
 }
 
-/* Hover / active platform colors */
-.social-link.twitter:hover,
-.social-link.twitter:active {
-  background: #1DA1F2;
-  color: #fff;
-  transform: translateY(-3px) scale(1.1);
-}
-.social-link.github:hover,
-.social-link.github:active {
-  background: #24292f;
-  color: #fff;
-  transform: translateY(-3px) scale(1.1);
-}
-.social-link.linkedin:hover,
-.social-link.linkedin:active {
-  background: #0A66C2;
-  color: #fff;
-  transform: translateY(-3px) scale(1.1);
-}
-.social-link.instagram:hover,
-.social-link.instagram:active {
-  background: #E1306C;
-  color: #fff;
-  transform: translateY(-3px) scale(1.1);
-}
-.social-link.bluesky:hover,
-.social-link.bluesky:active {
-  background: #1DA1F2;
-  color: #fff;
-  transform: translateY(-3px) scale(1.1);
-}
+/* Icon highlight triggered by card hover */
+.social-card[data-platform="twitter"]:hover .social-link.twitter { background: #1DA1F2; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card[data-platform="github"]:hover .social-link.github { background: #24292f; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card[data-platform="linkedin"]:hover .social-link.linkedin { background: #0A66C2; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card[data-platform="instagram"]:hover .social-link.instagram { background: #E1306C; color: #fff; transform: translateY(-3px) scale(1.05); }
+.social-card[data-platform="bluesky"]:hover .social-link.bluesky { background: #1DA1F2; color: #fff; transform: translateY(-3px) scale(1.05); }
 
 /* Social cards grid */
 .social-cards-grid {
@@ -74,6 +49,7 @@ html.dark .social-link {
   align-items: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.2s, box-shadow 0.3s;
+  cursor: pointer;
 }
 
 /* Dark mode card style */
