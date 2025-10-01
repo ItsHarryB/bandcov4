@@ -69,8 +69,8 @@ button, a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0;       /* prevent shrinking on desktop */
-  min-width: 0;         /* allow text truncation */
+  flex-shrink: 0;            /* prevent shrinking on larger screens */
+  min-width: auto;           /* allow it to occupy available space */
 }
 .site-title img {
   width: 32px;
@@ -90,6 +90,8 @@ button, a {
   text-overflow: ellipsis;
   transition: color 0.5s ease;
 }
+
+/* Wrap text in a span for selective hiding */
 .site-title-text {
   display: inline;
 }
@@ -113,6 +115,8 @@ button, a {
   touch-action: manipulation;
   transition: transform 0.2s ease;
 }
+
+/* Hamburger lines */
 .hamburger .line {
   height: 3px;
   width: 100%;
@@ -122,6 +126,8 @@ button, a {
               opacity 0.2s ease;
   transform-origin: center;
 }
+
+/* Closed hamburger hover/tap effects */
 .hamburger:hover { transform: scale(1.1); }
 .hamburger:active { transform: scale(1.05); transition: transform 0.1s ease; }
 
@@ -134,48 +140,15 @@ button, a {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100%;
+  width: 100%;  /* full clickable area */
 }
 .hamburger.active .line1 { transform: translateY(-50%) rotate(45deg) scaleX(1.05); }
 .hamburger.active .line2 { opacity: 0; transition: opacity 0.2s ease 0.15s; }
 .hamburger.active .line3 { transform: translateY(-50%) rotate(-45deg) scaleX(1.05); }
+
+/* Active X hover/tap scaling */
 .hamburger.active:hover { transform: scale(1.2); }
 .hamburger.active:active { transform: scale(1.1); transition: transform 0.1s ease; }
-
-/* ===============================
-   Navigation Links
-   =============================== */
-.nav-links {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5rem;
-  height: 100%;
-  overflow: hidden;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #ffffff !important;
-  padding: 0 0.5rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Hover/focus effect */
-.nav-links a:hover,
-.nav-links a:focus { 
-  background-color: rgba(255,255,255,0.2); 
-}
-
-/* Active page highlighting */
-.nav-links a[aria-current="page"] {
-  background-color: #000000;
-  font-weight: bold;
-}
 
 /* ===============================
    Responsive adjustments
@@ -186,49 +159,14 @@ button, a {
     margin-left: 0;  
     transform: none;
   }
-
-  .nav-links {
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 0;
-    overflow: hidden;
-    background-color: #0094b6;
-    padding: 0;
-    transition: max-height 0.3s ease-out;
-    gap: 0.5rem;
-    z-index: 1000;
-  }
-
-  .nav-links.expanded { max-height: 600px; transition: max-height 0.4s ease-in; }
-
-  .nav-links a {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
-  }
-  .nav-links.expanded a { animation: fadeInUp 0.3s forwards; }
-  .nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
-  .nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
-  .nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
-  .nav-links.expanded a:nth-child(4) { animation-delay: 0.20s; }
-  .nav-links.expanded a:nth-child(5) { animation-delay: 0.25s; }
-  .nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
-  @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-
-  /* Prevent overlapping: allow logo to shrink slightly, keep hamburger clickable */
-  .site-title { flex-shrink: 1; min-width: 0; }
 }
 
-/* Hide site title text on very narrow screens */
+/* Hide site title text on very narrow screens, leaving only the logo */
 @media (max-width: 500px) {
-  .site-title-text { display: none; }
+  .site-title-text {
+    display: none; /* hide only the text, logo remains */
+  }
 }
-
 
 
 /* ===============================
@@ -301,9 +239,36 @@ button, a {
   font-weight: bold;
   border-radius: 4px;
 }
+/* ===============================
+   Navigation Links - Active Page Highlighting
+   =============================== */
+
+/* Light Mode */
+.nav-links a[aria-current="page"] {
+  background-color: #000000; /* dark highlight */
+  color: #ffffff !important;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
 .nav-links a[aria-current="page"]:hover,
 .nav-links a[aria-current="page"]:focus {
   background-color: #333333;
+  color: #ffffff !important;
+}
+
+/* Dark Mode */
+html.dark .nav-links a[aria-current="page"] {
+  background-color: #ffffff; /* light highlight for dark mode */
+  color: #004166 !important;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+html.dark .nav-links a[aria-current="page"]:hover,
+html.dark .nav-links a[aria-current="page"]:focus {
+  background-color: #cccccc;
+  color: #004166 !important;
 }
 
 /* Smooth collapse */
