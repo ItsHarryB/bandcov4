@@ -59,7 +59,7 @@ button, a {
   padding: 0 clamp(1rem, 5vw, 6rem); /* original padding preserved */
   position: relative;
   z-index: 800;
-  height: 50px;
+  height: 60px;
   background-color: #0094b6;
   gap: 0.5rem;
 }
@@ -209,6 +209,7 @@ button, a {
 /* Links animation */
 .nav-links a {
   display: block;
+  position: relative;
   width: 100%;
   padding: 0.75rem 1rem;
   font-weight: bold;
@@ -217,7 +218,7 @@ button, a {
   text-decoration: none;
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
 .nav-links.expanded a {
   animation: fadeInUp 0.3s forwards;
@@ -235,10 +236,9 @@ button, a {
 
 /* Hover/focus effects */
 .nav-links a:hover,
-.nav-links a:focus { 
-  background-color: rgba(255,255,255,0.2); 
-  border-radius: 4px; 
-  color: #ffffff !important; 
+.nav-links a:focus {
+  background-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px) scale(1.05);
 }
 
 /* Active page link */
