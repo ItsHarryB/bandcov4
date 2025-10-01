@@ -161,12 +161,19 @@ button, a {
   }
 }
 
-/* Hide site title text on very narrow screens, leaving only the logo */
+/* Hide site title text on narrow screens, keep logo visible */
 @media (max-width: 500px) {
-  .site-title-text {
-    display: none; /* hide only the text, logo remains */
+  .site-title a .site-title-text {
+    display: none;
+  }
+
+  /* Optional: center the remaining logo and hamburger */
+  .site-header {
+    justify-content: space-between; /* keeps logo on left, hamburger on right */
+    padding: 0 1rem; /* minimal padding for narrow screens */
   }
 }
+
 
 
 /* ===============================
