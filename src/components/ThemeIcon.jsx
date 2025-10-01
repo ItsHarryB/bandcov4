@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 
 export default function ThemeIcon() {
   const [theme, setTheme] = useState("light");
+  const [spinning, setSpinning] = useState(false);
 
+  // Initialize theme from localStorage or system preference
   useEffect(() => {
     const saved = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -11,16 +13,27 @@ export default function ThemeIcon() {
     document.documentElement.classList.toggle("dark", initialTheme === "dark");
   }, []);
 
+  // Toggle theme with animation
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     document.documentElement.classList.toggle("dark", newTheme === "dark");
     localStorage.setItem("theme", newTheme);
+
+    // Trigger spin animation
+    setSpinning(true);
+    setTimeout(() => setSpinning(false), 500); // match animation duration
   };
 
   return (
-    <button className="theme-toggle" aria-label="Toggle theme" onClick={toggleTheme}>
-      <span className="theme-icon">{theme === "dark" ? "🌙" : "☀️"}</span>
+    <button
+      className="theme-toggle"
+      aria-label="Toggle light/dark theme"
+      onClick={toggleTheme}
+    >
+      <span className={`theme-icon ${spinning ? "spin" : ""}`}>
+        {theme === "dark" ? "🌙" : "☀️"}
+      </span>
     </button>
   );
 }

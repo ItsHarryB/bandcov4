@@ -325,20 +325,7 @@ html.dark .nav-links a[aria-current="page"]:focus {
   .nav-overlay { display: none; }
 }
 
-/* Theme Toggle */
-.theme-toggle {
-  cursor: pointer;
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.theme-toggle:active { transform: scale(0.9); }
-.theme-toggle .theme-icon { display: inline-block; transition: transform 0.5s ease, color 0.5s ease; }
-.theme-toggle .theme-icon.spin { animation: spin 0.5s linear; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 
 /* ===============================
    Footer Styles
@@ -382,6 +369,44 @@ html.dark .nav-links a[aria-current="page"]:focus {
 .footer-section ul li { margin-bottom: 0.3rem; }
 
 .footer-section ul li a { color: var(--link); text-decoration: none; }
+
+/* Center the theme toggle in the footer */
+.footer-toggle {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  margin: 1rem 0;          /* spacing above/below */
+  width: 100%;
+}
+
+/* Optional: fine-tune the button size and hover effect */
+.theme-toggle {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+.theme-toggle:hover {
+  transform: scale(1.15) rotate(5deg); /* subtle hover effect */
+}
+.theme-toggle:active {
+  transform: scale(1.2); /* click feedback */
+}
+
+.theme-icon {
+  display: inline-block;
+  transition: transform 0.5s ease, color 0.5s ease;
+}
+.theme-icon.spin {
+  animation: spin 0.5s linear;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 
 /* Quick Links default styling */
