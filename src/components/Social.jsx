@@ -1,11 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Twitter, Github, Linkedin, Instagram, Cloud } from "lucide-react";
 import "../styles/social.css";
 
 export default function Social({ platform, username, url, iconOnly = false }) {
   const [isDark, setIsDark] = useState(false);
-  const iconRef = useRef(null);
-  const referenceRef = useRef(null);
 
   useEffect(() => {
     const updateDarkMode = () => {
@@ -22,7 +20,7 @@ export default function Social({ platform, username, url, iconOnly = false }) {
     return () => observer.disconnect();
   }, []);
 
-  // Determine URL
+  // Determine link
   let link = "#";
   switch (platform) {
     case "Twitter": link = username ? `https://twitter.com/${username}` : "#"; break;
@@ -46,25 +44,6 @@ export default function Social({ platform, username, url, iconOnly = false }) {
 
   const platformClass = platform.toLowerCase();
 
-  // Dynamic scaling for Instagram
-  const [scale, setScale] = useState(1);
-  useEffect(() => {
-    if (platform === "Instagram" && iconRef.current && referenceRef.current) {
-      const updateScale = () => {
-        const referenceWidth = referenceRef.current.offsetWidth;
-        const currentWidth = iconRef.current.offsetWidth;
-        setScale(referenceWidth / currentWidth);
-      };
-      updateScale();
-      const resizeObserver = new ResizeObserver(updateScale);
-      resizeObserver.observe(iconRef.current.parentElement);
-      resizeObserver.observe(referenceRef.current.parentElement);
-      return () => resizeObserver.disconnect();
-    }
-  }, [platform]);
-
-  const iconStyle = platform === "Instagram" ? { transform: `scale(${scale})` } : {};
-
   if (iconOnly) {
     // For footer or standalone icon usage
     return (
@@ -74,9 +53,8 @@ export default function Social({ platform, username, url, iconOnly = false }) {
         rel="noopener noreferrer"
         className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
         data-platform={platformClass}
-        ref={iconRef}
       >
-        {Icon && <Icon size={24} strokeWidth={1.8} style={iconStyle} />}
+        {Icon && <Icon size={24} strokeWidth={1.8} />}
       </a>
     );
   }
@@ -90,19 +68,9 @@ export default function Social({ platform, username, url, iconOnly = false }) {
       className={`social-card ${platformClass} ${isDark ? "dark" : ""}`}
       data-platform={platformClass}
     >
-      {platform === "Instagram" && (
-        <span
-          ref={referenceRef}
-          style={{ visibility: "hidden", position: "absolute", width: 0, height: 0 }}
-        >
-          <Twitter size={24} strokeWidth={1.8} />
-        </span>
-      )}
-
-      <div className={`social-link ${platformClass}`} ref={iconRef}>
-        {Icon && <Icon size={24} strokeWidth={1.8} style={iconStyle} />}
+      <div className={`social-link ${platformClass}`}>
+        {Icon && <Icon size={24} strokeWidth={1.8} />}
       </div>
-
       <span className="social-label">{platform}</span>
     </a>
   );
