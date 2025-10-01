@@ -56,7 +56,7 @@ button, a {
   align-items: center;        /* vertical centering */
   justify-content: space-between;
   width: 100%;
-  padding: 0 clamp(1rem, 5vw, 6rem);
+  padding: 0 clamp(1rem, 5vw, 6rem); /* original padding preserved */
   position: relative;
   z-index: 800;
   height: 50px;
@@ -69,8 +69,19 @@ button, a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 1;            /* allow shrinking on narrow screens */
-  min-width: 0;              /* enable text truncation */
+  flex-shrink: 0;      /* prevent shrinking on larger screens */
+  min-width: auto;     /* allow it to occupy available space */
+}
+
+/* Wrap text for selective hiding on very small screens */
+.site-title-text {
+  display: inline;      /* default visible */
+}
+
+@media (max-width: 500px) {
+  .site-title-text {
+    display: none;      /* hide text on very narrow screens */
+  }
 }
 .site-title img {
   width: 32px;
@@ -91,6 +102,11 @@ button, a {
   transition: color 0.5s ease;
 }
 
+/* wrap the text for selective hiding */
+.site-title-text {
+  display: inline; /* default display for text */
+}
+
 /* ===============================
    Hamburger Menu
    =============================== */
@@ -98,43 +114,17 @@ button, a {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* keep lines evenly spaced */
+  justify-content: space-between;
   width: 40px;
   height: 30px;
   background: none;
   border: none;
   padding: 0;
   margin: 0;
-  position: relative; /* keep relative so X lines are positioned properly */
+  position: relative; 
   z-index: 2000;
   touch-action: manipulation;
   transition: transform 0.2s ease;
-}
-
-/* Pulse ripple effect */
-.hamburger::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2.5em;
-  height: 2.5em;
-  background: rgba(255,255,255,0.2);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.hamburger:active::after {
-  transform: translate(-50%, -50%) scale(1.5);
-  opacity: 1;
-  animation: pulseFade 0.4s forwards;
-}
-@keyframes pulseFade {
-  0%   { transform: translate(-50%, -50%) scale(0);   opacity: 0.3; }
-  50%  { transform: translate(-50%, -50%) scale(1.2); opacity: 0.2; }
-  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
 }
 
 /* Hamburger lines */
@@ -154,17 +144,15 @@ button, a {
 
 /* Active X state */
 .hamburger.active {
-  cursor: pointer; /* ensure pointer on X */
+  cursor: pointer;
 }
-
 .hamburger.active .line1,
 .hamburger.active .line3 {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100%;      /* fill container for clickable area */
+  width: 100%;  /* full clickable area */
 }
-
 .hamburger.active .line1 { transform: translateY(-50%) rotate(45deg) scaleX(1.05); }
 .hamburger.active .line2 { opacity: 0; transition: opacity 0.2s ease 0.15s; }
 .hamburger.active .line3 { transform: translateY(-50%) rotate(-45deg) scaleX(1.05); }
@@ -174,14 +162,26 @@ button, a {
 .hamburger.active:active { transform: scale(1.1); transition: transform 0.1s ease; }
 
 /* ===============================
-   Responsive adjustment
+   Responsive adjustments
    =============================== */
 @media (max-width: 900px) {
-  /* Remove absolute positioning; rely on flexbox alignment */
+  /* keep vertical centering, remove absolute positioning */
   .hamburger {
     position: relative;
-    margin-left: 0.5rem;
-    transform: none; /* cancel previous translate */
+    margin-left: 0;  
+    transform: none;
+  }
+
+  .site-title {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+}
+
+/* Hide site title text on very narrow screens, leaving only the logo */
+@media (max-width: 500px) {
+  .site-title-text {
+    display: none; /* hide only the text, logo remains */
   }
 }
 
