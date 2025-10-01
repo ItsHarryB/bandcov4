@@ -69,19 +69,8 @@ button, a {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0;      /* prevent shrinking on larger screens */
-  min-width: auto;     /* allow it to occupy available space */
-}
-
-/* Wrap text for selective hiding on very small screens */
-.site-title-text {
-  display: inline;      /* default visible */
-}
-
-@media (max-width: 500px) {
-  .site-title-text {
-    display: none;      /* hide text on very narrow screens */
-  }
+  flex-shrink: 0;            /* prevent shrinking on larger screens */
+  min-width: auto;           /* allow it to occupy available space */
 }
 .site-title img {
   width: 32px;
@@ -102,9 +91,9 @@ button, a {
   transition: color 0.5s ease;
 }
 
-/* wrap the text for selective hiding */
+/* Wrap text in a span for selective hiding */
 .site-title-text {
-  display: inline; /* default display for text */
+  display: inline;
 }
 
 /* ===============================
@@ -165,16 +154,10 @@ button, a {
    Responsive adjustments
    =============================== */
 @media (max-width: 900px) {
-  /* keep vertical centering, remove absolute positioning */
   .hamburger {
     position: relative;
     margin-left: 0;  
     transform: none;
-  }
-
-  .site-title {
-    flex-shrink: 1;
-    min-width: 0;
   }
 }
 
@@ -184,6 +167,7 @@ button, a {
     display: none; /* hide only the text, logo remains */
   }
 }
+
 
 /* ===============================
    Responsive Navigation Links
