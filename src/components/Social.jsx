@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Twitter, Github, Linkedin, Instagram, Cloud } from "lucide-react";
 import "../styles/social.css";
 
-export default function Social({ platform, username, url }) {
+export default function Social({ platform, username, url, iconOnly = false }) {
   const [isDark, setIsDark] = useState(false);
   const iconRef = useRef(null);
   const referenceRef = useRef(null);
@@ -22,18 +22,18 @@ export default function Social({ platform, username, url }) {
     return () => observer.disconnect();
   }, []);
 
-  // Determine link
+  // Determine the URL
   let link = "#";
   switch (platform) {
-    case "Twitter": if (username) link = `https://twitter.com/${username}`; break;
-    case "GitHub": if (username) link = `https://github.com/${username}`; break;
-    case "LinkedIn": if (url) link = url; break;
-    case "Instagram": if (username) link = `https://instagram.com/${username}`; break;
-    case "Bluesky": if (username) link = `https://${username}`; break;
+    case "Twitter": link = username ? `https://twitter.com/${username}` : "#"; break;
+    case "GitHub": link = username ? `https://github.com/${username}` : "#"; break;
+    case "LinkedIn": link = url || (username ? `https://www.linkedin.com/in/${username}/` : "#"); break;
+    case "Instagram": link = username ? `https://instagram.com/${username}` : "#"; break;
+    case "Bluesky": link = username ? `https://${username}` : "#"; break;
     default: break;
   }
 
-  // Determine icon
+  // Determine the icon
   let Icon = null;
   switch (platform) {
     case "Twitter": Icon = Twitter; break;
@@ -55,7 +55,6 @@ export default function Social({ platform, username, url }) {
         const currentWidth = iconRef.current.offsetWidth;
         setScale(referenceWidth / currentWidth);
       };
-
       updateScale();
 
       const resizeObserver = new ResizeObserver(updateScale);
@@ -68,19 +67,41 @@ export default function Social({ platform, username, url }) {
 
   const iconStyle = platform === "Instagram" ? { transform: `scale(${scale})` } : {};
 
-  return (
-    <>
-      {/* Hidden reference icon for measuring size */}
-      {platform === "Instagram" && (
-        <span ref={referenceRef} style={{ visibility: "hidden", position: "absolute", width: 0, height: 0 }}>
-          <Twitter size={24} strokeWidth={1.8} />
-        </span>
-      )}
+  // Render only the icon for footers
+  if (iconOnly) {
+    return (
       <a
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={platform}
+        className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
+        data-platform={platformClass}
+        ref={iconRef}
+      >
+        {Icon && <Icon size={24} strokeWidth={1.8} style={iconStyle} />}
+      </a>
+    );
+  }
+
+  // Render full card (default)
+  return (
+    <a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="social-card"
+      data-platform={platformClass}
+    >
+      {platform === "Instagram" && (
+        <span
+          ref={referenceRef}
+          style={{ visibility: "hidden", position: "absolute", width: 0, height: 0 }}
+        >
+          <Twitter size={24} strokeWidth={1.8} />
+        </span>
+      )}
+
+      <div
         className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
         ref={iconRef}
         data-platform={platformClass}
@@ -101,7 +122,9 @@ export default function Social({ platform, username, url }) {
         >
           {platform}
         </span>
-      </a>
-    </>
+      </div>
+
+      <span className="social-label">{platform}</span>
+    </a>
   );
 }

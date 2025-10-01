@@ -38,18 +38,19 @@ html.dark .social-link {
 
 /* Individual social card */
 .social-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 160px;
   background: var(--card-bg, #fff);
   color: var(--card-color, #333);
   border-radius: 1rem;
   padding: 1rem;
-  width: 100%;
-  max-width: 160px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.2s, box-shadow 0.3s;
   cursor: pointer;
+  text-decoration: none;
 }
 
 /* Dark mode card style */
