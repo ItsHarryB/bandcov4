@@ -98,12 +98,12 @@ button, a {
   flex-direction: column;
   justify-content: space-between; /* keep lines evenly spaced */
   width: 40px;
-  height: 30px;                   /* original height preserved */
+  height: 30px;
   background: none;
   border: none;
   padding: 0;
   margin: 0;
-  position: relative;
+  position: relative; /* keep relative so X lines are positioned properly */
   z-index: 2000;
   touch-action: manipulation;
   transition: transform 0.2s ease;
@@ -175,9 +175,13 @@ button, a {
    Responsive adjustment
    =============================== */
 @media (max-width: 900px) {
-  .hamburger { position: relative; margin-left: 0.5rem; }
+  /* Remove absolute positioning; rely on flexbox alignment */
+  .hamburger {
+    position: relative;
+    margin-left: 0.5rem;
+    transform: none; /* cancel previous translate */
+  }
 }
-
 
 /* ===============================
    Responsive Navigation Links
@@ -254,60 +258,53 @@ button, a {
   background-color: #333333;
 }
 
-/* ===============================
-   Responsive Adjustments
-   =============================== */
-@media (max-width: 900px) {
-  .hamburger { position: relative; margin-left: 0.5rem; }
-  .nav-links { position: absolute; top: 100%; width: 100%; }
-}
-
-/* Active page link */
-.nav-links a[aria-current="page"] {
-  background-color: #000000;
-  color: #ffffff !important;
-  font-weight: bold;
-  border-radius: 4px;
-}
-.nav-links a[aria-current="page"]:hover,
-.nav-links a[aria-current="page"]:focus {
-  background-color: #333333;
-  color: #ffffff !important;
-}
-
-/* Optional: smoother collapse (links fade out) */
+/* Smooth collapse */
 .nav-links:not(.expanded) a {
   transition: opacity 0.2s ease, transform 0.2s ease;
   opacity: 0;
   transform: translateY(-10px);
 }
 
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .nav-links { position: absolute; top: 100%; width: 100%; }
+}
+@media (min-width: 900px) {
+  .hamburger { display: none; }
+  .nav-links {
+    display: flex !important;
+    position: static;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    max-height: none;
+    background: none;
+    gap: 4px;
+    padding-left: 1rem;
+    overflow: hidden;
+    height: 100%;
+  }
+  .nav-links a {
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+    height: 100%;
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 4px;
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus { background-color: rgba(255,255,255,0.2); color: #ffffff !important; }
+  .site-title { margin-right: 1rem; }
+  .nav-overlay { display: none; }
+}
 
-/* Active link (aria-current) */
-.nav-links a[aria-current="page"] {
-  background-color: #000000;
-  color: #ffffff !important;
-  font-weight: bold;
-  border-radius: 4px;
-}
-.nav-links a[aria-current="page"]:hover,
-.nav-links a[aria-current="page"]:focus {
-  background-color: #333333;
-  color: #ffffff !important;
-}
+/* Remaining footer, dark mode, and responsive styles unchanged */
 
-/* Navigation Overlay */
-.nav-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.2);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-  z-index: 900;
-}
-.nav-overlay.active { opacity: 1; visibility: visible; }
 
 /* Theme Toggle */
 .theme-toggle {
