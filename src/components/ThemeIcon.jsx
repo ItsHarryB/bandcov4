@@ -20,12 +20,12 @@ export default function ThemeIcon() {
 
     // Trigger spin animation
     setSpinning(true);
-    setTimeout(() => setSpinning(false), 500); // matches spin animation duration
+    setTimeout(() => setSpinning(false), 500);
   };
 
   return (
     <button
-      className="theme-toggle"
+      className={`theme-toggle ${theme}`}
       aria-label="Toggle theme"
       onClick={toggleTheme}
     >

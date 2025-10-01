@@ -380,15 +380,18 @@ html.dark .nav-links a[aria-current="page"]:focus {
   width: 100%;
 }
 
-.footer-toggle .theme-toggle {
-  font-size: 1.5rem;           /* slightly larger for visibility */
+/* Theme Toggle Base */
+.theme-toggle {
+  padding: 0.1rem;          /* minimal padding for small highlight */
+  border-radius: 50%;        /* keep circular */
+  font-size: 1.5rem;         /* icon size unchanged */
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.2s ease, color 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .footer-toggle .theme-toggle:hover {
@@ -398,6 +401,7 @@ html.dark .nav-links a[aria-current="page"]:focus {
 .footer-toggle .theme-toggle:active {
   transform: scale(1.0);
 }
+
 
 .footer-toggle .theme-icon {
   display: inline-block;

@@ -1,11 +1,28 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Social from '../components/Social.jsx';
+
 const pageTitle = "Links";
+
+const socials = [
+  { platform: "Twitter", username: "ItsHarryB_" },
+  { platform: "GitHub", username: "yourGitHubHandle" },
+  { platform: "LinkedIn", url: "https://linkedin.com/in/yourProfile" },
+  { platform: "Instagram", username: "ItsHarryB_" },
+  { platform: "Bluesky", username: "harryb1.bsky.social" }
+];
 ---
 <BaseLayout>
-<div class="page-center">
+  <div class="page-center">
     <h1>{pageTitle}</h1>
-</div>
-    <h2>Social Media -</h2>
-    <p>When this page is operational, there will be links available.</p>
+  </div>
+
+  <div class="social-cards-grid">
+    {socials.map((s) => (
+      <div class="social-card">
+        <Social platform={s.platform} username={s.username} url={s.url} />
+        <span class="social-label">{s.platform}</span>
+      </div>
+    ))}
+  </div>
 </BaseLayout>

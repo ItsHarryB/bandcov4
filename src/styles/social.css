@@ -1,41 +1,103 @@
-/* Social icon base */
-.social-icon {
+/* Base social link style (neutral) */
+.social-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   text-decoration: none;
-  transition: background 0.3s, color 0.3s, transform 0.2s;
+  background: var(--neutral-bg, #e0e0e0);
+  color: var(--neutral-color, #333);
+  transition: transform 0.2s, background 0.3s, color 0.3s;
   position: relative;
 }
 
-/* Dark mode background for social icons */
-html.dark .social-icon {
+/* Dark mode neutral colors */
+html.dark .social-link {
   background: #333;
   color: #ddd;
 }
 
-/* Light mode background */
-html:not(.dark) .social-icon {
-  background: #f0f0f0;
-  color: #333;
-}
-
-/* Hover effects per platform */
-.social-icon[data-platform="Twitter"]:hover {
+/* Hover / active platform colors */
+.social-link.twitter:hover,
+.social-link.twitter:active {
   background: #1DA1F2;
   color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.1);
 }
-.social-icon[data-platform="GitHub"]:hover {
+.social-link.github:hover,
+.social-link.github:active {
   background: #24292f;
   color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.1);
 }
-.social-icon[data-platform="LinkedIn"]:hover {
+.social-link.linkedin:hover,
+.social-link.linkedin:active {
   background: #0A66C2;
   color: #fff;
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.1);
+}
+.social-link.instagram:hover,
+.social-link.instagram:active {
+  background: #E1306C;
+  color: #fff;
+  transform: translateY(-3px) scale(1.1);
+}
+.social-link.bluesky:hover,
+.social-link.bluesky:active {
+  background: #1DA1F2;
+  color: #fff;
+  transform: translateY(-3px) scale(1.1);
+}
+
+/* Social cards grid */
+.social-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+/* Individual social card */
+.social-card {
+  background: var(--card-bg, #fff);
+  color: var(--card-color, #333);
+  border-radius: 1rem;
+  padding: 1rem;
+  width: 100%;
+  max-width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+
+/* Dark mode card style */
+html.dark .social-card {
+  background: #1c1c1c;
+  color: #ddd;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* Card hover effect */
+.social-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Label below icon */
+.social-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Ensure icon spacing in card */
+.social-card .social-link {
+  margin-bottom: 0.5rem;
 }

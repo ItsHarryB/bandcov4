@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Twitter, Github, Linkedin } from "lucide-react";
-import "../styles/global.css";
+import { Twitter, Github, Linkedin, Instagram, Cloud } from "lucide-react";
+import "../styles/social.css";
 
 export default function Social({ platform, username, url }) {
   const [isDark, setIsDark] = useState(false);
@@ -21,19 +21,52 @@ export default function Social({ platform, username, url }) {
     return () => observer.disconnect();
   }, []);
 
+  // Determine link
   let link = "#";
-  let Icon = null;
-
-  if (platform === "Twitter" && username) {
-    link = `https://twitter.com/${username}`;
-    Icon = Twitter;
-  } else if (platform === "GitHub" && username) {
-    link = `https://github.com/${username}`;
-    Icon = Github;
-  } else if (platform === "LinkedIn" && url) {
-    link = url;
-    Icon = Linkedin;
+  switch (platform) {
+    case "Twitter":
+      if (username) link = `https://twitter.com/${username}`;
+      break;
+    case "GitHub":
+      if (username) link = `https://github.com/${username}`;
+      break;
+    case "LinkedIn":
+      if (url) link = url;
+      break;
+    case "Instagram":
+      if (username) link = `https://instagram.com/${username}`;
+      break;
+    case "Bluesky":
+      if (username) link = `https://${username}`;
+      break;
+    default:
+      break;
   }
+
+  // Determine icon
+  let Icon = null;
+  switch (platform) {
+    case "Twitter":
+      Icon = Twitter;
+      break;
+    case "GitHub":
+      Icon = Github;
+      break;
+    case "LinkedIn":
+      Icon = Linkedin;
+      break;
+    case "Instagram":
+      Icon = Instagram;
+      break;
+    case "Bluesky":
+      Icon = Cloud;
+      break;
+    default:
+      break;
+  }
+
+  // Platform class for CSS
+  const platformClass = platform.toLowerCase();
 
   return (
     <a
@@ -41,9 +74,24 @@ export default function Social({ platform, username, url }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={platform}
-      className={`social-link ${platform.toLowerCase()} ${isDark ? "dark" : ""}`}
+      className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
+      data-platform={platformClass}
     >
-      {Icon && <Icon size={20} strokeWidth={1.8} />}
+      {Icon && (
+        <Icon
+          size={24}
+          strokeWidth={1.8}
+          style={
+            platform === "Instagram"
+              ? {
+                  borderRadius: "50%",
+                  padding: "6px",
+                  // The gradient will be applied via CSS on hover
+                }
+              : {}
+          }
+        />
+      )}
       <span
         style={{
           position: "absolute",
