@@ -41,17 +41,22 @@ html.dark .social-link {
   transform: translateY(-3px) scale(1.05);
 }
 
-/* Instagram fix: prevent double-tap issue on iOS Safari */
-.social-card.instagram:hover .social-link,
-.social-card.instagram:active .social-link {
-  background: #E1306C;
-  color: #fff;
-  transform: none; /* remove hover transform to avoid double-tap */
+/* Instagram: remove transform from hover/active to prevent double-tap */
+.social-card.instagram:hover,
+.social-card.instagram:active {
+  transform: translateY(-5px); /* keep card animation */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
-.social-card.instagram {
-  cursor: pointer;
-  touch-action: manipulation; /* ensures tap goes straight to link */
+/* Icon coloring for Instagram still works via .social-link inside card */
+.social-card.instagram .social-link {
+  transition: background 0.3s, color 0.3s;
+}
+
+.social-card.instagram .social-link:hover,
+.social-card.instagram .social-link:active {
+  background: #E1306C;
+  color: #fff;
 }
 
 .social-card.bluesky:hover .social-link,

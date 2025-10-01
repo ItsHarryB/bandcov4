@@ -60,6 +60,24 @@ export default function Social({ platform, username, url, iconOnly = false }) {
   }
 
   // Full card clickable
+  if (platform === "Instagram") {
+    // Special structure to fix double-tap
+    return (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`social-card instagram ${isDark ? "dark" : ""}`}
+        data-platform="instagram"
+        style={{ touchAction: "manipulation" }} // ensures direct tap on mobile
+      >
+        {Icon && <Icon size={24} strokeWidth={1.8} className="social-link" />}
+        <span className="social-label">{platform}</span>
+      </a>
+    );
+  }
+
+  // Other platforms: keep previous structure
   return (
     <a
       href={link}
