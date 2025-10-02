@@ -62,7 +62,7 @@ export default function Navigation() {
       <div
         className={`nav-overlay ${expanded ? "active" : ""}`}
         onClick={() => setExpanded(false)}
-      ></div>
+      />
     </>
   );
 }
