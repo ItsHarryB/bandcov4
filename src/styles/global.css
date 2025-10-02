@@ -15,17 +15,14 @@ body {
   padding: 0;
   line-height: 1.5;
   transition: background-color 0.5s ease, color 0.5s ease;
+  padding-top: calc(60px + env(safe-area-inset-top));
 }
 
 * { box-sizing: border-box; }
 
 h1,h2,h3,h4,h5,h6 { margin: 1rem 0; color: inherit; }
 
-/* Remove forced width/block from buttons and links globally */
-button, a {
-  display: inline-block;
-  width: auto;
-}
+button, a { display: inline-block; width: auto; }
 
 /* ===============================
    Layout Helpers
@@ -49,41 +46,44 @@ button, a {
 .layout-content h1 { text-align: center; }
 
 /* ===============================
-   Header
+   Header (Sticky on all screens)
    =============================== */
 .site-header {
-  position: fixed;       /* sticks header to top */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;          /* your existing header height */
-  z-index: 1000;         /* ensures header is above content */
-  background-color: #0094b6;
+  height: 60px;
+  z-index: 1000;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+
   padding: 0 clamp(1rem, 5vw, 6rem);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* optional shadow */
-}
-body {
-  padding-top: 60px; /* matches .site-header height */
+  padding-top: env(safe-area-inset-top);
+  background-color: #0094b6;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-
-/* Site Title + Logo */
+/* ===============================
+   Site Title + Logo
+   =============================== */
 .site-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  flex-shrink: 0;            /* prevent shrinking on larger screens */
-  min-width: auto;           /* allow it to occupy available space */
+  flex-shrink: 0;
+  min-width: auto;
 }
+
 .site-title img {
   width: 32px;
   height: 32px;
   object-fit: contain;
 }
+
 .site-title a {
   display: flex;
   align-items: center;
@@ -98,7 +98,6 @@ body {
   transition: color 0.5s ease;
 }
 
-/* Wrap text in a span for selective hiding */
 .site-title-text {
   display: inline;
 }
@@ -108,7 +107,6 @@ body {
    =============================== */
 .hamburger {
   position: relative;
-  top: 0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -119,13 +117,11 @@ body {
   border: none;
   padding: 0;
   margin: 0;
-  position: relative; 
   z-index: 2000;
   touch-action: manipulation;
   transition: transform 0.2s ease;
 }
 
-/* Hamburger lines */
 .hamburger .line {
   height: 3px;
   width: 100%;
@@ -136,78 +132,50 @@ body {
   transform-origin: center;
 }
 
-/* Closed hamburger hover/tap effects */
 .hamburger:hover { transform: scale(1.1); }
 .hamburger:active { transform: scale(1.05); transition: transform 0.1s ease; }
 
-/* Active X state */
-.hamburger.active {
-  cursor: pointer;
-}
 .hamburger.active .line1,
 .hamburger.active .line3 {
   position: absolute;
   top: 50%;
   left: 0;
-  width: 100%;  /* full clickable area */
+  width: 100%;
 }
 .hamburger.active .line1 { transform: translateY(-50%) rotate(45deg) scaleX(1.05); }
 .hamburger.active .line2 { opacity: 0; transition: opacity 0.2s ease 0.15s; }
 .hamburger.active .line3 { transform: translateY(-50%) rotate(-45deg) scaleX(1.05); }
 
-/* Active X hover/tap scaling */
 .hamburger.active:hover { transform: scale(1.2); }
 .hamburger.active:active { transform: scale(1.1); transition: transform 0.1s ease; }
 
 /* ===============================
-   Responsive adjustments
-   =============================== */
-@media (max-width: 900px) {
-  .hamburger {
-    position: relative;
-    margin-left: 0;  
-    transform: none;
-  }
-}
-
-/* Hide site title text on narrow screens, keep logo visible */
-@media (max-width: 500px) {
-  .site-title a .site-title-text {
-    display: none;
-  }
-
-  /* Optional: center the remaining logo and hamburger */
-  .site-header {
-    justify-content: space-between; /* keeps logo on left, hamburger on right */
-    padding: 0 1rem; /* minimal padding for narrow screens */
-  }
-}
-
-
-
-/* ===============================
-   Responsive Navigation Links
+   Navigation Links (Collapsed mobile menu)
    =============================== */
 .nav-links {
-  position: fixed;       /* fixed for mobile */
-  top: 60px;             /* directly under header */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: absolute;
+  top: calc(60px + env(safe-area-inset-top));
   left: 0;
   width: 100%;
   max-height: 0;
   overflow: hidden;
   background-color: #0094b6;
-  display: flex;
-  flex-direction: column;
+  color: #ffffff;
+  text-align: center;
+  z-index: 1000;
   gap: 0.5rem;
-  z-index: 900;          /* below header but above content */
+  padding: 0;
   transition: max-height 0.3s ease-out;
 }
 
 .nav-links.expanded {
-  max-height: 600px;     /* height for expanded menu */
+  max-height: 600px;
+  transition: max-height 0.4s ease-in;
 }
 
-/* Links animation */
 .nav-links a {
   display: block;
   width: 100%;
@@ -220,6 +188,7 @@ body {
   transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
 }
+
 .nav-links.expanded a {
   animation: fadeInUp 0.3s forwards;
 }
@@ -234,7 +203,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Hover/focus effects */
 .nav-links a:hover,
 .nav-links a:focus { 
   background-color: rgba(255,255,255,0.2); 
@@ -242,61 +210,36 @@ body {
   color: #ffffff !important; 
 }
 
-/* Active page link */
 .nav-links a[aria-current="page"] {
   background-color: #000000;
   color: #ffffff !important;
   font-weight: bold;
   border-radius: 4px;
 }
-/* ===============================
-   Navigation Links - Active Page Highlighting
-   =============================== */
 
-/* Light Mode */
-.nav-links a[aria-current="page"] {
-  background-color: #000000; /* dark highlight */
-  color: #ffffff !important;
-  font-weight: bold;
-  border-radius: 4px;
-}
-
-.nav-links a[aria-current="page"]:hover,
-.nav-links a[aria-current="page"]:focus {
-  background-color: #333333;
-  color: #ffffff !important;
-}
-
-/* Dark Mode */
 html.dark .nav-links a[aria-current="page"] {
-  background-color: #ffffff; /* light highlight for dark mode */
-  color: #004166 !important;
-  font-weight: bold;
-  border-radius: 4px;
-}
-
-html.dark .nav-links a[aria-current="page"]:hover,
-html.dark .nav-links a[aria-current="page"]:focus {
-  background-color: #cccccc;
+  background-color: #ffffff;
   color: #004166 !important;
 }
 
-/* Smooth collapse */
-.nav-links:not(.expanded) a {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  opacity: 0;
-  transform: translateY(-10px);
+/* ===============================
+   Mobile adjustments
+   =============================== */
+@media (max-width: 500px) {
+  .site-header { justify-content: space-between; padding: 0 1rem; }
+  .site-title a .site-title-text { display: none; }
+  .nav-links { top: calc(60px + env(safe-area-inset-top)); }
 }
 
-/* Responsive adjustments */
-@media (max-width: 900px) {
-  .nav-links { position: absolute; top: 100%; width: 100%; }
-}
+/* ===============================
+   Desktop adjustments
+   =============================== */
 @media (min-width: 900px) {
   .hamburger { display: none; }
+
   .nav-links {
-    display: flex !important;
     position: static;
+    display: flex !important;
     flex-direction: row;
     justify-content: flex-start;
     flex-wrap: nowrap;
@@ -307,38 +250,19 @@ html.dark .nav-links a[aria-current="page"]:focus {
     overflow: hidden;
     height: 100%;
   }
+
   .nav-links a {
-    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 2px;
     height: 100%;
-    color: #ffffff !important;
-    text-decoration: none;
-    border-radius: 4px;
+    padding: 0 2px;
+    white-space: nowrap;
     opacity: 1 !important;
     transform: translateY(0) !important;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
-  .nav-links a:hover, .nav-links a:focus { background-color: rgba(255,255,255,0.2); color: #ffffff !important; }
-  .site-title { margin-right: 1rem; }
-  .nav-overlay {
-  display: none;
-  position: fixed;
-  top: 60px;             /* below header */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 60px);
-  background-color: rgba(0,0,0,0.4);
-  z-index: 850;
 }
-
-.nav-overlay.active {
-  display: block;
-}
-
-
 
 /* ===============================
    Footer Styles
@@ -381,98 +305,36 @@ html.dark .nav-links a[aria-current="page"]:focus {
 
 .footer-section ul li { margin-bottom: 0.3rem; }
 
-.footer-section ul li a { color: var(--link); text-decoration: none; }
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-.footer-toggle {
-  display: flex;
-  justify-content: center;   /* center horizontally */
-  margin: 1.5rem 0;          /* space above/below */
-  width: 100%;
-}
-
-/* Theme Toggle Base */
-.theme-toggle {
-  padding: 0.1rem;          /* minimal padding for small highlight */
-  border-radius: 50%;        /* keep circular */
-  font-size: 1.5rem;         /* icon size unchanged */
-  background: none;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.footer-toggle .theme-toggle:hover {
-  transform: scale(1.2);
-}
-
-.footer-toggle .theme-toggle:active {
-  transform: scale(1.0);
-}
-
-
-.footer-toggle .theme-icon {
-  display: inline-block;
-  transition: transform 0.5s ease, color 0.5s ease;
-}
-
-.footer-toggle .theme-icon.spin {
-  animation: spin 0.5s linear;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .footer-toggle .theme-toggle {
-    font-size: 1.7rem;  /* slightly smaller on narrow screens */
-  }
-}
-
-
-/* Quick Links default styling */
-.footer-right ul li a {
-  color: #838383;
-  text-decoration: none; /* remove underline */
+.footer-section ul li a {
+  color: var(--link);
+  text-decoration: none;
   position: relative;
   padding: 2px 4px;
   transition: color 0.3s ease;
 }
 
-/* Sliding highlight */
-.footer-right ul li a::after {
+.footer-section ul li a::after {
   content: "";
   position: absolute;
   left: 0;
   bottom: 0;
   width: 0%;
   height: 100%;
-  background-color: #ffffff; /* highlight color */
-  opacity: 0.15; /* subtle effect */
+  background-color: #ffffff;
+  opacity: 0.15;
   transition: width 0.3s ease;
-  z-index: -1; /* behind text */
+  z-index: -1;
   border-radius: 2px;
 }
 
-/* Hover state */
-.footer-right ul li a:hover {
-  color: #0094b6; /* text contrast on highlight */
+.footer-section ul li a:hover {
+  color: #0094b6;
 }
 
-.footer-right ul li a:hover::after {
-  width: 100%; /* slide in highlight fully */
+.footer-section ul li a:hover::after {
+  width: 100%;
 }
 
-
-/* Social links as circular buttons */
 .social-links {
   display: flex;
   flex-wrap: wrap;
@@ -493,6 +355,7 @@ html.dark .nav-links a[aria-current="page"]:focus {
   text-decoration: none;
   transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
+
 .social-link:hover { transform: translateY(-2px); }
 .social-link.twitter:hover { background: #1DA1F2; color: #fff; }
 .social-link.github:hover { background: #24292f; color: #fff; }
@@ -505,13 +368,47 @@ html.dark .nav-links a[aria-current="page"]:focus {
   color: #666;
 }
 
+/* Footer Theme Toggle */
+.footer-toggle {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+.theme-toggle {
+  padding: 0.1rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.footer-toggle .theme-toggle:hover { transform: scale(1.2); }
+.footer-toggle .theme-toggle:active { transform: scale(1.0); }
+
+.footer-toggle .theme-icon {
+  display: inline-block;
+  transition: transform 0.5s ease, color 0.5s ease;
+}
+.footer-toggle .theme-icon.spin { animation: spin 0.5s linear; }
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* ===============================
    Dark Mode
    =============================== */
 html.dark {
   background-color: #1b1b1b;
   color: #ffffff;
-  transition: background-color 0.5s ease, color 0.5s ease;
 }
 html.dark a { color: #66aaff; }
 html.dark a:hover, html.dark a:focus { color: #99cfff; }
@@ -528,65 +425,10 @@ html.dark .footer-section ul li a:hover { color: #0078be; }
 html.dark .footer-meta { color: #696969; }
 
 /* ===============================
-   Responsive Styles
+   Responsive Footer Adjustments
    =============================== */
-@media (max-width: 900px) {
-  .site-header { justify-content: center; text-align: center; position: relative; }
-  .hamburger { position: absolute; top: 1rem; left: 1rem; }
-  .nav-links {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    transition: max-height 0.3s ease-out;
-    background-color: #0094b6;
-  }
-  .nav-links a { text-align: left; padding: 0.75rem 1rem; width: 100%; opacity: 1; transform: translateY(0); }
-}
-
-@media (min-width: 900px) {
-  .hamburger { display: none; }
-  .nav-links {
-    display: flex !important;
-    position: static;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    max-height: none;
-    background: none;
-    gap: 4px;
-    padding-left: 1rem;
-    overflow: hidden;
-    height: 100%;
-  }
-  .nav-links a {
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2px;
-    height: 100%;
-    color: #ffffff !important;
-    text-decoration: none;
-    border-radius: 4px;
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  .nav-links a:hover, .nav-links a:focus { background-color: rgba(255,255,255,0.2); color: #ffffff !important; }
-  .site-title { margin-right: 1rem; }
-  .nav-overlay { display: none; }
-}
-
 @media (max-width: 800px) {
   .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
   .footer-section { flex: 1 1 100%; align-items: center; }
   .social-links { justify-content: center; }
-}
 }
