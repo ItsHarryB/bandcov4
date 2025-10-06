@@ -374,6 +374,7 @@ html.dark .nav-links a[aria-current="page"] {
   justify-content: center;
   margin: 1.5rem 0;
   width: 100%;
+  gap: 0.5rem;
 }
 
 .theme-toggle {
