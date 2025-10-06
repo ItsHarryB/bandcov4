@@ -419,7 +419,11 @@ html.dark .hamburger .line { background-color: #ffffff; }
 html.dark .nav-links { background-color: #004166; color: #ffffff; }
 html.dark .nav-links a { color: #ffffff !important; }
 html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { background-color: #222; color: #7b7b7b; }
+html.dark .site-footer { 
+  background-color: #222; 
+  color: #7b7b7b; 
+  border-top: 1px solid #444;
+}
 html.dark .footer-section h4 { color: #ffffff; }
 html.dark .footer-section ul li a { color: #7b7b7b; }
 html.dark .footer-section ul li a:hover { color: #0078be; }
