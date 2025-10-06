@@ -437,3 +437,102 @@ html.dark .footer-meta { color: #696969; }
   .footer-section { flex: 1 1 100%; align-items: center; }
   .social-links { justify-content: center; }
 }
+
+/* ===============================
+   Custom bullet points with nested support and clear indentation
+   =============================== */
+ul.custom-bullets {
+  list-style: none;        
+  padding-left: 0;          
+  margin: 0;
+}
+
+/* Level 1 bullets */
+ul.custom-bullets > li {
+  position: relative;
+  margin-bottom: 0.5rem;   
+  padding-left: 2.5rem;       /* increased space for bullet */
+  opacity: 0;
+  transform: translateX(-20px); 
+  animation: slideInBullet 0.5s forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s);
+}
+ul.custom-bullets > li::before {
+  content: "•";
+  position: absolute;
+  left: 0;                
+  top: 0;                 
+  color: #0094b6;          
+  font-size: 1.5rem;       
+  line-height: 1;
+}
+
+/* Level 2 bullets */
+ul.custom-bullets li ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.25rem;
+}
+ul.custom-bullets li ul li {
+  position: relative;
+  margin-bottom: 0.25rem;
+  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
+  opacity: 0;
+  transform: translateX(-15px); 
+  animation: slideInBullet 0.5s forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
+}
+ul.custom-bullets li ul li::before {
+  content: "◦";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #0078a0;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* Level 3 bullets */
+ul.custom-bullets li ul li ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.15rem;
+}
+ul.custom-bullets li ul li ul li {
+  position: relative;
+  margin-bottom: 0.15rem;
+  padding-left: 3.2rem;      /* increased indentation for level 3 */
+  opacity: 0;
+  transform: translateX(-10px); 
+  animation: slideInBullet 0.5s forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
+}
+ul.custom-bullets li ul li ul li::before {
+  content: "■";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #005577;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+/* Animation keyframes */
+@keyframes slideInBullet {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Dark mode bullet colors */
+html.dark ul.custom-bullets > li::before { color: #004166; }
+html.dark ul.custom-bullets li ul li::before { color: #006699; }
+html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
+
+/* Mobile adjustments for bullets */
+@media (max-width: 600px) {
+  ul.custom-bullets > li::before { font-size: 2.2rem; }
+  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
+  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
+}
