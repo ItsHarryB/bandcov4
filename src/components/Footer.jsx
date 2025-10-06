@@ -38,7 +38,7 @@ export default function Footer() {
           <ul>
             <li><a href="/">Home</a></li>
             <li><a href="/enquiries/">Enquiries</a></li>
-            <li><a href="/about/">About Me</a></li>
+            <li><a href="/about-me/">About Me</a></li>
             <li><a href="/blog/">Blog</a></li>
             <li><a href="/photography/">Photography</a></li>
             <li><a href="/links/">Links</a></li>
