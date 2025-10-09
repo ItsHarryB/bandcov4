@@ -1,29 +1,68 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PetCarousel from '../components/PetCarousel.jsx';
+import '../styles/about-me.css';
+
 const pageTitle = "About Me";
+
+const petImages = [
+  { src: "/images/penny.jpg", alt: "Penny the black cat" },
+  { src: "/images/poppy.jpg", alt: "Poppy the grey cat" },
+  { src: "/images/luna.jpg", alt: "Luna the big cat" },
+];
 ---
 <BaseLayout>
   <div class="page-center">
     <h1>{pageTitle}</h1>
   </div>
 
-  <h2>Harry Brighton</h2>
-  <h3>Professional Information -</h3>
-  <h4>Education:</h4>
-  <ul class="custom-bullets">
-    <li>I graduated from the University of Sheffield in 2024 with a 2:1 in Law LLB at Undergraduate Level.
-      <ul>
+  <section class="about-cards">
+
+    <!-- About Me card -->
+    <div class="card about-me">
+      <div class="about-content">
+        <div class="about-text">
+          <h2>Who I Am</h2>
+          <p>I’m Harry Brighton. My main interests include PCs, technology, photography, and sports (mainly badminton and tennis).</p>
+        </div>
+        <figure class="about-photo">
+          <img src="/images/harry-brighton-graduation-2024.JPG" alt="Harry Brighton portrait" />
+          <figcaption>My Graduation photo from 2024.</figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <!-- Education card -->
+    <div class="card">
+      <h2>Education:</h2>
+      <ul class="custom-bullets">
+        <li>I graduated from the University of Sheffield in 2024 with a 2:1 in Law LLB.</li>
         <li>I studied areas of law including: administrative, contract, criminal, employment, property (including equity and trusts), and public law.</li>
+        <li>I finished my Master's Degree in MA Politics, Governance and Public Policy at the end of August 2025 - also at the University of Sheffield.</li>
       </ul>
-    </li>
-    <li>I have recently finished my Master's Degree in Politics, Governance and Public Policy also at the University of Sheffield, with my course finishing at the end of August 2025.</li>
-  </ul>
-  <h4>Professional Interests:</h4>
-  <ul class="custom-bullets">
-    <li>Policymaking and analysis on matters including transport, regeneration, local government issues and assurance.
-      <ul>
-        <li>The focus of my Master's dissertation was on the public transport systems of Greater Manchester and Greater London, exploring these integrated networks through the lens of Positive Public Policy.</li>
+    </div>
+
+    <!-- Professional Interests card -->
+    <div class="card">
+      <h2>Professional Interests:</h2>
+      <ul class="custom-bullets">
+        <li>Policymaking and analysis on matters including transport, regeneration, local government and assurance.</li>
+        <li>The focus of my Master's dissertation was on the public transport systems of Greater Manchester and Greater London, judging them through the lens of Positive Public Policy, within the context of English Devolution.</li>
       </ul>
-    </li>
-  </ul>
+    </div>
+
+    <!-- Pets card with React carousel -->
+    <div class="card">
+      <h2>My Pets:</h2>
+      <p>I have three cats and a dog!</p>
+      <p>Here you can see:</p>
+      <ul class="custom-bullets">
+        <li>Penny (the black cat)</li>
+        <li>Poppy (the grey-coloured cat)</li>
+        <li>Luna (the big cat)</li>
+      </ul>
+      <PetCarousel client:load images={petImages} />
+    </div>
+
+  </section>
 </BaseLayout>
