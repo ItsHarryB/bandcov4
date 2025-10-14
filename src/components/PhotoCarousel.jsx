@@ -6,7 +6,7 @@ import '../styles/photography.css';
 
 export default function PhotoCarousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [lightboxIndex, setLightboxIndex] = useState(null); // null = lightbox closed
   const [isDark, setIsDark] = useState(false);
   const total = images.length;
 
@@ -20,6 +20,18 @@ export default function PhotoCarousel({ images }) {
     setIsDark(html.classList.contains('dark'));
     return () => observer.disconnect();
   }, []);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxIndex !== null) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [lightboxIndex]);
 
   // Main carousel navigation
   const prevSlide = () => setCurrentIndex((currentIndex - 1 + total) % total);
@@ -91,6 +103,7 @@ export default function PhotoCarousel({ images }) {
               alt={images[lightboxIndex].alt}
               className="lightbox-image"
             />
+
             <button className="lightbox-btn left" onClick={prevLightbox} aria-label="Previous">&#10094;</button>
             <button className="lightbox-btn right" onClick={nextLightbox} aria-label="Next">&#10095;</button>
             <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
