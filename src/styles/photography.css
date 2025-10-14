@@ -340,51 +340,49 @@ html.dark .about-photo figcaption {
 }
 
 /* ===============================
-   Lightbox Styles (Fixed for large images)
+   Lightbox Styles — Optimized for Desktop + Mobile
    =============================== */
 
 .lightbox-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.8);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2000;
-  animation: fadeIn 0.3s ease;
+  overflow: hidden;
+  animation: fadeIn 0.25s ease-in-out;
 }
 
 .lightbox-content {
   position: relative;
-  width: 90vw;
-  height: 90vh;
-  max-width: 1600px; /* ensures enormous images don’t overflow */
-  max-height: 1200px;
+  max-width: 90vw;
+  max-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: none; /* prevent scrolling while swiping */
 }
 
 .lightbox-image {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* preserves aspect ratio and prevents stretching */
+  width: auto;
+  height: auto;
+  max-width: 90vw;
+  max-height: 85vh;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  pointer-events: none; /* prevents cursor interference */
-  display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  user-select: none;
 }
 
-
-/* Lightbox navigation buttons */
+/* Navigation Buttons */
 .lightbox-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0,148,182,0.7);
+  background-color: rgba(0, 148, 182, 0.7);
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -395,46 +393,100 @@ html.dark .about-photo figcaption {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
-.lightbox-btn.left { left: -60px; }
-.lightbox-btn.right { right: -60px; }
 
 .lightbox-btn:hover {
-  background-color: rgba(0,148,182,1);
+  background-color: rgba(0, 148, 182, 1);
+  transform: translateY(-50%) scale(1.05);
 }
 
-/* Close button */
+/* Positioning */
+.lightbox-btn.left {
+  left: 3%;
+}
+.lightbox-btn.right {
+  right: 3%;
+}
+
+/* Close Button */
 .lightbox-close {
   position: absolute;
-  top: -40px;
-  right: -40px;
+  top: 1rem;
+  right: 1rem;
   font-size: 2rem;
   background: transparent;
   color: white;
   border: none;
   cursor: pointer;
   transition: opacity 0.2s ease;
+  z-index: 10;
 }
 
 .lightbox-close:hover {
   opacity: 0.8;
 }
 
-/* Dark mode */
+/* Dark mode consistency */
 html.dark .lightbox-overlay {
-  background: rgba(0,0,0,0.9);
+  background: rgba(0, 0, 0, 0.92);
 }
 
 html.dark .lightbox-btn {
-  background-color: rgba(0,148,182,0.5);
+  background-color: rgba(0, 148, 182, 0.5);
 }
 
 html.dark .lightbox-btn:hover {
-  background-color: rgba(0,148,182,0.9);
+  background-color: rgba(0, 148, 182, 0.9);
 }
 
+/* ===============================
+   Mobile Adjustments
+   =============================== */
+@media (max-width: 900px) {
+  .lightbox-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .lightbox-content {
+    max-width: 95vw;
+    max-height: 80vh;
+  }
+
+  .lightbox-image {
+    max-width: 95vw;
+    max-height: 75vh;
+    border-radius: 10px;
+  }
+
+  .lightbox-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+  }
+
+  .lightbox-btn.left {
+    left: 1rem;
+  }
+
+  .lightbox-btn.right {
+    right: 1rem;
+  }
+
+  .lightbox-close {
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.8rem;
+  }
+}
+
+/* ===============================
+   Animations
+   =============================== */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
