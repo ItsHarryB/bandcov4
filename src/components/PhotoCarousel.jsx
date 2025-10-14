@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom";
 import '../styles/about-me.css';
+import '../styles/photography.css';
 
 export default function PhotoCarousel({ images }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [lightboxIndex, setLightboxIndex] = useState(null); // null = lightbox closed
   const [isDark, setIsDark] = useState(false);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
   const total = images.length;
 
-  // Detect dark mode dynamically
   useEffect(() => {
     const html = document.documentElement;
     const observer = new MutationObserver(() => {
       setIsDark(html.classList.contains('dark'));
     });
     observer.observe(html, { attributes: true, attributeFilter: ['class'] });
-
     setIsDark(html.classList.contains('dark'));
     return () => observer.disconnect();
   }, []);
@@ -22,12 +22,10 @@ export default function PhotoCarousel({ images }) {
   const prevSlide = () => setCurrentIndex((currentIndex - 1 + total) % total);
   const nextSlide = () => setCurrentIndex((currentIndex + 1) % total);
 
-  const openLightbox = (index) => {
-    setCurrentIndex(index);
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = () => setLightboxOpen(false);
+  const openLightbox = (idx) => setLightboxIndex(idx);
+  const closeLightbox = () => setLightboxIndex(null);
+  const prevLightbox = () => setLightboxIndex((lightboxIndex - 1 + total) % total);
+  const nextLightbox = () => setLightboxIndex((lightboxIndex + 1) % total);
 
   return (
     <>
@@ -65,19 +63,22 @@ export default function PhotoCarousel({ images }) {
         </div>
       </div>
 
-      {lightboxOpen && (
+      {/* Lightbox rendered via portal */}
+      {lightboxIndex !== null && ReactDOM.createPortal(
         <div className="lightbox-overlay" onClick={closeLightbox}>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <img
-              src={images[currentIndex].src}
-              alt={images[currentIndex].alt}
+              src={images[lightboxIndex].src}
+              alt={images[lightboxIndex].alt}
               className="lightbox-image"
             />
-            <button className="lightbox-btn left" onClick={prevSlide} aria-label="Previous">&#10094;</button>
-            <button className="lightbox-btn right" onClick={nextSlide} aria-label="Next">&#10095;</button>
-            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&#10005;</button>
+
+            <button className="lightbox-btn left" onClick={prevLightbox} aria-label="Previous">&#10094;</button>
+            <button className="lightbox-btn right" onClick={nextLightbox} aria-label="Next">&#10095;</button>
+            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
