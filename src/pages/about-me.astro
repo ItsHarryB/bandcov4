@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PetCarousel from '../components/PetCarousel.jsx';
+import PhotoCarousel from '../components/PhotoCarousel.jsx';
 import '../styles/about-me.css';
 
 const pageTitle = "About Me";
@@ -9,6 +9,11 @@ const petImages = [
   { src: "/images/penny.jpg", alt: "Penny the black cat" },
   { src: "/images/poppy.jpg", alt: "Poppy the grey cat" },
   { src: "/images/luna.jpg", alt: "Luna the big cat" },
+];
+const hobbiesImages = [
+  {src: "/images/badminton.jpg", alt: "Me and my girlfriend playing badminton"},
+  {src: "/images/mycomputer.jpg", alt: "My Computer"},
+  {src: "/images/atgym.jpg", alt: "Me at the gym"},
 ];
 ---
 <BaseLayout>
@@ -61,8 +66,15 @@ const petImages = [
         <li>Poppy (the grey-coloured cat)</li>
         <li>Luna (the big cat)</li>
       </ul>
-      <PetCarousel client:load images={petImages} />
+      <PhotoCarousel client:load images={petImages} />
     </div>
-
+    <div class="card">
+      <h2>My Hobbies:</h2>
+      <p>I really enjoy playing sports with my girlfriend (especially badminton), as well as gaming and going to the gym!</p>
+      <p>Another one of my favourite hobbies is 
+     <a href="/photography" class="inline-link">photography</a>.
+      </p>
+      <PhotoCarousel client:load images={hobbiesImages} />
+    </div>
   </section>
 </BaseLayout>

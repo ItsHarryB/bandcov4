@@ -1,11 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/photography.css';
+import PhotoCarousel from '../components/PhotoCarousel.jsx';
 const pageTitle = "Photography";
+const recentfavouriteImages = [
+  { src: "/images/IWMLondon.jpg", alt: "A big naval gun at IWM London" },
+  { src: "/images/coneonroof.jpg", alt: "An orange traffic cone on a high up roof" },
+  { src: "/images/birdinwater.jpg", alt: "A medium sized bird in a pond" },
+];
+const morecatphotosImages= [
+  {src: "/images/poppy2.jpg", alt: "Poppy in a window"},
+  {src: "/images/lunalarge.jpg", alt: "Luna on her back looking kind of large"},
+  {src: "/images/penny2.jpg", alt: "Penny close up to the camera"},
+  {src: "/images/poppydiva.jpg", alt: "Poppy in the sun, looking like a diva"},
+];
 ---
 <BaseLayout>
 <div class="page-center">
     <h1>{pageTitle}</h1>
 </div>
-    <h2>My Favourite Photos -</h2>
-  <p>Here, I will post photos.</p>
+<section class="about-cards">
+  <div class="card">
+      <h2>A few recent favourites:</h2>
+      <PhotoCarousel client:load images={recentfavouriteImages} />
+    </div>
+  <div class="card">
+      <h2>Some cat photos, of course:</h2>
+      <PhotoCarousel client:load images={morecatphotosImages} />
+  </div>
+</section>
 </BaseLayout>
