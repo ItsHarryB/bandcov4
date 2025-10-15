@@ -155,7 +155,7 @@ button, a { display: inline-block; width: auto; }
 .nav-links {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   position: absolute;
   top: calc(60px + env(safe-area-inset-top));
   left: 0;
@@ -178,16 +178,17 @@ button, a { display: inline-block; width: auto; }
 
 .nav-links a {
   display: block;
-  width: 100%;
-  padding: 0.75rem 1rem;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 0.4rem 0.75rem; /* tighter highlight */
   font-weight: bold;
   text-transform: uppercase;
   color: #ffffff !important;
   text-decoration: none;
   opacity: 0;
-  --scale: 1; /* default scale */
+  --scale: 1;
   transform: translateY(-10px) scale(var(--scale));
-  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .nav-links.expanded a {
@@ -204,25 +205,18 @@ button, a { display: inline-block; width: auto; }
   to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
 }
 
+/* Hover / Focus with subtle scaling */
 .nav-links a:hover,
-.nav-links a:focus,
-.nav-links a.tap-scale {
-  background-color: rgba(255,255,255,0.2);
+.nav-links a:focus {
+  background-color: rgba(255,255,255,0.15);
   border-radius: 4px;
   color: #ffffff !important;
-  --scale: 1.1; /* scale up on hover/focus */
+  --scale: 1.05;
 }
 
-/* Active page styling */
-.nav-links a[aria-current="page"] {
-  background-color: #000000;
-  color: #ffffff !important;
-  font-weight: bold;
-  border-radius: 4px;
-}
 
 html.dark .nav-links a[aria-current="page"] {
-  background-color: #ffffff;
+  background-color: rgba(255,255,255,0.6);
   color: #004166 !important;
 }
 
@@ -277,16 +271,23 @@ html.dark .nav-links a[aria-current="page"] {
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 0 2px;
+    padding: 0 40px;
     white-space: nowrap;
     opacity: 1 !important;
     transform: translateY(0) scale(var(--scale)) !important;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
   }
-
+  /* Active page styling */
+  .nav-links a[aria-current="page"] {
+    background-color: rgba(0,0,0,0.6); /* smaller, subtler highlight */
+    color: #ffffff !important;
+    font-weight: bold;
+    border-radius: 10px;
+    --scale: 1.02; /* slight scale for active link */
+}
   .nav-links a:hover,
   .nav-links a:focus {
-    --scale: 1.1;
+    --scale: 1.05;
     color: #0094b6;
   }
 }
@@ -301,7 +302,7 @@ html.dark .nav-links a {
 html.dark .nav-links a:hover,
 html.dark .nav-links a:focus {
   color: #00bcd4;
-  --scale: 1.1;
+  --scale: 1.05;
 }
 
 /* ===============================
