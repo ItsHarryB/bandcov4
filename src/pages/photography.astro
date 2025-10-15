@@ -14,19 +14,64 @@ const morecatphotosImages= [
   {src: "/images/penny2.jpg", alt: "Penny close up to the camera"},
   {src: "/images/poppydiva.jpg", alt: "Poppy in the sun, looking like a diva"},
 ];
+const pragueImages= [
+  {src: "/images/goldceiling.jpg", alt: "The ceiling in Prague's main museum"},
+  {src: "/images/viewofprague1.jpg", alt: "A view of Prague"},
+  {src: "/images/praguemuseum.jpg", alt: "A photo of the exterior of Prague's main museum"},
+  {src: "/images/praguemeerkat.jpg", alt: "A meerkat photographed at Prague Zoo, stood on their back feet"},
+  {src: "/images/praguebuilding1.jpg", alt: "A photograph of a prominent building in Prague"},
+  {src: "/images/r2d2prague.jpg", alt: "A concrete pillar painted in the style of R2D2"},
+  {src: "/images/praguetram1.jpg", alt: "A Prague tram, of the Soviet variety"},
+  {src: "/images/pragueriver.jpg", alt: "A view of a river from the centre of Prague"},
+];
+const pefkosrhodesImages= [
+  {src: "/images/rhodesoldtownstreet.jpg", alt: "A view down a narrow street of Rhodes Old Town"},
+  {src: "/images/rhodesoldtownarch.jpg", alt: "A view down an arch in Rhodes Old Town"},
+  {src: "/images/lindosrock1.jpg", alt: "A rock on the coast off Lindos"},
+  {src: "/images/lindosrock2.jpg", alt: "A rock shaped like a lion, off the coast of Lindos"},
+  {src: "/images/pefkosbeachview1.jpg", alt: "A view of the water from a beach near Pefkos"},
+  {src: "/images/pefkosrhodescats1.jpg", alt: "Two cats laying under a bench, shading from the sun"},
+  {src: "/images/pefkosrhodescats2.jpg", alt: "Pefkos cat feeding area"},
+  {src: "/images/pefkosrhodescats3.jpg", alt: "Some cats laying on ruins in Rhodes old town"},
+];
+const londonImages= [
+  {src: "/images/victoriatheatre.jpg", alt: "A view from high up in the Victoria Theatre"},
+  {src: "/images/nhmskeleton.jpg", alt: "A skeleton from the Natural History Museum"},
+  {src: "/images/swanlondon.jpg", alt: "A swan and goose in Kensington Gardens"},
+  {src: "/images/londonskyline.jpg", alt: "A view from West London of London's skyline"},
+]
 ---
 <BaseLayout>
 <div class="page-center">
     <h1>{pageTitle}</h1>
 </div>
+<h2>My Favourite Photos -</h2>
 <section class="about-cards">
   <div class="card">
-      <h2>A few recent favourites:</h2>
+      <h3>A few recent favourites:</h3>
       <PhotoCarousel client:load images={recentfavouriteImages} />
     </div>
   <div class="card">
-      <h2>Some cat photos, of course:</h2>
+      <h3>Some cat photos, of course:</h3>
       <PhotoCarousel client:load images={morecatphotosImages} />
+  </div>
+</section>
+
+<hr class="section-divider" />
+<h2>Some holiday photos:</h2>
+
+<section class="about-cards">
+  <div class="card">
+    <h3>Prague - June 2024:</h3>
+    <PhotoCarousel client:load images={pragueImages} />
+  </div>
+  <div class="card">
+    <h3>Pefkos/Rhodes - June 2025:</h3>
+    <PhotoCarousel client:load images={pefkosrhodesImages} />
+  </div>
+  <div class="card">
+    <h3>London - August 2025:</h3>
+    <PhotoCarousel client:load images={londonImages} />
   </div>
 </section>
 </BaseLayout>

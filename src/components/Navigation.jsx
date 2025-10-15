@@ -11,10 +11,10 @@ const links = [
 
 export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
-  const [currentPath, setCurrentPath] = useState("");
+  const [currentPath, setCurrentPath] = useState("/");
 
-  // Normalize paths to handle trailing slashes
-  const normalizePath = (path) => path.replace(/\/$/, "") || "/";
+  // Normalize paths to handle trailing slashes consistently
+  const normalizePath = (path) => path.replace(/\/+$/, "") || "/";
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -40,25 +40,22 @@ export default function Navigation() {
 
       {/* Navigation Links */}
       <nav className={`nav-links ${expanded ? "expanded" : ""}`} aria-label="Main navigation">
-        <ul>
-          {links.map((link) => {
-            const isActive = path === normalizePath(link.href);
-            return (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  aria-current={isActive ? "page" : undefined}
-                  onClick={() => setExpanded(false)}
-                >
-                  {link.label}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
+        {links.map((link) => {
+          const isActive = path === normalizePath(link.href);
+          return (
+            <a
+              key={link.href}
+              href={link.href}
+              aria-current={isActive ? "page" : undefined}
+              onClick={() => setExpanded(false)}
+            >
+              {link.label}
+            </a>
+          );
+        })}
       </nav>
 
-      {/* Navigation Overlay */}
+      {/* Navigation overlay for mobile */}
       <div
         className={`nav-overlay ${expanded ? "active" : ""}`}
         onClick={() => setExpanded(false)}
