@@ -1,35 +1,117 @@
----import BaseLayout from '../layouts/BaseLayout.astro';
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
 const pageTitle = "Enquiries";
 ---
 <BaseLayout pageTitle={pageTitle}>
-<div class="page-center">
-     <h1>Enquiries</h1>
-</div>
-    <h2>If you have any questions -</h2>
-<!-- Embedded Google Form -->
+  <div class="page-center">
+    <h1>Enquiries</h1>
+  </div>
+  <h2>If you have any questions -</h2>
+
+  <section class="form-section form-card">
+  <div class="iframe-wrapper">
+    <iframe
+      src="https://docs.google.com/forms/d/e/1FAIpQLSeTXpA_Y_VlB--oyTgnU5Xulp6iLdq9I3QQRFcxUs9mE-8tFA/viewform?embedded=true"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="Enquiry Form"
+      allowfullscreen
+      class="fade-in-iframe"
+    ></iframe>
+  </div>
+</section>
+
 <style>
-  .responsive-form iframe {
-    width: 100%;
-    height: 1200px;
+  /* ================= Form Card ================= */
+  .form-card {
+    border-radius: 1rem;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    color: #000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 1rem;
+    max-width: 800px;
+    margin-inline: auto;
+    margin-top: 1rem;
+    transition: transform 0.5s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.5s cubic-bezier(0.22,1,0.36,1),
+                background-color 0.5s ease,
+                color 0.5s ease;
   }
 
-  @media (min-width: 768px) {
-    .responsive-form iframe {
-      width: 640px;
-      height: 1200px;
+  /* Hover animation for desktop */
+  @media (min-width: 769px) {
+    .form-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: hoverPop 0.3s ease-out forwards;
     }
   }
-</style>
 
-<div class="responsive-form page-center" style="margin-top: 1rem;">
-  <iframe
-    src="https://docs.google.com/forms/d/e/1FAIpQLSeTXpA_Y_VlB--oyTgnU5Xulp6iLdq9I3QQRFcxUs9mE-8tFA/viewform?embedded=true"
-    frameborder="0"
-    marginheight="0"
-    marginwidth="0"
-  >
-    Loading…
-  </iframe>
-</div>
+  @keyframes hoverPop {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+    100% { transform: translateY(-6px); }
+  }
+
+  /* Theme toggle */
+  html.light .form-card {
+    background-color: #f5f5f5;
+    color: #000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  html.dark .form-card {
+    background-color: #111;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+
+  /* Iframe wrapper */
+  .iframe-wrapper {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  /* Mobile: nearly full viewport height */
+  @media (max-width: 480px) {
+    .iframe-wrapper { padding-bottom: 90vh; }
+  }
+
+  /* Tablet */
+  @media (min-width: 481px) and (max-width: 768px) {
+    .iframe-wrapper { padding-bottom: 150%; }
+  }
+
+  /* Desktop */
+  @media (min-width: 769px) {
+    .iframe-wrapper { padding-bottom: 150%; }
+  }
+
+  /* Fade-in iframe */
+  .fade-in-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Prevent horizontal scroll on mobile */
+  @media (max-width: 480px) {
+    html, body { overflow-x: hidden; }
+  }
+</style>
 
 </BaseLayout>
