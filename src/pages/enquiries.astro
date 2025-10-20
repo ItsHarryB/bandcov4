@@ -1,11 +1,15 @@
----
-import BaseLayout from '../layouts/BaseLayout.astro';
+---import BaseLayout from '../layouts/BaseLayout.astro';
 const pageTitle = "Enquiries";
 ---
 <BaseLayout pageTitle={pageTitle}>
 <div class="page-center">
-    <h1>Enquiries</h1>
+     <h1>Enquiries</h1>
 </div>
     <h2>If you have any questions -</h2>
-    <p>When this page is fully operational, there will be an enquiry form available.</p>
+<!-- Embedded Google Form -->
+<div style="margin-top: 1rem;">
+    <div class="page-center">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeTXpA_Y_VlB--oyTgnU5Xulp6iLdq9I3QQRFcxUs9mE-8tFA/viewform?embedded=true" width="640" height="1100" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+</div>
 </BaseLayout>
