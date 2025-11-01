@@ -58,13 +58,20 @@ button, a { display: inline-block; width: auto; }
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* CENTER the logo/title */
   gap: 0.5rem;
 
   padding: 0 clamp(1rem, 5vw, 6rem);
   padding-top: env(safe-area-inset-top);
   background-color: #0094b6;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+  text-align: center;
+}
+
+/* Shadow when menu is active */
+.site-header.menu-shadow {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.638);
 }
 
 /* ===============================
@@ -98,15 +105,15 @@ button, a { display: inline-block; width: auto; }
   transition: color 0.5s ease;
 }
 
-.site-title-text {
-  display: inline;
-}
+.site-title-text { display: inline; }
 
 /* ===============================
    Hamburger Menu
    =============================== */
+/* Wrap hamburger absolutely to not disturb center alignment */
 .hamburger {
-  position: relative;
+  position: absolute;
+  left: 1.5rem; /* adjust as needed */
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -150,7 +157,7 @@ button, a { display: inline-block; width: auto; }
 .hamburger.active:active { transform: scale(1.1); transition: transform 0.1s ease; }
 
 /* ===============================
-   Navigation Links (Collapsed mobile menu)
+   Navigation Links (Mobile)
    =============================== */
 .nav-links {
   display: flex;
@@ -165,22 +172,23 @@ button, a { display: inline-block; width: auto; }
   background-color: #0094b6;
   color: #ffffff;
   text-align: center;
-  z-index: 1000;
+  z-index: 1200;
   gap: 0.5rem;
   padding: 0;
-  transition: max-height 0.3s ease-out;
+  transition: max-height 0.4s ease, transform 0.3s ease;
+  transform: translateY(-10px);
 }
 
 .nav-links.expanded {
   max-height: 600px;
-  transition: max-height 0.4s ease-in;
+  transform: translateY(0);
 }
 
 .nav-links a {
   display: block;
   width: fit-content;
   margin: 0 auto;
-  padding: 0.4rem 0.75rem; /* tighter highlight */
+  padding: 0.4rem 0.75rem;
   font-weight: bold;
   text-transform: uppercase;
   color: #ffffff !important;
@@ -200,12 +208,15 @@ button, a { display: inline-block; width: auto; }
 .nav-links.expanded a:nth-child(4) { animation-delay: 0.20s; }
 .nav-links.expanded a:nth-child(5) { animation-delay: 0.25s; }
 .nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
+/* Extra padding below the last link when menu is expanded */
+.nav-links.expanded a:last-child {
+  margin-bottom: 1rem; /* increase this value to taste */
+}
 
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
 }
 
-/* Hover / Focus with subtle scaling */
 .nav-links a:hover,
 .nav-links a:focus {
   background-color: rgba(255,255,255,0.15);
@@ -214,32 +225,38 @@ button, a { display: inline-block; width: auto; }
   --scale: 1.05;
 }
 
+/* ===============================
+   Navigation Overlay
+   =============================== */
+.nav-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 60px);
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1100;
+}
 
-html.dark .nav-links a[aria-current="page"] {
-  background-color: rgba(255,255,255,0.6);
-  color: #004166 !important;
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
 /* ===============================
-   Responsive tweaks for mobile
+   Responsive tweaks
    =============================== */
 @media (max-width: 900px) {
-  .nav-links a {
-    font-size: 0.95rem;
-    margin: 0 0.8rem;
-  }
+  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
 }
 
 @media (max-width: 600px) {
-  .nav-links a {
-    font-size: 0.9rem;
-    margin: 0 0.6rem;
-  }
+  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
 }
 
-/* ===============================
-   Mobile adjustments
-   =============================== */
 @media (max-width: 500px) {
   .site-header { justify-content: space-between; padding: 0 1rem; }
   .site-title a .site-title-text { display: none; }
@@ -247,9 +264,9 @@ html.dark .nav-links a[aria-current="page"] {
 }
 
 /* ===============================
-   Desktop adjustments
+   Desktop Adjustments
    =============================== */
-@media (min-width: 900px) {
+@media (min-width: 1300px) {
   .hamburger { display: none; }
 
   .nav-links {
@@ -264,6 +281,7 @@ html.dark .nav-links a[aria-current="page"] {
     padding-left: 1rem;
     overflow: hidden;
     height: 100%;
+    transform: translateY(0);
   }
 
   .nav-links a {
@@ -277,33 +295,25 @@ html.dark .nav-links a[aria-current="page"] {
     transform: translateY(0) scale(var(--scale)) !important;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
   }
-  /* Active page styling */
+
   .nav-links a[aria-current="page"] {
-    background-color: rgba(0,0,0,0.6); /* smaller, subtler highlight */
+    background-color: rgba(0,0,0,0.6);
     color: #ffffff !important;
     font-weight: bold;
     border-radius: 10px;
-    --scale: 1.02; /* slight scale for active link */
-}
-  .nav-links a:hover,
-  .nav-links a:focus {
-    --scale: 1.05;
-    color: #0094b6;
+    --scale: 1.02;
   }
+
+  .nav-links a:hover,
+  .nav-links a:focus { --scale: 1.05; color: #0094b6; }
 }
 
 /* ===============================
-   Dark Mode adjustments
+   Dark Mode
    =============================== */
-html.dark .nav-links a {
-  color: #ccc;
-}
-
+html.dark .nav-links a { color: #ccc; }
 html.dark .nav-links a:hover,
-html.dark .nav-links a:focus {
-  color: #00bcd4;
-  --scale: 1.05;
-}
+html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 
 /* ===============================
    Footer Styles
@@ -333,8 +343,10 @@ html.dark .nav-links a:focus {
   min-width: 150px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;  /* change from flex-start to center */
+
 }
+
 
 .footer-section h4 {
   margin-bottom: 0.5rem;

@@ -13,7 +13,6 @@ export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
   const [currentPath, setCurrentPath] = useState("/");
 
-  // Normalize paths to handle trailing slashes consistently
   const normalizePath = (path) => path.replace(/\/+$/, "") || "/";
 
   useEffect(() => {
@@ -21,6 +20,23 @@ export default function Navigation() {
       setCurrentPath(window.location.pathname);
     }
   }, []);
+
+  // Lock scroll and add shadow when menu is expanded
+  useEffect(() => {
+    if (expanded) {
+      document.body.style.overflow = "hidden";
+      document.querySelector(".site-header")?.classList.add("menu-shadow");
+    } else {
+      document.body.style.overflow = "";
+      document.querySelector(".site-header")?.classList.remove("menu-shadow");
+    }
+
+    // Cleanup in case component unmounts
+    return () => {
+      document.body.style.overflow = "";
+      document.querySelector(".site-header")?.classList.remove("menu-shadow");
+    };
+  }, [expanded]);
 
   const path = normalizePath(currentPath);
 
@@ -55,7 +71,7 @@ export default function Navigation() {
         })}
       </nav>
 
-      {/* Navigation overlay for mobile */}
+      {/* Optional overlay for mobile */}
       <div
         className={`nav-overlay ${expanded ? "active" : ""}`}
         onClick={() => setExpanded(false)}
