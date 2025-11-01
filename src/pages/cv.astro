@@ -1,0 +1,244 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import "../styles/about-me.css";
+import BackButton from "../components/BackButton.astro";
+
+const pageTitle = "My CV:";
+---
+<BaseLayout pageTitle={pageTitle}>
+  <div class="page-center">
+    <h1>My CV:</h1>
+    <BackButton parent="/about-me" label="Back to About Me" />
+  </div>
+
+  <section class="cv-section cv-card" id="cvCard">
+    <div class="viewer-controls">
+      <a href="/cv/my-cv.pdf" target="_blank" rel="noopener noreferrer" download class="control-btn download-btn" id="downloadBtn">
+        Download CV
+      </a>
+      <button id="fitToggle" class="control-btn">Fit to Width</button>
+    </div>
+
+    <div class="pdf-container" id="pdfContainer">
+      <iframe
+        src="/cv/my-cv.pdf"
+        frameborder="0"
+        title="My CV PDF Viewer"
+        allowfullscreen
+        class="fade-in-iframe"
+      ></iframe>
+    </div>
+  </section>
+
+  <script>
+    const toggle = document.getElementById("fitToggle");
+    const container = document.getElementById("pdfContainer");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const iframe = container?.querySelector("iframe");
+
+    // Restore Fit-to-Width preference
+    if (container && toggle) {
+      const saved = localStorage.getItem("cvFitMode");
+      if (saved === "fit") {
+        container.classList.add("fit-width", "highlight");
+        toggle.textContent = "Reset View";
+        if (iframe) iframe.classList.add("zoom-in");
+        setTimeout(() => {
+          container.classList.remove("highlight");
+          if (iframe) iframe.classList.remove("zoom-in");
+        }, 500);
+      }
+
+      toggle.addEventListener("click", () => {
+        const fit = container.classList.toggle("fit-width");
+        toggle.textContent = fit ? "Reset View" : "Fit to Width";
+
+        // Add highlight pulse
+        container.classList.add("highlight");
+        if (iframe) iframe.classList.add("zoom-in");
+        setTimeout(() => {
+          container.classList.remove("highlight");
+          if (iframe) iframe.classList.remove("zoom-in");
+        }, 500);
+
+        localStorage.setItem("cvFitMode", fit ? "fit" : "normal");
+      });
+    }
+
+    // Download button animation
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        downloadBtn.classList.add("download-animate");
+
+        setTimeout(() => {
+          downloadBtn.classList.remove("download-animate");
+          downloadBtn.blur();
+
+          const link = document.createElement("a") as HTMLAnchorElement;
+          link.href = (downloadBtn as HTMLAnchorElement).href;
+          link.download = (downloadBtn as HTMLAnchorElement).getAttribute("download") ?? "";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }, 150);
+      });
+    }
+  </script>
+
+  <style>
+    /* ================= CV Card ================= */
+    .cv-card {
+      border-radius: 1rem;
+      overflow: hidden;
+      background-color: #f5f5f5;
+      color: #000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 1rem;
+      max-width: 900px;
+      margin-inline: auto;
+      margin-top: 1rem;
+      transition: transform 0.3s ease-in-out,
+                  box-shadow 0.3s ease-in-out,
+                  background-color 0.5s ease,
+                  color 0.5s ease;
+    }
+
+    @media (min-width: 769px) {
+      .cv-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+      }
+    }
+
+    html.light .cv-card {
+      background-color: #f5f5f5;
+      color: #000;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    html.dark .cv-card {
+      background-color: #111;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* ================= Viewer Controls ================= */
+    .viewer-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .control-btn {
+      background-color: #0094b6;
+      color: #fff;
+      border: none;
+      padding: 0.55rem 1rem;
+      border-radius: 0.45rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      min-width: 130px;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .control-btn:hover {
+      background-color: #007a98;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      color: #fff;
+    }
+
+    html.dark .control-btn {
+      background-color: #004166;
+    }
+
+    html.dark .control-btn:hover {
+      background-color: #00547f;
+      color: #fff;
+    }
+
+    .download-animate {
+      animation: downloadPop 0.15s ease-in-out forwards;
+    }
+
+    @keyframes downloadPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* ================= PDF Viewer ================= */
+    .pdf-container {
+      position: relative;
+      width: 100%;
+      padding-top: 130%;
+      overflow: hidden;
+      border-radius: 0.75rem;
+      background-color: inherit;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .pdf-container.fit-width {
+      padding-top: 0;
+      height: 85vh;
+    }
+
+    .pdf-container.highlight {
+      animation: highlightPulse 0.5s ease-in-out;
+    }
+
+    @keyframes highlightPulse {
+      0% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+      50% { box-shadow: 0 0 20px rgba(0,150,182,0.5); }
+      100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
+    }
+
+    .fade-in-iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0.75rem;
+      opacity: 0;
+      animation: fadeIn 0.8s forwards;
+      background-color: inherit;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.15);
+      transform-origin: top center;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    /* Subtle zoom animation when toggling Fit-to-Width */
+    .fade-in-iframe.zoom-in {
+      animation: zoomPulse 0.5s ease-in-out forwards;
+    }
+
+    @keyframes zoomPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .pdf-container {
+        padding-top: 0;
+        height: 85vh;
+      }
+      html, body { overflow-x: hidden; }
+    }
+  </style>
+</BaseLayout>
