@@ -113,7 +113,7 @@ button, a { display: inline-block; width: auto; }
 /* Wrap hamburger absolutely to not disturb center alignment */
 .hamburger {
   position: absolute;
-  left: 1.5rem; /* adjust as needed */
+  left: calc(1rem + env(safe-area-inset-left));
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -613,4 +613,33 @@ html.dark .inline-link {
 html.dark .inline-link:hover {
   color: #7dd3fc; /* lighter cyan for hover contrast */
   text-decoration: underline;
+}
+
+/* ===============================
+   avoid hamburger / logo overlap on small screens:
+   - keep hamburger pinned to the left (respect safe-area)
+   - absolutely center the site title on small/medium screens so it never collides
+   - restore normal flow on large (desktop) screens */
+.hamburger {
+  left: calc(1rem + env(safe-area-inset-left));
+}
+
+@media (max-width: 1299px) {
+  .site-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1500;
+    /* keep the link clickable */
+  }
+  .site-title a { pointer-events: auto; }
+}
+
+/* revert to document flow on wide screens so desktop nav isn't overlapped */
+@media (min-width: 1300px) {
+  .site-title {
+    position: static;
+    transform: none;
+    z-index: auto;
+  }
 }
