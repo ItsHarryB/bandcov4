@@ -1,7 +1,7 @@
 ---
 title: "v0.3.0"
 author: Harry Brighton
-description: "Changes resulting in v0.2.0"
+description: "Changes resulting in v0.3.0"
 pubDate: 02/10/2025
 category: "Changelog"
 tags: ["Web Dev", "Changelog"]
