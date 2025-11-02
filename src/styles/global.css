@@ -15,7 +15,7 @@ body {
   padding: 0;
   line-height: 1.5;
   transition: background-color 0.5s ease, color 0.5s ease;
-  padding-top: calc(60px + env(safe-area-inset-top));
+  padding-top: calc(70px + env(safe-area-inset-top));
 }
 
 * { box-sizing: border-box; }
@@ -53,7 +53,7 @@ button, a { display: inline-block; width: auto; }
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* Increased height */
+  height: 70px; /* Increased height */
   z-index: 1000;
 
   display: flex;
@@ -93,10 +93,12 @@ button, a { display: inline-block; width: auto; }
   min-width: auto;
 }
 
+/* Update base logo size - keep it consistent */
 .site-title img {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
+  transition: width 0.25s ease, height 0.25s ease;
 }
 
 .site-title a {
@@ -106,14 +108,77 @@ button, a { display: inline-block; width: auto; }
   text-decoration: none;
   color: #ffffff;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.2rem; /* consistent size */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: color 0.5s ease;
+  transition: color 0.5s ease; /* remove font-size transition */
+  height: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
-.site-title-text { display: inline; }
+/* Add new breakpoint for title text hiding */
+@media (max-width: 1000px) {
+  .site-title-text {
+    display: none;
+  }
+  
+  .site-title a {
+    padding: 0 8px;
+    font-size: 1.2rem; /* keep consistent with base */
+  }
+}
+
+/* Update desktop styles - remove logo size changes */
+@media (min-width: 1300px) {
+  .site-title a {
+    padding: 0 36px;
+    font-size: 1.2rem; /* keep consistent across all breakpoints */
+  }
+  
+  .site-title-text {
+    display: inline;
+  }
+}
+
+/* Hide title text earlier to prevent collision with the hamburger.
+   Adjust this breakpoint if you need the switch to happen slightly sooner/later. */
+@media (max-width: 1200px) {
+  .site-title a { padding: 0 8px; } /* tighter padding when only logo visible */
+
+  /* visually hide the textual title but keep it accessible to screen readers */
+  .site-title .site-title-text {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* Restore textual title on larger screens */
+@media (min-width: 1201px) {
+  .site-title a { padding: 0 20px; } /* restore default padding */
+
+  .site-title .site-title-text {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: nowrap;
+    display: inline-block;
+  }
+}
 
 /* ===============================
    Hamburger Menu
@@ -122,6 +187,7 @@ button, a { display: inline-block; width: auto; }
 .hamburger {
   position: absolute;
   left: calc(1rem + env(safe-area-inset-left));
+  top: 50%; /* vertically center */
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -135,6 +201,7 @@ button, a { display: inline-block; width: auto; }
   z-index: 2000;
   touch-action: manipulation;
   transition: transform 0.2s ease;
+  transform: translateY(-50%); /* shift up by half its height */
 }
 
 .hamburger .line {
@@ -147,8 +214,8 @@ button, a { display: inline-block; width: auto; }
   transform-origin: center;
 }
 
-.hamburger:hover { transform: scale(1.1); }
-.hamburger:active { transform: scale(1.05); transition: transform 0.1s ease; }
+.hamburger:hover { transform: translateY(-50%) scale(1.1); }
+.hamburger:active { transform: translateY(-50%) scale(1.05); transition: transform 0.1s ease; }
 
 .hamburger.active .line1,
 .hamburger.active .line3 {
@@ -161,8 +228,8 @@ button, a { display: inline-block; width: auto; }
 .hamburger.active .line2 { opacity: 0; transition: opacity 0.2s ease 0.15s; }
 .hamburger.active .line3 { transform: translateY(-50%) rotate(-45deg) scaleX(1.05); }
 
-.hamburger.active:hover { transform: scale(1.2); }
-.hamburger.active:active { transform: scale(1.1); transition: transform 0.1s ease; }
+.hamburger.active:hover { transform: translateY(-50%) scale(1.2); }
+.hamburger.active:active { transform: translateY(-50%) scale(1.1); transition: transform 0.1s ease; }
 
 /* ===============================
    Navigation Links (Mobile)
@@ -171,7 +238,7 @@ button, a { display: inline-block; width: auto; }
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: calc(60px + env(safe-area-inset-top));
+  top: calc(70px + env(safe-area-inset-top));
   left: 0;
   width: 100%;
   max-height: 0;
@@ -265,7 +332,7 @@ button, a { display: inline-block; width: auto; }
 /* ===============================
    Responsive tweaks
    =============================== */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
 }
 
@@ -275,7 +342,6 @@ button, a { display: inline-block; width: auto; }
 
 @media (max-width: 500px) {
   .site-header { justify-content: space-between; padding: 0 1rem; }
-  .site-title a .site-title-text { display: none; }
   .nav-links { 
     top: calc(70px + env(safe-area-inset-top)); /* Adjust for new header height */
     padding: 1.25rem 0; /* Slightly more padding on mobile */
@@ -285,7 +351,7 @@ button, a { display: inline-block; width: auto; }
 /* ===============================
    Desktop Adjustments
    =============================== */
-@media (min-width: 1300px) {
+@media (min-width: 1400px) {
   .hamburger { display: none; }
 
   .site-header {
@@ -662,21 +728,76 @@ html.dark .inline-link:hover {
 
 @media (max-width: 1299px) {
   .site-title {
+    /* span the full header width so we can center content while reserving space */
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto 0; /* vertical center within header (respects safe-area padding) */
+    transform: none; /* neutral horizontal transform (we center via flex) */
     z-index: 1500;
-    /* keep the link clickable */
+
+    /* center contents */
+    display: flex;
+    justify-content: center; /* horizontally center logo + text */
+    align-items: center;     /* vertically center within header */
+    text-align: center;
+
+    /* reserve space on both sides to avoid overlap with the hamburger (left)
+       and any potential right controls; adjust the 56px if your controls are wider */
+    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
+    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
+    box-sizing: border-box;
   }
-  .site-title a { pointer-events: auto; }
+
+  .site-title a {
+    padding: 0 8px; /* tighter padding when space is constrained */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* hide visual title text on narrower screens to avoid collisions */
+  .site-title .site-title-text {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+  }
 }
 
-/* revert to document flow on wide screens so desktop nav isn't overlapped */
+/* Restore normal flow on wide screens */
 @media (min-width: 1300px) {
   .site-title {
     position: static;
     transform: none;
-    z-index: auto;
+    left: auto;
+    right: auto;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+  }
+  .site-title .site-title-text {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: nowrap;
+    display: inline-block;
   }
 }
 
