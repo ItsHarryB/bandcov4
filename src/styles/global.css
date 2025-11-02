@@ -883,3 +883,44 @@ body.menu-active {
     animation: none !important;
   }
 }
+.section-divider {
+  width: 85%;
+  max-width: 1000px;
+  margin: 3rem auto;
+  border: none;
+  height: 2px;
+
+  /* Subtle gradient line that adapts to theme */
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--divider-color, rgba(0, 0, 0, 0.3)),
+    transparent
+  );
+
+  transition: background 0.3s ease, opacity 0.3s ease;
+  opacity: 0.7;
+  border-radius: 2px;
+}
+
+/* Dark mode support */
+:root.dark .section-divider {
+  --divider-color: rgba(255, 255, 255, 0.25);
+  opacity: 0.5;
+}
+
+/* Responsive spacing */
+@media (max-width: 768px) {
+  .section-divider {
+    width: 90%;
+    margin: 2rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-divider {
+    width: 95%;
+    margin: 1.5rem auto;
+    height: 1.5px;
+  }
+}
