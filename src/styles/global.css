@@ -53,7 +53,7 @@ button, a { display: inline-block; width: auto; }
   top: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  height: 80px; /* Increased height */
   z-index: 1000;
 
   display: flex;
@@ -67,6 +67,14 @@ button, a { display: inline-block; width: auto; }
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: box-shadow 0.3s ease;
   text-align: center;
+}
+
+/* Adjustments for mobile */
+@media (max-width: 500px) {
+  .site-header {
+    height: 70px; /* Adjusted height for mobile */
+    padding: 0 1rem; /* Consistent padding */
+  }
 }
 
 /* Shadow when menu is active */
@@ -162,7 +170,6 @@ button, a { display: inline-block; width: auto; }
 .nav-links {
   display: flex;
   flex-direction: column;
-  align-items: center;
   position: absolute;
   top: calc(60px + env(safe-area-inset-top));
   left: 0;
@@ -171,24 +178,24 @@ button, a { display: inline-block; width: auto; }
   overflow: hidden;
   background-color: #0094b6;
   color: #ffffff;
-  text-align: center;
+  text-align: left; /* Change from center to left */
   z-index: 1200;
-  gap: 0.5rem;
-  padding: 0;
+  gap: 0.75rem; /* Increased gap between links */
+  padding: 1rem 2rem; /* Add horizontal padding for left alignment */
   transition: max-height 0.4s ease, transform 0.3s ease;
   transform: translateY(-10px);
 }
 
 .nav-links.expanded {
-  max-height: 600px;
+  max-height: 600px; /* Ensure enough height for expanded links */
   transform: translateY(0);
+  padding-top: 1.5rem; /* Additional padding at top when expanded */
 }
 
 .nav-links a {
   display: block;
   width: fit-content;
-  margin: 0 auto;
-  padding: 0.4rem 0.75rem;
+  padding: 0.6rem 1rem; /* Increased padding for larger clickable area */
   font-weight: bold;
   text-transform: uppercase;
   color: #ffffff !important;
@@ -197,6 +204,14 @@ button, a { display: inline-block; width: auto; }
   --scale: 1;
   transform: translateY(-10px) scale(var(--scale));
   transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  margin: 0.25rem 0; /* Remove auto margins to allow left alignment */
+}
+
+.nav-links a[aria-current="page"],
+.nav-links a.active { /* Ensure both selectors are applied */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); /* Gradient highlight */
+  color: #ffffff !important; /* Ensure text color remains white */
+  border-radius: 8px; /* Rounded corners for a nicer appearance */
 }
 
 .nav-links.expanded a {
@@ -220,7 +235,7 @@ button, a { display: inline-block; width: auto; }
 .nav-links a:hover,
 .nav-links a:focus {
   background-color: rgba(255,255,255,0.15);
-  border-radius: 4px;
+  border-radius: 8px; /* Ensure consistent border-radius */
   color: #ffffff !important;
   --scale: 1.05;
 }
@@ -230,15 +245,16 @@ button, a { display: inline-block; width: auto; }
    =============================== */
 .nav-overlay {
   position: fixed;
-  top: 60px;
+  top: 80px; /* Match new header height */
   left: 0;
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100vh - 80px); /* Full viewport height minus header */
   background: rgba(0,0,0,0.35);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0.3s ease;
   z-index: 1100;
+  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
 }
 
 .nav-overlay.active {
@@ -260,7 +276,10 @@ button, a { display: inline-block; width: auto; }
 @media (max-width: 500px) {
   .site-header { justify-content: space-between; padding: 0 1rem; }
   .site-title a .site-title-text { display: none; }
-  .nav-links { top: calc(60px + env(safe-area-inset-top)); }
+  .nav-links { 
+    top: calc(70px + env(safe-area-inset-top)); /* Adjust for new header height */
+    padding: 1.25rem 0; /* Slightly more padding on mobile */
+  }
 }
 
 /* ===============================
@@ -268,6 +287,10 @@ button, a { display: inline-block; width: auto; }
    =============================== */
 @media (min-width: 1300px) {
   .hamburger { display: none; }
+
+  .site-header {
+    height: 80px; /* Consistent height for desktop */
+  }
 
   .nav-links {
     position: static;
@@ -278,7 +301,7 @@ button, a { display: inline-block; width: auto; }
     max-height: none;
     background: none;
     gap: 4px;
-    padding-left: 1rem;
+    padding-left: 1rem; /* Ensure consistent padding */
     overflow: hidden;
     height: 100%;
     transform: translateY(0);
@@ -296,16 +319,29 @@ button, a { display: inline-block; width: auto; }
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
   }
 
-  .nav-links a[aria-current="page"] {
-    background-color: rgba(0,0,0,0.6);
+  .nav-links a[aria-current="page"],
+  .nav-links a.active { /* Ensure both selectors are applied */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); /* Match hamburger gradient */
     color: #ffffff !important;
     font-weight: bold;
-    border-radius: 10px;
-    --scale: 1.02;
+    border-radius: 8px; /* Rounded corners for a nicer appearance */
+    transition: background 0.3s ease, color 0.3s ease; /* Consistent transition */
   }
 
   .nav-links a:hover,
-  .nav-links a:focus { --scale: 1.05; color: #0094b6; }
+  .nav-links a:focus { 
+    background-color: rgba(255,255,255,0.15); /* Match hover effect */
+    border-radius: 8px; /* Ensure consistent border-radius */
+    color: #ffffff !important;
+    --scale: 1.05; /* Scale effect on hover */
+  }
+
+  /* Ensure active link highlighting responds to dark mode */
+  html.dark .nav-links a[aria-current="page"],
+  html.dark .nav-links a.active {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); /* Adjust for dark mode */
+    color: #ffffff !important;
+  }
 }
 
 /* ===============================
@@ -642,4 +678,12 @@ html.dark .inline-link:hover {
     transform: none;
     z-index: auto;
   }
+}
+
+/* Add this to your existing body styles */
+body.menu-active {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
