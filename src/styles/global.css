@@ -53,16 +53,21 @@ button, a { display: inline-block; width: auto; }
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px; /* Increased height */
+  height: 70px;
+  min-height: 70px;
+  max-height: 70px;
   z-index: 1000;
 
+  overflow: visible; /* allow the mobile dropdown to render outside the header */
   display: flex;
-  align-items: center;
-  justify-content: center; /* CENTER the logo/title */
+  align-items: center;      /* Vertically center children */
+  justify-content: center;  /* Center content horizontally */
   gap: 0.5rem;
 
+  /* Remove vertical padding, only keep horizontal */
   padding: 0 clamp(1rem, 5vw, 6rem);
-  padding-top: env(safe-area-inset-top);
+  /* Remove: padding-top: env(safe-area-inset-top); */
+
   background-color: #0094b6;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: box-shadow 0.3s ease;
@@ -72,8 +77,10 @@ button, a { display: inline-block; width: auto; }
 /* Adjustments for mobile */
 @media (max-width: 500px) {
   .site-header {
-    height: 70px; /* Adjusted height for mobile */
-    padding: 0 1rem; /* Consistent padding */
+    height: 70px;
+    min-height: 70px;
+    max-height: 70px;
+    padding: 0 1rem;
   }
 }
 
@@ -86,6 +93,7 @@ button, a { display: inline-block; width: auto; }
    Site Title + Logo
    =============================== */
 .site-title {
+  height: 100%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -95,16 +103,20 @@ button, a { display: inline-block; width: auto; }
 
 /* Update base logo size - keep it consistent */
 .site-title img {
-  width: 40px;
-  height: 40px;
+  height: 100%;
+  max-height: 100%;
+  width: auto;
+  max-width: 40px;
   object-fit: contain;
   transition: width 0.25s ease, height 0.25s ease;
 }
 
 .site-title a {
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  padding: 0 20px;
+  box-sizing: border-box;
   text-decoration: none;
   color: #ffffff;
   font-weight: bold;
@@ -113,38 +125,26 @@ button, a { display: inline-block; width: auto; }
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color 0.5s ease; /* remove font-size transition */
-  height: 100%;
-  padding: 0 20px;
-  box-sizing: border-box;
 }
 
 /* Add new breakpoint for title text hiding */
-@media (max-width: 1000px) {
+/* REMOVE this duplicate block that used display:none; rely on the accessible hide below */
+/*
+@media (max-width: 900px) {
   .site-title-text {
     display: none;
   }
-  
+
   .site-title a {
     padding: 0 8px;
-    font-size: 1.2rem; /* keep consistent with base */
+    font-size: 1.2rem; 
   }
 }
-
-/* Update desktop styles - remove logo size changes */
-@media (min-width: 1300px) {
-  .site-title a {
-    padding: 0 36px;
-    font-size: 1.2rem; /* keep consistent across all breakpoints */
-  }
-  
-  .site-title-text {
-    display: inline;
-  }
-}
+*/
 
 /* Hide title text earlier to prevent collision with the hamburger.
-   Adjust this breakpoint if you need the switch to happen slightly sooner/later. */
-@media (max-width: 1200px) {
+   Narrow this to 900px so text is only hidden on very small screens. */
+@media (max-width: 900px) {
   .site-title a { padding: 0 8px; } /* tighter padding when only logo visible */
 
   /* visually hide the textual title but keep it accessible to screen readers */
@@ -162,21 +162,31 @@ button, a { display: inline-block; width: auto; }
   }
 }
 
-/* Restore textual title on larger screens */
-@media (min-width: 1201px) {
-  .site-title a { padding: 0 20px; } /* restore default padding */
+/* Robust hide for site title text on small screens (keep logo img/svg visible) */
+@media (max-width: 500px) {
+  /* collapse any raw text nodes inside the link */
+  .site-title a {
+    font-size: 0 !important; /* hide text even if not wrapped */
+  }
+  /* visually hide any non-logo child elements (leave img/svg visible) */
+  .site-title a > :not(img):not(svg) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+  }
+}
 
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
+/* Restore defaults from 901px and up */
+@media (min-width: 501px) {
+  .site-title a {
+    font-size: 1.2rem !important; /* restore readable text size */
   }
 }
 
@@ -188,6 +198,7 @@ button, a { display: inline-block; width: auto; }
   position: absolute;
   left: calc(1rem + env(safe-area-inset-left));
   top: 50%; /* vertically center */
+  transform: translateY(-50%);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -201,7 +212,6 @@ button, a { display: inline-block; width: auto; }
   z-index: 2000;
   touch-action: manipulation;
   transition: transform 0.2s ease;
-  transform: translateY(-50%); /* shift up by half its height */
 }
 
 .hamburger .line {
@@ -231,6 +241,16 @@ button, a { display: inline-block; width: auto; }
 .hamburger.active:hover { transform: translateY(-50%) scale(1.2); }
 .hamburger.active:active { transform: translateY(-50%) scale(1.1); transition: transform 0.1s ease; }
 
+/* Subtle pop when activating the hamburger */
+.hamburger.is-activating {
+  animation: hamburgerPop 300ms ease-out;
+}
+@keyframes hamburgerPop {
+  0% { transform: translateY(-50%) scale(1); }
+  40% { transform: translateY(-50%) scale(1.12); }
+  100% { transform: translateY(-50%) scale(1); }
+}
+
 /* ===============================
    Navigation Links (Mobile)
    =============================== */
@@ -241,22 +261,51 @@ button, a { display: inline-block; width: auto; }
   top: calc(70px + env(safe-area-inset-top));
   left: 0;
   width: 100%;
-  max-height: 0;
+  max-height: 0;                 /* collapsed height */
   overflow: hidden;
   background-color: #0094b6;
   color: #ffffff;
-  text-align: left; /* Change from center to left */
+  text-align: left;
   z-index: 1200;
-  gap: 0.75rem; /* Increased gap between links */
-  padding: 1rem 2rem; /* Add horizontal padding for left alignment */
-  transition: max-height 0.4s ease, transform 0.3s ease;
-  transform: translateY(-10px);
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+
+  /* refined slide in/out */
+  opacity: 0;
+  visibility: hidden;            /* hide after close finishes (see transition below) */
+  pointer-events: none;
+  transform: translateY(-12px);
+  will-change: opacity, transform, max-height, padding-top, visibility;
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),   /* was 240ms */
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1), /* was 260ms */
+    max-height 480ms ease,                          /* was 320ms */
+    padding-top 480ms ease,                         /* was 320ms */
+    visibility 0s linear 380ms;                     /* was 260ms */
 }
 
 .nav-links.expanded {
-  max-height: 600px; /* Ensure enough height for expanded links */
+  max-height: 80vh;              /* allow enough height */
+  padding-top: 1.5rem;           /* keep your existing padding tweak */
+  opacity: 1;
+  visibility: visible;           /* show immediately on open */
+  pointer-events: auto;
   transform: translateY(0);
-  padding-top: 1.5rem; /* Additional padding at top when expanded */
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 480ms ease,
+    padding-top 480ms ease,
+    visibility 0s linear 0s;     /* ensure visible without delay on open */
+}
+
+/* Keep per-link fade-in; it will also animate out via their transitions */
+.nav-links.expanded a {
+  animation: fadeInUp 0.3s forwards;
+}
+@keyframes menuExpand {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .nav-links a {
@@ -312,10 +361,10 @@ button, a { display: inline-block; width: auto; }
    =============================== */
 .nav-overlay {
   position: fixed;
-  top: 80px; /* Match new header height */
+  top: 70px; /* Match new header height */
   left: 0;
   width: 100%;
-  height: calc(100vh - 80px); /* Full viewport height minus header */
+  height: calc(100vh - 70px); /* Full viewport height minus header */
   background: rgba(0,0,0,0.35);
   opacity: 0;
   visibility: hidden;
@@ -342,9 +391,9 @@ button, a { display: inline-block; width: auto; }
 
 @media (max-width: 500px) {
   .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links { 
-    top: calc(70px + env(safe-area-inset-top)); /* Adjust for new header height */
-    padding: 1.25rem 0; /* Slightly more padding on mobile */
+  .nav-links {
+    top: calc(70px + env(safe-area-inset-top));
+    padding: 1.25rem 0;
   }
 }
 
@@ -354,9 +403,7 @@ button, a { display: inline-block; width: auto; }
 @media (min-width: 1400px) {
   .hamburger { display: none; }
 
-  .site-header {
-    height: 80px; /* Consistent height for desktop */
-  }
+  .site-header { height: 70px; }
 
   .nav-links {
     position: static;
@@ -367,10 +414,16 @@ button, a { display: inline-block; width: auto; }
     max-height: none;
     background: none;
     gap: 4px;
-    padding-left: 1rem; /* Ensure consistent padding */
+    padding-left: 1rem;
     overflow: hidden;
     height: 100%;
     transform: translateY(0);
+
+    /* override mobile hidden states to ensure visible on desktop */
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: none; /* desktop has no open/close animation */
   }
 
   .nav-links a {
@@ -761,7 +814,8 @@ html.dark .inline-link:hover {
     text-overflow: ellipsis;
   }
 
-  /* hide visual title text on narrower screens to avoid collisions */
+  /* REMOVE this wide visual-hide to avoid overriding the 900px intent */
+  /*
   .site-title .site-title-text {
     position: absolute !important;
     width: 1px !important;
@@ -774,6 +828,7 @@ html.dark .inline-link:hover {
     clip-path: inset(50%) !important;
     white-space: nowrap !important;
   }
+  */
 }
 
 /* Restore normal flow on wide screens */
@@ -807,4 +862,19 @@ body.menu-active {
   position: fixed;
   width: 100%;
   height: 100%;
+}
+
+/* ===============================
+   Reduced Motion
+   =============================== */
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger,
+  .hamburger .line,
+  .nav-links,
+  .nav-links a,
+  .nav-overlay {
+    transition: none !important;
+    animation: none !important;
+  }
 }
