@@ -1,7 +1,7 @@
 {
   "name": "galactic-group",
   "type": "module",
-  "version": "0.8.2d",
+  "version": "0.8.2e",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

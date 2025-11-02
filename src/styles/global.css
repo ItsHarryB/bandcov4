@@ -115,6 +115,7 @@ button, a { display: inline-block; width: auto; }
   height: 100%;
   display: flex;
   align-items: center;
+  gap: 0.5rem; /* add space between logo and text */
   padding: 0 20px;
   box-sizing: border-box;
   text-decoration: none;
@@ -812,6 +813,7 @@ html.dark .inline-link:hover {
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    gap: 0.5rem; /* add space between logo and text */
   }
 
   /* REMOVE this wide visual-hide to avoid overriding the 900px intent */
@@ -841,6 +843,9 @@ html.dark .inline-link:hover {
     padding-left: 0;
     padding-right: 0;
     text-align: left;
+  }
+  .site-title a {
+    gap: 0.6rem; /* slightly larger gap on wide screens */
   }
   .site-title .site-title-text {
     position: static;
