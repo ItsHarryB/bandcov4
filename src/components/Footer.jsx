@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Social from "./Social.jsx";
-import ThemeIcon from "./ThemeIcon.jsx";
+import ThemeIcon from "./ThemeIcon.jsx"; // Import your toggle
 import "../styles/global.css";
 
 export default function Footer() {
@@ -15,30 +15,11 @@ export default function Footer() {
       document.body.appendChild(s);
     }
 
-    // Map subdomains to apex so Carbon has a result in test environments
-    const mapToMeasuredHost = (host) => {
-      // If it's any subdomain of brightonandco.co.uk, use the apex
-      return host.endsWith(".brightonandco.co.uk")
-        ? "brightonandco.co.uk"
-        : host.replace(/^www\./, "");
-    };
-
-    // Set data-site on the badge before initializing
-    const badgeEl = document.getElementById("wcb");
-    if (badgeEl) {
-      const currentHost = window.location.hostname;
-      badgeEl.setAttribute("data-site", mapToMeasuredHost(currentHost));
-    }
-
-    // Re-initialize if script already present
-    if (already && window.wcb) {
-      try { window.wcb(); } catch {}
-    }
-
     // set dark-mode class on the badge based on current theme
+    const badge = () => document.getElementById("wcb");
     const syncBadgeTheme = () => {
       const isDark = document.documentElement.classList.contains("dark");
-      const el = document.getElementById("wcb");
+      const el = badge();
       if (!el) return;
       el.classList.toggle("wcb-d", isDark);
     };
@@ -115,14 +96,14 @@ export default function Footer() {
 
       {/* Website Carbon Badge (below toggle, above meta) */}
       <div className="footer-carbon" aria-label="Website Carbon Badge">
-        {/* data-site is set/overridden in useEffect at runtime */}
         <div id="wcb" className="carbonbadge"></div>
       </div>
 
       {/* Footer meta */}
       <div className="footer-meta">
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4a - 03/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4b -
+          02/11/2025
         </p>
       </div>
     </footer>
