@@ -18,6 +18,9 @@ export default function ThemeIcon() {
     document.documentElement.classList.toggle("dark", newTheme === "dark");
     localStorage.setItem("theme", newTheme);
 
+    // Notify listeners (e.g., Footer carbon badge) about theme change
+    document.dispatchEvent(new CustomEvent("themechange", { detail: { theme: newTheme } }));
+
     // Trigger spin animation
     setSpinning(true);
     setTimeout(() => setSpinning(false), 500);

@@ -269,7 +269,7 @@ button, a { display: inline-block; width: auto; }
   text-align: left;
   z-index: 1200;
   gap: 0.75rem;
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.25rem;
 
   /* refined slide in/out */
   opacity: 0;
@@ -287,7 +287,7 @@ button, a { display: inline-block; width: auto; }
 
 .nav-links.expanded {
   max-height: 80vh;              /* allow enough height */
-  padding-top: 1.5rem;           /* keep your existing padding tweak */
+  padding-top: 1rem;           /* keep your existing padding tweak */
   opacity: 1;
   visibility: visible;           /* show immediately on open */
   pointer-events: auto;
@@ -312,7 +312,7 @@ button, a { display: inline-block; width: auto; }
 .nav-links a {
   display: block;
   width: fit-content;
-  padding: 0.6rem 1rem; /* Increased padding for larger clickable area */
+  padding: 0.5rem 0.85rem; /* Increased padding for larger clickable area */
   font-weight: bold;
   text-transform: uppercase;
   color: #ffffff !important;
@@ -321,7 +321,7 @@ button, a { display: inline-block; width: auto; }
   --scale: 1;
   transform: translateY(-10px) scale(var(--scale));
   transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-  margin: 0.25rem 0; /* Remove auto margins to allow left alignment */
+  margin: 0.2rem 0; /* Remove auto margins to allow left alignment */
 }
 
 .nav-links a[aria-current="page"],
@@ -394,7 +394,7 @@ button, a { display: inline-block; width: auto; }
   .site-header { justify-content: space-between; padding: 0 1rem; }
   .nav-links {
     top: calc(70px + env(safe-area-inset-top));
-    padding: 1.25rem 0;
+    padding: 1rem 0; /* was 1.25rem 0 */
   }
 }
 
@@ -432,7 +432,7 @@ button, a { display: inline-block; width: auto; }
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 0 40px;
+    padding: 0 28px; /* was 0 40px */
     white-space: nowrap;
     opacity: 1 !important;
     transform: translateY(0) scale(var(--scale)) !important;
@@ -476,7 +476,7 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
    =============================== */
 .site-footer {
   width: 100%;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem; /* was 2rem 1rem */
   background-color: #f8f8f8;
   border-top: 1px solid #ddd;
   font-size: 0.9rem;
@@ -491,7 +491,7 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
+  gap: 1.25rem; /* was 2rem */
 }
 
 .footer-section {
@@ -505,7 +505,7 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 
 
 .footer-section h4 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem; /* was 0.5rem */
   font-size: 1rem;
   color: #000;
 }
@@ -547,9 +547,9 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 .social-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.4rem;       /* was 0.5rem */
   justify-content: flex-start;
-  margin-top: 0.25rem;
+  margin-top: 0.15rem; /* was 0.25rem */
 }
 
 .social-link {
@@ -571,7 +571,7 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 .social-link.linkedin:hover { background: #0A66C2; color: #fff; }
 
 .footer-meta {
-  margin-top: 2rem;
+  margin-top: 1rem; /* was 2rem */
   text-align: center;
   font-size: 0.8rem;
   color: #666;
@@ -581,7 +581,7 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 .footer-toggle {
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0;
+  margin: 1rem 0; /* was 1.5rem 0 */
   width: 100%;
   gap: 0.5rem;
 }
@@ -923,4 +923,25 @@ body.menu-active {
     margin: 1.5rem auto;
     height: 1.5px;
   }
+}
+
+/* ===============================
+   Tighten spacing between carbon badge and footer meta
+   =============================== */
+.footer-carbon-badge {
+  /* if you wrap the badge, reduce its vertical margins slightly */
+  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
+}
+.footer-carbon-badge + .footer-meta {
+  margin-top: 1.25rem; /* was 2rem */
+}
+
+/* Fallback when badge is inserted directly without wrapper */
+.site-footer .carbonbadge {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0; /* reduced vertical spacing */
+}
+.site-footer .carbonbadge + .footer-meta {
+  margin-top: 1.25rem; /* override default 2rem when following the badge */
 }

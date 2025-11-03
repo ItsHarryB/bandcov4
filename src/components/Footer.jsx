@@ -1,37 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Social from "./Social.jsx";
 import ThemeIcon from "./ThemeIcon.jsx"; // Import your toggle
 import "../styles/global.css";
 
 export default function Footer() {
+  const [wcbDark, setWcbDark] = useState(false);
+
   useEffect(() => {
-    // ensure script is added only once
-    const src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-    const already = Array.from(document.scripts).some((s) => s.src === src);
-    if (!already) {
+    const getIsDark = () =>
+      document.documentElement.classList.contains("dark") ||
+      localStorage.getItem("theme") === "dark";
+
+    setWcbDark(getIsDark());
+
+    // Inject the Website Carbon Badge script once
+    if (!document.querySelector('script[data-carbon-badge]')) {
       const s = document.createElement("script");
-      s.src = src;
+      s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
       s.defer = true;
+      s.setAttribute("data-carbon-badge", "true");
       document.body.appendChild(s);
     }
 
-    // set dark-mode class on the badge based on current theme
-    const badge = () => document.getElementById("wcb");
-    const syncBadgeTheme = () => {
-      const isDark = document.documentElement.classList.contains("dark");
-      const el = badge();
-      if (!el) return;
-      el.classList.toggle("wcb-d", isDark);
+    // Update badge theme on theme toggle
+    const onThemeChange = (e) => {
+      setWcbDark((e?.detail?.theme || (getIsDark() ? "dark" : "light")) === "dark");
     };
-    syncBadgeTheme();
-
-    // observe theme changes (html.dark toggled by ThemeIcon)
-    const mo = new MutationObserver(syncBadgeTheme);
-    mo.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-    return () => mo.disconnect();
+    document.addEventListener("themechange", onThemeChange);
+    return () => document.removeEventListener("themechange", onThemeChange);
   }, []);
 
   return (
@@ -66,43 +62,31 @@ export default function Footer() {
         <div className="footer-section footer-right">
           <h4>Quick Links:</h4>
           <ul>
-            <li>
-              <a href="/">Home</a>
-            </li>
-            <li>
-              <a href="/enquiries/">Enquiries</a>
-            </li>
-            <li>
-              <a href="/about-me/">About Me</a>
-            </li>
-            <li>
-              <a href="/blog/">Blog</a>
-            </li>
-            <li>
-              <a href="/photography/">Photography</a>
-            </li>
-            <li>
-              <a href="/links/">Links</a>
-            </li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/enquiries/">Enquiries</a></li>
+            <li><a href="/about-me/">About Me</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/photography/">Photography</a></li>
+            <li><a href="/links/">Links</a></li>
           </ul>
         </div>
       </div>
 
       {/* Theme toggle centered below the columns */}
-      <div className="footer-toggle">
+      <div className="footer-toggle" style={{ marginBottom: "0.5rem" }}>
         <h4>Toggle Theme:</h4>
         <ThemeIcon client:load />
       </div>
 
-      {/* Website Carbon Badge (below toggle, above meta) */}
-      <div className="footer-carbon" aria-label="Website Carbon Badge">
-        <div id="wcb" className="carbonbadge"></div>
+      {/* Website Carbon Badge (centered, tight spacing) */}
+      <div className="footer-carbon-badge">
+        <div id="wcb" className={`carbonbadge${wcbDark ? " wcb-d" : ""}`}></div>
       </div>
 
       {/* Footer meta */}
-      <div className="footer-meta">
+      <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4c2 - 03/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4h - 02/11/2025
         </p>
       </div>
     </footer>
