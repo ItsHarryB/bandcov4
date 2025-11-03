@@ -13,21 +13,56 @@ export default function Footer() {
 
     setWcbDark(getIsDark());
 
-    // Inject the Website Carbon Badge script once
-    if (!document.querySelector('script[data-carbon-badge]')) {
-      const s = document.createElement("script");
-      s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-      s.defer = true;
-      s.setAttribute("data-carbon-badge", "true");
-      document.body.appendChild(s);
-    }
+    const inject = () => {
+      if (!document.querySelector('script[data-carbon-badge]')) {
+        const s = document.createElement("script");
+        s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
+        s.defer = true;
+        s.setAttribute("data-carbon-badge", "true");
+        document.body.appendChild(s);
+      }
+    };
 
-    // Update badge theme on theme toggle
+    inject();
+
+    // Retry a few times if the badge fails (e.g., API 503) without spamming
+    let attempts = 0;
+    const maxAttempts = 3;
+    const timers = [];
+    const retry = () => {
+      const el = document.getElementById("wcb");
+      if (!el) return;
+      const hasSVG = !!el.querySelector("svg");
+      const showsNoResult = /no result/i.test(el.textContent || "");
+      if ((showsNoResult || !hasSVG) && attempts < maxAttempts) {
+        attempts++;
+        // remove script to force a clean re-run, clear container
+        document
+          .querySelectorAll('script[src*="website-carbon-badges"]')
+          .forEach((n) => n.remove());
+        el.innerHTML = "";
+        // staggered backoff
+        timers.push(
+          setTimeout(() => {
+            inject();
+            // schedule next check
+            timers.push(setTimeout(retry, 5000));
+          }, 3000 * attempts)
+        );
+      }
+    };
+    // first check after initial load
+    timers.push(setTimeout(retry, 6000));
+
     const onThemeChange = (e) => {
       setWcbDark((e?.detail?.theme || (getIsDark() ? "dark" : "light")) === "dark");
     };
     document.addEventListener("themechange", onThemeChange);
-    return () => document.removeEventListener("themechange", onThemeChange);
+
+    return () => {
+      document.removeEventListener("themechange", onThemeChange);
+      timers.forEach(clearTimeout);
+    };
   }, []);
 
   return (
@@ -86,7 +121,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4h - 02/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4i - 03/11/2025
         </p>
       </div>
     </footer>
