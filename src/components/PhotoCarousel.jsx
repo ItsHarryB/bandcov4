@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import ReactDOM from "react-dom";
 import { useSwipeable } from "react-swipeable";
-import '../styles/about-me.css';
-import '../styles/photography.css';
 
-export default function PhotoCarousel({ images }) {
+function PhotoCarousel({ images, priority = false }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [lightboxIndex, setLightboxIndex] = useState(null); // null = lightbox closed
+  const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isDark, setIsDark] = useState(false);
   const total = images.length;
 
@@ -21,41 +19,50 @@ export default function PhotoCarousel({ images }) {
     return () => observer.disconnect();
   }, []);
 
+  // Prefetch next/prev images to avoid swipe stalls
+  useEffect(() => {
+    if (!total) return;
+    const next = (currentIndex + 1) % total;
+    const prev = (currentIndex - 1 + total) % total;
+    [next, prev].forEach(i => {
+      const src = images[i]?.src;
+      if (src) {
+        const im = new Image();
+        im.decoding = "async";
+        im.loading = "eager";
+        im.src = src;
+      }
+    });
+  }, [currentIndex, images, total]);
+
   // Lock body scroll when lightbox is open
   useEffect(() => {
-    if (lightboxIndex !== null) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
+    document.body.style.overflow = (lightboxIndex !== null) ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
   }, [lightboxIndex]);
 
-  // Main carousel navigation
-  const prevSlide = () => setCurrentIndex((currentIndex - 1 + total) % total);
-  const nextSlide = () => setCurrentIndex((currentIndex + 1) % total);
+  const prevSlide = useCallback(() => setCurrentIndex(i => (i - 1 + total) % total), [total]);
+  const nextSlide = useCallback(() => setCurrentIndex(i => (i + 1) % total), [total]);
 
-  // Lightbox navigation
-  const openLightbox = (idx) => setLightboxIndex(idx);
-  const closeLightbox = () => setLightboxIndex(null);
-  const prevLightbox = () => setLightboxIndex((lightboxIndex - 1 + total) % total);
-  const nextLightbox = () => setLightboxIndex((lightboxIndex + 1) % total);
+  const openLightbox = useCallback((idx) => setLightboxIndex(idx), []);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const prevLightbox = useCallback(() => setLightboxIndex(i => (i - 1 + total) % total), [total]);
+  const nextLightbox = useCallback(() => setLightboxIndex(i => (i + 1) % total), [total]);
 
-  // Swipe handlers for main carousel
   const carouselHandlers = useSwipeable({
     onSwipedLeft: nextSlide,
     onSwipedRight: prevSlide,
     trackMouse: true,
   });
 
-  // Swipe handlers for lightbox
   const lightboxHandlers = useSwipeable({
     onSwipedLeft: nextLightbox,
     onSwipedRight: prevLightbox,
     trackMouse: true,
   });
+
+  const prefersReducedMotion = typeof window !== 'undefined' &&
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   return (
     <>
@@ -65,19 +72,28 @@ export default function PhotoCarousel({ images }) {
           className="carousel-track"
           style={{
             width: `${100 * total}%`,
-            transform: `translateX(-${(100 / total) * currentIndex}%)`
+            transform: `translate3d(-${(100 / Math.max(total, 1)) * currentIndex}%, 0, 0)`,
+            transitionDuration: prefersReducedMotion ? '0ms' : undefined
           }}
         >
-          {images.map((img, idx) => (
-            <img
-              key={idx}
-              src={img.src}
-              alt={img.alt}
-              className="carousel-image"
-              style={{ width: `${100 / total}%` }}
-              onClick={() => openLightbox(idx)}
-            />
-          ))}
+          {images.map((img, idx) => {
+            const isHero = priority && idx === 0;
+            return (
+              <img
+                key={idx}
+                src={img.src}
+                alt={img.alt}
+                className="carousel-image"
+                style={{ width: `${100 / Math.max(total, 1)}%` }}
+                loading={isHero ? "eager" : "lazy"}
+                decoding="async"
+                fetchpriority={isHero ? "high" : "low"}
+                sizes="100vw"
+                onClick={() => openLightbox(idx)}
+                draggable={false}
+              />
+            );
+          })}
         </div>
 
         <button className="carousel-btn left" onClick={prevSlide} aria-label="Previous">&#10094;</button>
@@ -102,8 +118,9 @@ export default function PhotoCarousel({ images }) {
               src={images[lightboxIndex].src}
               alt={images[lightboxIndex].alt}
               className="lightbox-image"
+              loading="eager"
+              decoding="async"
             />
-
             <button className="lightbox-btn left" onClick={prevLightbox} aria-label="Previous">&#10094;</button>
             <button className="lightbox-btn right" onClick={nextLightbox} aria-label="Next">&#10095;</button>
             <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
@@ -114,3 +131,5 @@ export default function PhotoCarousel({ images }) {
     </>
   );
 }
+
+export default memo(PhotoCarousel);

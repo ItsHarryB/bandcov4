@@ -133,6 +133,24 @@ html.dark .about-photo figcaption {
   border-radius: 12px;    /* round all corners */
 }
 
+/* Make sure the carousel uses GPU compositing */
+.carousel-track {
+  will-change: transform;
+}
+
+/* Respect reduced motion (keeps look the same for most users) */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    transition: none !important;
+  }
+}
+
+/* Prevent image drag ghosting while swiping/clicking */
+.carousel-image {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
 /* ===============================
    Pet Carousel Buttons & Dots (Theme-Aware)
    =============================== */
