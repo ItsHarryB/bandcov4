@@ -571,10 +571,13 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 .social-link.linkedin:hover { background: #0A66C2; color: #fff; }
 
 .footer-meta {
-  margin-top: 2rem;
+  margin-top: 0.5rem; /* was 2rem; bring meta text closer */
   text-align: center;
   font-size: 0.8rem;
   color: #666;
+}
+.footer-meta p {
+  margin: 0; /* remove default p margin for tighter layout */
 }
 
 /* Footer Theme Toggle */
@@ -924,3 +927,18 @@ body.menu-active {
     height: 1.5px;
   }
 }
+
+/* ===============================
+   Footer Carbon Ads
+   =============================== */
+.footer-carbon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem 0 0.5rem; /* tighter spacing above/below the badge */
+}
+
+/* ===============================
+   Dark Mode
+   =============================== */
+html.dark .footer-carbon { opacity: 0.95; }

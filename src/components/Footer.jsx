@@ -1,9 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Social from "./Social.jsx";
 import ThemeIcon from "./ThemeIcon.jsx"; // Import your toggle
 import "../styles/global.css";
 
 export default function Footer() {
+  useEffect(() => {
+    // ensure script is added only once
+    const src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
+    const already = Array.from(document.scripts).some((s) => s.src === src);
+    if (!already) {
+      const s = document.createElement("script");
+      s.src = src;
+      s.defer = true;
+      document.body.appendChild(s);
+    }
+
+    // set dark-mode class on the badge based on current theme
+    const badge = () => document.getElementById("wcb");
+    const syncBadgeTheme = () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      const el = badge();
+      if (!el) return;
+      el.classList.toggle("wcb-d", isDark);
+    };
+    syncBadgeTheme();
+
+    // observe theme changes (html.dark toggled by ThemeIcon)
+    const mo = new MutationObserver(syncBadgeTheme);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+    return () => mo.disconnect();
+  }, []);
+
   return (
     <footer className="site-footer">
       {/* Sitemap link */}
@@ -36,12 +66,24 @@ export default function Footer() {
         <div className="footer-section footer-right">
           <h4>Quick Links:</h4>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/enquiries/">Enquiries</a></li>
-            <li><a href="/about-me/">About Me</a></li>
-            <li><a href="/blog/">Blog</a></li>
-            <li><a href="/photography/">Photography</a></li>
-            <li><a href="/links/">Links</a></li>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/enquiries/">Enquiries</a>
+            </li>
+            <li>
+              <a href="/about-me/">About Me</a>
+            </li>
+            <li>
+              <a href="/blog/">Blog</a>
+            </li>
+            <li>
+              <a href="/photography/">Photography</a>
+            </li>
+            <li>
+              <a href="/links/">Links</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -52,10 +94,15 @@ export default function Footer() {
         <ThemeIcon client:load />
       </div>
 
+      {/* Website Carbon Badge (below toggle, above meta) */}
+      <div className="footer-carbon" aria-label="Website Carbon Badge">
+        <div id="wcb" className="carbonbadge"></div>
+      </div>
+
       {/* Footer meta */}
       <div className="footer-meta">
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.3c - 02/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.4 - 03/11/2025
         </p>
       </div>
     </footer>
