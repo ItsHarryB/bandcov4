@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Social from "./Social.jsx";
-import ThemeIcon from "./ThemeIcon.jsx"; // Import your toggle
+import ThemeIcon from "./ThemeIcon.jsx";
 import "../styles/global.css";
 
 export default function Footer() {
@@ -25,33 +25,46 @@ export default function Footer() {
 
     inject();
 
-    // Retry a few times if the badge fails (e.g., API 503) without spamming
     let attempts = 0;
     const maxAttempts = 3;
     const timers = [];
+    let badgeLoaded = false; // track if badge successfully rendered
+
+    const isLoaded = () => {
+      const el = document.getElementById("wcb");
+      // Badge is loaded if it has an <a> link or <svg>, and doesn't say "no result"
+      return !!el?.querySelector("a[href*='websitecarbon.com'], svg") &&
+             !/no result/i.test(el.textContent || "");
+    };
+
     const retry = () => {
+      if (badgeLoaded) return; // stop if already loaded
+
       const el = document.getElementById("wcb");
       if (!el) return;
-      const hasSVG = !!el.querySelector("svg");
-      const showsNoResult = /no result/i.test(el.textContent || "");
-      if ((showsNoResult || !hasSVG) && attempts < maxAttempts) {
+
+      if (isLoaded()) {
+        badgeLoaded = true; // mark as successfully loaded
+        return;
+      }
+
+      // Only retry if not loaded and under max attempts
+      if (attempts < maxAttempts) {
         attempts++;
-        // remove script to force a clean re-run, clear container
         document
           .querySelectorAll('script[src*="website-carbon-badges"]')
           .forEach((n) => n.remove());
         el.innerHTML = "";
-        // staggered backoff
         timers.push(
           setTimeout(() => {
             inject();
-            // schedule next check
             timers.push(setTimeout(retry, 5000));
           }, 3000 * attempts)
         );
       }
     };
-    // first check after initial load
+
+    // First check after initial load
     timers.push(setTimeout(retry, 6000));
 
     const onThemeChange = (e) => {
@@ -121,7 +134,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.5b - 03/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.8.5c - 04/11/2025
         </p>
       </div>
     </footer>
