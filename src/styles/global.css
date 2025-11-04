@@ -45,6 +45,16 @@ button, a { display: inline-block; width: auto; }
 }
 .layout-content h1 { text-align: center; }
 
+/* Sticky footer wrapper */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.page-wrapper > main {
+  flex: 1;
+}
+
 /* ===============================
    Header (Sticky on all screens)
    =============================== */

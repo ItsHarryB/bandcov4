@@ -26,8 +26,6 @@ import "../styles/global.css";
         </a>
       </div>
 
-     
-
       <nav class="nav-links" id="nav">
         <a href="/">Home</a>
         <a href="/enquiries/">Enquiries</a>
@@ -40,11 +38,13 @@ import "../styles/global.css";
       <div class="nav-overlay" id="nav-overlay"></div>
     </header>
 
-    <main class="layout-content">
-      <slot />
-    </main>
+    <div class="page-wrapper">
+      <main class="layout-content">
+        <slot />
+      </main>
 
-    <Footer client:load />
+      <Footer client:load />
+    </div>
 
     <script type="module">
       document.addEventListener("DOMContentLoaded", () => {
