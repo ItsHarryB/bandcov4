@@ -1,20 +1,40 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image, getImage } from 'astro:assets';
 import PhotoCarousel from '../components/PhotoCarousel.jsx';
 import '../styles/about-me.css';
 
 const pageTitle = "About Me";
 
-const petImages = [
-  { src: "/images/penny.jpg", alt: "Penny the black cat" },
-  { src: "/images/poppy.jpg", alt: "Poppy the grey cat" },
-  { src: "/images/luna.jpg", alt: "Luna the big cat" },
-];
-const hobbiesImages = [
-  {src: "/images/badminton.jpg", alt: "Me and my girlfriend playing badminton"},
-  {src: "/images/mycomputer.jpg", alt: "My Computer"},
-  {src: "/images/atgym.jpg", alt: "Me at the gym"},
-];
+// Import images
+import graduationPhoto from '../assets/images/harry-brighton-graduation-2024.JPG';
+import pennyImg from '../assets/images/penny.jpg';
+import poppyImg from '../assets/images/poppy.jpg';
+import lunaImg from '../assets/images/luna.jpg';
+import badmintonImg from '../assets/images/badminton.jpg';
+import mycomputerImg from '../assets/images/mycomputer.jpg';
+import atgymImg from '../assets/images/atgym.jpg';
+
+// Pre-process images with aggressive optimization
+const petImages = await Promise.all([
+  getImage({ src: pennyImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+  getImage({ src: poppyImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+  getImage({ src: lunaImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  srcSet: img.srcSet?.attribute, // Include srcset if available
+  alt: ['Penny the black cat', 'Poppy the grey cat', 'Luna the big cat'][i]
+})));
+
+const hobbiesImages = await Promise.all([
+  getImage({ src: badmintonImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+  getImage({ src: mycomputerImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+  getImage({ src: atgymImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  srcSet: img.srcSet?.attribute,
+  alt: ['Me and my girlfriend playing badminton', 'My Computer', 'Me at the gym'][i]
+})));
 ---
 <BaseLayout>
   <div class="page-center">
@@ -28,10 +48,19 @@ const hobbiesImages = [
       <div class="about-content">
         <div class="about-text">
           <h2>Who I Am</h2>
-          <p>I’m Harry Brighton. My main interests include PCs, technology, photography, and sports (mainly badminton and tennis).</p>
+          <p>I'm Harry Brighton. My main interests include PCs, technology, photography, and sports (mainly badminton and tennis).</p>
         </div>
         <figure class="about-photo">
-          <img src="/images/harry-brighton-graduation-2024.JPG" alt="Harry Brighton portrait" />
+          <Image 
+            src={graduationPhoto} 
+            alt="Harry Brighton portrait"
+            width={600}
+            height={600}
+            quality={80}
+            format="webp"
+            loading="eager"
+            densities={[1, 2]}
+          />
           <figcaption>My Graduation photo from 2024.</figcaption>
         </figure>
       </div>
@@ -69,6 +98,7 @@ const hobbiesImages = [
       </ul>
       <PhotoCarousel client:load images={petImages} />
     </div>
+    
     <div class="card">
       <h2>My Hobbies:</h2>
       <p>I really enjoy playing sports with my girlfriend (especially badminton), as well as gaming and going to the gym!</p>

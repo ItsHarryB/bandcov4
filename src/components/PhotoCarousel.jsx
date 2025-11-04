@@ -25,7 +25,9 @@ function PhotoCarousel({ images, priority = false }) {
     const next = (currentIndex + 1) % total;
     const prev = (currentIndex - 1 + total) % total;
     [next, prev].forEach(i => {
-      const src = images[i]?.src;
+      const img = images[i];
+      // Handle both string paths and Astro image objects
+      const src = typeof img === 'string' ? img : (img?.src?.src || img?.src);
       if (src) {
         const im = new Image();
         im.decoding = "async";
@@ -64,6 +66,20 @@ function PhotoCarousel({ images, priority = false }) {
   const prefersReducedMotion = typeof window !== 'undefined' &&
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Helper to get image src and alt - improved to handle Astro image objects
+  const getImageData = (img) => {
+    if (typeof img === 'string') {
+      return { src: img, alt: '' };
+    }
+    // Astro returns { src: { src: string, width: number, height: number, format: string } }
+    // or just { src: string } depending on how it's imported
+    const srcValue = img?.src?.src || img?.src || img;
+    return {
+      src: typeof srcValue === 'string' ? srcValue : srcValue?.src || '',
+      alt: img?.alt || ''
+    };
+  };
+
   return (
     <>
       {/* Main Carousel */}
@@ -77,12 +93,13 @@ function PhotoCarousel({ images, priority = false }) {
           }}
         >
           {images.map((img, idx) => {
+            const { src, alt } = getImageData(img);
             const isHero = priority && idx === 0;
             return (
               <img
                 key={idx}
-                src={img.src}
-                alt={img.alt}
+                src={src}
+                alt={alt}
                 className="carousel-image"
                 style={{ width: `${100 / Math.max(total, 1)}%` }}
                 loading={isHero ? "eager" : "lazy"}
@@ -115,8 +132,8 @@ function PhotoCarousel({ images, priority = false }) {
         <div className="lightbox-overlay" {...lightboxHandlers} onClick={closeLightbox}>
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <img
-              src={images[lightboxIndex].src}
-              alt={images[lightboxIndex].alt}
+              src={getImageData(images[lightboxIndex]).src}
+              alt={getImageData(images[lightboxIndex]).alt}
               className="lightbox-image"
               loading="eager"
               decoding="async"

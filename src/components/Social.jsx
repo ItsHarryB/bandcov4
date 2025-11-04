@@ -58,8 +58,9 @@ export default function Social({ platform, username, url, iconOnly = false }) {
         rel="noopener noreferrer"
         className={`social-link ${platformClass} ${isDark ? "dark" : ""}`}
         data-platform={platformClass}
+        aria-label={`Visit my ${platform} profile`}
       >
-        {Icon && <Icon size={24} />}
+        {Icon && <Icon size={24} aria-hidden="true" />}
       </a>
     );
   }
@@ -72,9 +73,10 @@ export default function Social({ platform, username, url, iconOnly = false }) {
       rel="noopener noreferrer"
       className={`social-card ${platformClass} ${isDark ? "dark" : ""}`}
       data-platform={platformClass}
+      aria-label={`Visit my ${platform} profile`}
     >
-      <div className={`social-link ${platformClass}`}>
-        {Icon && <Icon size={24} />}
+      <div className={`social-link ${platformClass}`} aria-hidden="true">
+        {Icon && <Icon size={24} aria-hidden="true" />}
       </div>
       <span className="social-label">{platform}</span>
     </a>

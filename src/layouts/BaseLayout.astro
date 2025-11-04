@@ -1,7 +1,11 @@
 ---
 import '@fontsource-variable/raleway'; // variable font, includes all weights
+import { Image } from 'astro:assets';
 import Footer from "../components/Footer.jsx";
 import "../styles/global.css";
+
+// Import the logo from src/assets
+import logo from '../assets/favicon.png';
 ---
 
 <html lang="en">
@@ -13,7 +17,7 @@ import "../styles/global.css";
   </head>
   <body>
     <header class="site-header">
-      <div class="hamburger" id="hamburger">
+      <div class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
         <span class="line line1"></span>
         <span class="line line2"></span>
         <span class="line line3"></span>
@@ -21,12 +25,22 @@ import "../styles/global.css";
 
       <div class="site-title">
         <a href="/" class="site-logo-link">
-          <img src="/favicon.png" alt="Site Logo" />
+          <Image 
+            src={logo} 
+            alt="Site Logo" 
+            width={40}
+            height={40}
+            densities={[1, 2, 3]}
+            quality={100}
+            format="png"
+            loading="eager"
+            decoding="sync"
+          />
           <span>TEST: Brighton and Co</span>
         </a>
       </div>
 
-      <nav class="nav-links" id="nav">
+      <nav class="nav-links" id="nav" aria-label="Main navigation">
         <a href="/">Home</a>
         <a href="/enquiries/">Enquiries</a>
         <a href="/about-me/">About Me</a>

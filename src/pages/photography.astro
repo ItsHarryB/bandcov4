@@ -1,48 +1,135 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getImage } from 'astro:assets';
 import '../styles/photography.css';
 import PhotoCarousel from '../components/PhotoCarousel.jsx';
 
-type CarouselImage = { src: string; alt: string };
+// Import all images
+import iwmLondonImg from '../assets/images/IWMLondon.jpg';
+import coneOnRoofImg from '../assets/images/coneonroof.jpg';
+import birdInWaterImg from '../assets/images/birdinwater.jpg';
 
-const pageTitle = "Photography";
-const recentfavouriteImages: CarouselImage[] = [
-  { src: "/images/IWMLondon.jpg", alt: "A big naval gun at IWM London" },
-  { src: "/images/coneonroof.jpg", alt: "An orange traffic cone on a high up roof" },
-  { src: "/images/birdinwater.jpg", alt: "A medium sized bird in a pond" },
-];
-const morecatphotosImages: CarouselImage[] = [
-  { src: "/images/poppy2.jpg", alt: "Poppy in a window" },
-  { src: "/images/lunalarge.jpg", alt: "Luna on her back looking kind of large" },
-  { src: "/images/penny2.jpg", alt: "Penny close up to the camera" },
-  { src: "/images/poppydiva.jpg", alt: "Poppy in the sun, looking like a diva" },
-];
-const pragueImages: CarouselImage[] = [
-  { src: "/images/goldceiling.jpg", alt: "The ceiling in Prague's main museum" },
-  { src: "/images/viewofprague1.jpg", alt: "A view of Prague" },
-  { src: "/images/praguemuseum.jpg", alt: "A photo of the exterior of Prague's main museum" },
-  { src: "/images/praguemeerkat.jpg", alt: "A meerkat photographed at Prague Zoo, stood on their back feet" },
-  { src: "/images/praguebuilding1.jpg", alt: "A photograph of a prominent building in Prague" },
-  { src: "/images/r2d2prague.jpg", alt: "A concrete pillar painted in the style of R2D2" },
-  { src: "/images/praguetram1.jpg", alt: "A Prague tram, of the Soviet variety" },
-  { src: "/images/pragueriver.jpg", alt: "A view of a river from the centre of Prague" },
-];
-const pefkosrhodesImages: CarouselImage[] = [
-  { src: "/images/rhodesoldtownstreet.jpg", alt: "A view down a narrow street of Rhodes Old Town" },
-  { src: "/images/rhodesoldtownarch.jpg", alt: "A view down an arch in Rhodes Old Town" },
-  { src: "/images/lindosrock1.jpg", alt: "A rock on the coast off Lindos" },
-  { src: "/images/lindosrock2.jpg", alt: "A rock shaped like a lion, off the coast of Lindos" },
-  { src: "/images/pefkosbeachview1.jpg", alt: "A view of the water from a beach near Pefkos" },
-  { src: "/images/pefkosrhodescats1.jpg", alt: "Two cats laying under a bench, shading from the sun" },
-  { src: "/images/pefkosrhodescats2.jpg", alt: "Pefkos cat feeding area" },
-  { src: "/images/pefkosrhodescats3.jpg", alt: "Some cats laying on ruins in Rhodes old town" },
-];
-const londonImages: CarouselImage[] = [
-  { src: "/images/victoriatheatre.jpg", alt: "A view from high up in the Victoria Theatre" },
-  { src: "/images/nhmskeleton.jpg", alt: "A skeleton from the Natural History Museum" },
-  { src: "/images/swanlondon.jpg", alt: "A swan and goose in Kensington Gardens" },
-  { src: "/images/londonskyline.jpg", alt: "A view from West London of London's skyline" },
-];
+// Import cat photos
+import poppy2Img from '../assets/images/poppy2.jpg';
+import lunaLargeImg from '../assets/images/lunalarge.jpg';
+import penny2Img from '../assets/images/penny2.jpg';
+import poppyDivaImg from '../assets/images/poppydiva.jpg';
+
+// Import Prague images
+import goldCeilingImg from '../assets/images/goldceiling.jpg';
+import viewOfPrague1Img from '../assets/images/viewofprague1.jpg';
+import pragueMuseumImg from '../assets/images/praguemuseum.jpg';
+import pragueMeerkatImg from '../assets/images/praguemeerkat.jpg';
+import pragueBuilding1Img from '../assets/images/praguebuilding1.jpg';
+import r2d2PragueImg from '../assets/images/r2d2prague.jpg';
+import pragueTram1Img from '../assets/images/praguetram1.jpg';
+import pragueRiverImg from '../assets/images/pragueriver.jpg';
+
+// Import Pefkos/Rhodes images
+import rhodesOldTownStreetImg from '../assets/images/rhodesoldtownstreet.jpg';
+import rhodesOldTownArchImg from '../assets/images/rhodesoldtownarch.jpg';
+import lindosRock1Img from '../assets/images/lindosrock1.jpg';
+import lindosRock2Img from '../assets/images/lindosrock2.jpg';
+import pefkosBeachView1Img from '../assets/images/pefkosbeachview1.jpg';
+import pefkosRhodesCats1Img from '../assets/images/pefkosrhodescats1.jpg';
+import pefkosRhodesCats2Img from '../assets/images/pefkosrhodescats2.jpg';
+import pefkosRhodesCats3Img from '../assets/images/pefkosrhodescats3.jpg';
+
+// Import London images
+import victoriaTheatreImg from '../assets/images/victoriatheatre.jpg';
+import nhmSkeletonImg from '../assets/images/nhmskeleton.jpg';
+import swanLondonImg from '../assets/images/swanlondon.jpg';
+import londonSkylineImg from '../assets/images/londonskyline.jpg';
+
+// Pre-process with getImage for optimization
+const recentfavouriteImages = await Promise.all([
+  getImage({ src: iwmLondonImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: coneOnRoofImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: birdInWaterImg, width: 1400, format: 'webp', quality: 85 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  alt: [
+    'A big naval gun at IWM London',
+    'An orange traffic cone on a high up roof',
+    'A medium sized bird in a pond'
+  ][i]
+})));
+
+const morecatphotosImages = await Promise.all([
+  getImage({ src: poppy2Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: lunaLargeImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: penny2Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: poppyDivaImg, width: 1400, format: 'webp', quality: 85 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  alt: [
+    'Poppy in a window',
+    'Luna on her back looking kind of large',
+    'Penny close up to the camera',
+    'Poppy in the sun, looking like a diva'
+  ][i]
+})));
+
+const pragueImages = await Promise.all([
+  getImage({ src: goldCeilingImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: viewOfPrague1Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pragueMuseumImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pragueMeerkatImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pragueBuilding1Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: r2d2PragueImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pragueTram1Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pragueRiverImg, width: 1400, format: 'webp', quality: 85 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  alt: [
+    "The ceiling in Prague's main museum",
+    'A view of Prague',
+    "A photo of the exterior of Prague's main museum",
+    'A meerkat photographed at Prague Zoo, stood on their back feet',
+    'A photograph of a prominent building in Prague',
+    'A concrete pillar painted in the style of R2D2',
+    'A Prague tram, of the Soviet variety',
+    'A view of a river from the centre of Prague'
+  ][i]
+})));
+
+const pefkosrhodesImages = await Promise.all([
+  getImage({ src: rhodesOldTownStreetImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: rhodesOldTownArchImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: lindosRock1Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: lindosRock2Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pefkosBeachView1Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pefkosRhodesCats1Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pefkosRhodesCats2Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: pefkosRhodesCats3Img, width: 1400, format: 'webp', quality: 85 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  alt: [
+    'A view down a narrow street of Rhodes Old Town',
+    'A view down an arch in Rhodes Old Town',
+    'A rock on the coast off Lindos',
+    'A rock shaped like a lion, off the coast of Lindos',
+    'A view of the water from a beach near Pefkos',
+    'Two cats laying under a bench, shading from the sun',
+    'Pefkos cat feeding area',
+    'Some cats laying on ruins in Rhodes old town'
+  ][i]
+})));
+
+const londonImages = await Promise.all([
+  getImage({ src: victoriaTheatreImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: nhmSkeletonImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: swanLondonImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: londonSkylineImg, width: 1400, format: 'webp', quality: 85 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  alt: [
+    'A view from high up in the Victoria Theatre',
+    'A skeleton from the Natural History Museum',
+    'A swan and goose in Kensington Gardens',
+    'A view from West London of London\'s skyline'
+  ][i]
+})));
 ---
 <BaseLayout>
   <div class="page-center"></div>

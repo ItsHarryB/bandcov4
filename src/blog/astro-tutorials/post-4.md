@@ -3,7 +3,7 @@ title: My Fourth Blog Post
 author: Harry Brighton
 description: "This post will show up on its own!"
 image:
-    url: "https://docs.astro.build/default-og-image.png"
+    url: "/images/blog/default-og-image.png"
     alt: "The word astro against an illustration of planets and stars." 
 pubDate: 18/09/2025
 category: "Astro Tutorials"

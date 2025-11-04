@@ -1,8 +1,15 @@
 ---
 import { getCollection } from "astro:content";
+import { getImage } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CategoryFilters from "../components/CategoryFilters.tsx";
 import "../styles/blog.css";
+
+// Import blog post images
+import roseImg from "../assets/images/blog/rose.webp";
+import arcImg from "../assets/images/blog/arc.webp";
+import raysImg from "../assets/images/blog/rays.webp";
+import defaultOgImg from "../assets/images/blog/default-og-image.png";
 
 const pageTitle = "Website Development Log";
 
@@ -13,6 +20,26 @@ const allPosts = (await getCollection("blog"))
     (a, b) =>
       new Date(b.data.pubDate).valueOf() - new Date(a.data.pubDate).valueOf()
   );
+
+// Pre-process blog images
+const optimizedImages = {
+  "/images/blog/rose.webp": (await getImage({ src: roseImg, width: 800, height: 600, format: 'webp', quality: 80 })).src,
+  "/images/blog/arc.webp": (await getImage({ src: arcImg, width: 800, height: 600, format: 'webp', quality: 80 })).src,
+  "/images/blog/rays.webp": (await getImage({ src: raysImg, width: 800, height: 600, format: 'webp', quality: 80 })).src,
+  "/images/blog/default-og-image.png": (await getImage({ src: defaultOgImg, width: 800, height: 600, format: 'webp', quality: 80 })).src,
+};
+
+// Replace image URLs in posts with optimized versions
+const postsWithOptimizedImages = allPosts.map(post => ({
+  ...post,
+  data: {
+    ...post.data,
+    image: post.data.image ? {
+      ...post.data.image,
+      url: optimizedImages[post.data.image.url] || post.data.image.url
+    } : undefined
+  }
+}));
 
 // Extract unique categories
 const categories = Array.from(
@@ -26,5 +53,5 @@ const categories = Array.from(
     <h1>Blog</h1>
   </div>
   <h2>{pageTitle}</h2>
-<CategoryFilters client:load categories={categories} allPosts={allPosts} />  <!-- React Island handles category filtering and post cards -->
+  <CategoryFilters client:load categories={categories} allPosts={postsWithOptimizedImages} />  <!-- React Island handles category filtering and post cards -->
 </BaseLayout>

@@ -7,38 +7,6 @@
   margin-bottom: 1rem;
 }
 
-/* ================= Reset Button ================= */
-.reset-filters {
-  background-color: #ff4d4d; /* always red in light mode */
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  border: none;
-  font-weight: bold;
-  height: 40px;
-  width: 140px; /* fixed width */
-  cursor: pointer;
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease;
-}
-
-.reset-filters:hover {
-  background-color: #ff6666;
-}
-
-/* Dark mode for reset button */
-html.dark .reset-filters {
-  background-color: #cc3333; /* darker red in dark mode */
-  color: #ffffff;
-}
-
-html.dark .reset-filters:hover {
-  background-color: #e64d4d;
-}
-
 /* ================= Filters Row ================= */
 .filters-row {
   display: flex;
@@ -48,16 +16,8 @@ html.dark .reset-filters:hover {
   align-items: center; /* vertical alignment */
 }
 
-/* ================= Category Buttons Wrapper ================= */
-.category-buttons-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center; /* vertically center buttons */
-}
-
-/* Individual Category Buttons */
-.category-buttons-wrapper button:not(.reset-filters) {
+/* Category Buttons */
+.filters-row button {
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: none;
@@ -72,28 +32,28 @@ html.dark .reset-filters:hover {
   color: #0078be;           /* light mode text */
 }
 
-.category-buttons-wrapper button:not(.reset-filters):hover {
+.filters-row button:hover {
   background-color: #c0e4f2;
   transform: translateY(-1px);
 }
 
-.category-buttons-wrapper button:not(.reset-filters).active {
+.filters-row button.active {
   background-color: #0078be;
   color: #ffffff;
 }
 
 /* Dark mode for category buttons */
-html.dark .category-buttons-wrapper button:not(.reset-filters) {
+html.dark .filters-row button {
   background-color: #003c57;
   color: #a1d1f0;
 }
 
-html.dark .category-buttons-wrapper button:not(.reset-filters):hover {
+html.dark .filters-row button:hover {
   background-color: #005080;
   color: #ffffff;
 }
 
-html.dark .category-buttons-wrapper button:not(.reset-filters).active {
+html.dark .filters-row button.active {
   background-color: #66aaff;
   color: #000;
 }

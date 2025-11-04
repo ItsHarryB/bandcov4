@@ -28,11 +28,6 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
     );
   };
 
-  const resetFilters = () => {
-    setSelectedCategories([]);
-    setSelectedTags([]);
-  };
-
   const filteredPosts = useMemo(() => {
     return allPosts.filter((post) => {
       const matchesCategory =
@@ -47,23 +42,17 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
 
   return (
     <div className="category-filters">
-      {/* Filters row: reset button + category buttons */}
+      {/* Category filter buttons */}
       <div className="filters-row">
-        <div className="category-buttons-wrapper">
-          <button className="reset-filters" onClick={resetFilters}>
-            Reset All Filters
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => toggleCategory(category)}
+            className={selectedCategories.includes(category) ? "active" : ""}
+          >
+            {category}
           </button>
-
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => toggleCategory(category)}
-              className={selectedCategories.includes(category) ? "active" : ""}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+        ))}
       </div>
 
       {/* Tag buttons */}
@@ -89,6 +78,10 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
                   <img
                     src={post.data.image.url}
                     alt={post.data.image.alt || post.data.title}
+                    loading="lazy"
+                    decoding="async"
+                    width="800"
+                    height="600"
                   />
                 </div>
               )}

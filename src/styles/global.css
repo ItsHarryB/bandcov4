@@ -525,9 +525,16 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
   display: flex;
   flex-direction: column;
   align-items: center;  /* change from flex-start to center */
-
 }
 
+/* Align Quick Links column left so heading and list share the same left edge */
+.footer-section.footer-right {
+  align-items: flex-start;
+}
+.footer-section.footer-right h4,
+.footer-section.footer-right ul {
+  text-align: left;
+}
 
 .footer-section h4 {
   margin-bottom: 0.4rem; /* was 0.5rem */
@@ -670,6 +677,15 @@ html.dark .footer-meta { color: #696969; }
   .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
   .footer-section { flex: 1 1 100%; align-items: center; }
   .social-links { justify-content: center; }
+
+  /* On small screens, center Quick Links like other sections */
+  .footer-section.footer-right {
+    align-items: center;
+  }
+  .footer-section.footer-right h4,
+  .footer-section.footer-right ul {
+    text-align: center;
+  }
 }
 
 /* ===============================

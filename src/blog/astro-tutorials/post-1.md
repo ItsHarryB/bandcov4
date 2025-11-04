@@ -3,7 +3,7 @@ title: 'My First Blog Post'
 description: 'This is the first post of my new Astro blog.'
 author: 'Harry Brighton'
 image:
-    url: 'https://docs.astro.build/assets/rose.webp'
+    url: '/images/blog/rose.webp'
     alt: 'The Astro logo on a dark background with a pink glow.'
 pubDate: 15/09/2025
 category: "Astro Tutorials"

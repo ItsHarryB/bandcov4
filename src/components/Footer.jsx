@@ -94,8 +94,8 @@ export default function Footer() {
 
         {/* Middle section: Social icons */}
         <div className="footer-section footer-middle">
-          <h4>Follow Me:</h4>
-          <div className="social-links">
+          <h4 id="social-heading">Follow Me:</h4>
+          <div className="social-links" role="list" aria-labelledby="social-heading">
             <Social platform="Twitter" username="ItsHarryB_" iconOnly />
             <Social platform="GitHub" username="ItsHarryB" iconOnly />
             <Social
@@ -108,8 +108,8 @@ export default function Footer() {
 
         {/* Right section: Quick links */}
         <div className="footer-section footer-right">
-          <h4>Quick Links:</h4>
-          <ul>
+          <h4 id="quick-links-heading">Quick Links:</h4>
+          <ul aria-labelledby="quick-links-heading">
             <li><a href="/">Home</a></li>
             <li><a href="/enquiries/">Enquiries</a></li>
             <li><a href="/about-me/">About Me</a></li>
@@ -123,8 +123,10 @@ export default function Footer() {
 
       {/* Theme toggle centered below the columns */}
       <div className="footer-toggle" style={{ marginBottom: "0.5rem" }}>
-        <h4>Toggle Theme:</h4>
-        <ThemeIcon client:load />
+        <h4 id="theme-toggle-heading">Toggle Theme:</h4>
+        <div aria-labelledby="theme-toggle-heading">
+          <ThemeIcon client:load />
+        </div>
       </div>
 
       {/* Website Carbon Badge (centered, tight spacing) */}
@@ -135,7 +137,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.9.2 - 04/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.10.0 - 04/11/2025
         </p>
       </div>
     </footer>
