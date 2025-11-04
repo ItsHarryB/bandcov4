@@ -12,7 +12,7 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   adapter: cloudflare(),
-  site: 'https://test.brightonandco.co.uk',
+  site: 'https://web.brightonandco.co.uk',
   // @ts-ignore
   integrations: [react(), mdx(),     
     sitemap({

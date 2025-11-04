@@ -87,7 +87,7 @@ export default function Footer() {
         {/* Left section */}
         <div className="footer-section footer-left">
           <p>
-            &copy; {new Date().getFullYear()} TEST: Brighton and Co. <br />
+            &copy; {new Date().getFullYear()} Brighton and Co. <br />
             All rights reserved.
           </p>
         </div>
@@ -137,7 +137,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.10.0 - 04/11/2025
+          Brighton and Co Website – Made by Harry Brighton | Version 0.9.2 - 04/11/2025
         </p>
       </div>
     </footer>
