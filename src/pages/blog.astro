@@ -36,7 +36,7 @@ const postsWithOptimizedImages = allPosts.map(post => ({
     ...post.data,
     image: post.data.image ? {
       ...post.data.image,
-      url: optimizedImages[post.data.image.url] || post.data.image.url
+      url: optimizedImages[post.data.image.url as keyof typeof optimizedImages] || post.data.image.url
     } : undefined
   }
 }));
