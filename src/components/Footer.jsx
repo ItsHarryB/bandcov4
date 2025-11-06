@@ -13,59 +13,78 @@ export default function Footer() {
 
     setWcbDark(getIsDark());
 
+    let scriptInjected = false;
+
     const inject = () => {
-      if (!document.querySelector('script[data-carbon-badge]')) {
-        const s = document.createElement("script");
-        s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-        s.defer = true;
-        s.setAttribute("data-carbon-badge", "true");
-        document.body.appendChild(s);
+      // Check if script already exists in DOM
+      if (document.querySelector('script[data-carbon-badge]')) {
+        return;
       }
+
+      const s = document.createElement("script");
+      s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
+      s.defer = true;
+      s.setAttribute("data-carbon-badge", "true");
+      
+      // Add error handler for script loading
+      s.onerror = () => {
+        console.warn("Website Carbon Badge script failed to load");
+      };
+      
+      document.body.appendChild(s);
+      scriptInjected = true;
     };
 
     inject();
 
     let attempts = 0;
-    const maxAttempts = 3;
+    const maxAttempts = 2; // Reduced from 3
     const timers = [];
-    let badgeLoaded = false; // track if badge successfully rendered
+    let badgeLoaded = false;
 
     const isLoaded = () => {
       const el = document.getElementById("wcb");
-      // Badge is loaded if it has an <a> link or <svg>, and doesn't say "no result"
       return !!el?.querySelector("a[href*='websitecarbon.com'], svg") &&
              !/no result/i.test(el.textContent || "");
     };
 
     const retry = () => {
-      if (badgeLoaded) return; // stop if already loaded
+      if (badgeLoaded) return;
 
       const el = document.getElementById("wcb");
       if (!el) return;
 
       if (isLoaded()) {
-        badgeLoaded = true; // mark as successfully loaded
+        badgeLoaded = true;
         return;
       }
 
-      // Only retry if not loaded and under max attempts
       if (attempts < maxAttempts) {
         attempts++;
+        
+        // Remove ALL scripts that might have been injected
         document
           .querySelectorAll('script[src*="website-carbon-badges"]')
           .forEach((n) => n.remove());
+        
         el.innerHTML = "";
+        scriptInjected = false;
+        
         timers.push(
           setTimeout(() => {
             inject();
-            timers.push(setTimeout(retry, 5000));
-          }, 3000 * attempts)
+            timers.push(setTimeout(retry, 6000)); // Increased wait time
+          }, 4000 * attempts)
         );
+      } else {
+        // After max attempts, hide the badge completely
+        el.style.display = "none";
+        // Optionally hide the entire footer-carbon-badge container
+        el.closest('.footer-carbon-badge')?.style.setProperty('display', 'none');
       }
     };
 
-    // First check after initial load
-    timers.push(setTimeout(retry, 6000));
+    timers.push(setTimeout(retry, 8000)); // Increased initial wait
 
     const onThemeChange = (e) => {
       setWcbDark((e?.detail?.theme || (getIsDark() ? "dark" : "light")) === "dark");
