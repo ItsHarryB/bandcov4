@@ -169,7 +169,6 @@ export default function Footer() {
       <div className="footer-toggle" style={{ marginBottom: "0.5rem" }}>
         <h4 id="theme-toggle-heading">Toggle Theme:</h4>
         <div className="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
-          <span className="label">Light</span>
           <button
             type="button"
             className="toggle-track"
@@ -185,7 +184,6 @@ export default function Footer() {
             </span>
             <span className="toggle-thumb" aria-hidden="true" />
           </button>
-          <span className="label">Dark</span>
         </div>
       </div>
 
@@ -197,7 +195,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.10.4 - 10/11/2025
+          TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.10.4a - 10/11/2025
         </p>
       </div>
     </footer>
