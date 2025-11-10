@@ -612,37 +612,129 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
 /* Footer Theme Toggle */
 .footer-toggle {
   display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
-  margin: 1rem 0; /* was 1.5rem 0 */
+  margin: 1rem 0;
   width: 100%;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.theme-toggle {
-  padding: 0.1rem;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  background: none;
-  border: none;
+.footer-toggle h4 {
+  margin: 0;
+}
+
+/* ===============================
+   Footer Theme Toggle
+   =============================== */
+/* Container now only holds the switch itself */
+.theme-toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Remove label styles since we're not using them */
+
+/* Switch track (role="switch") */
+.toggle-track {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  border-radius: 999px;
+  background: #e5e7eb;
+  border: 1px solid #d1d5db;
   cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.footer-toggle .theme-toggle:hover { transform: scale(1.2); }
-.footer-toggle .theme-toggle:active { transform: scale(1.0); }
-
-.footer-toggle .theme-icon {
-  display: inline-block;
-  transition: transform 0.5s ease, color 0.5s ease;
+/* Icons inside track (left sun, right moon) */
+.toggle-track .icons {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  font-size: 1.1rem;
+  pointer-events: none;
+  font-weight: 400;
 }
-.footer-toggle .theme-icon.spin { animation: spin 0.5s linear; }
+.toggle-track .icons .sun { 
+  opacity: 1;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  color: #f59e0b;
+  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
+}
+.toggle-track .icons .moon { 
+  opacity: 0.6;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  color: #64748b;
+}
+.toggle-track[aria-checked="true"] .icons .sun { 
+  opacity: 0.5;
+  transform: scale(0.9);
+  filter: none;
+}
+.toggle-track[aria-checked="true"] .icons .moon { 
+  opacity: 1;
+  color: #fbbf24;
+  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
+}
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Thumb that slides left->right */
+.toggle-track .toggle-thumb {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: left 0.25s ease;
+}
+.toggle-track[aria-checked="true"] .toggle-thumb {
+  left: calc(100% - 30px);
+}
+
+/* Focus ring */
+.toggle-track:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
+  border-color: #0094b6;
+}
+
+/* Hover effect */
+.toggle-track:hover {
+  background: #d1d5db;
+}
+.toggle-track[aria-checked="true"]:hover {
+  background: #1e293b;
+}
+
+/* Dark mode adjustments for the switch track and thumb */
+html.dark .toggle-track {
+  background: #334155;
+  border-color: #475569;
+}
+html.dark .toggle-track .toggle-thumb {
+  background: #f1f5f9;
+}
+html.dark .toggle-track:hover {
+  background: #1e293b;
+}
+html.dark .toggle-track .icons .sun {
+  color: #94a3b8;
+}
+html.dark .toggle-track[aria-checked="true"] .icons .moon {
+  color: #fbbf24;
+  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
 }
 
 /* ===============================
