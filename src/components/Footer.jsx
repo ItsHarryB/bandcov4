@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from "react";
 import Social from "./Social.jsx";
-import ThemeIcon from "./ThemeIcon.jsx";
 import "../styles/global.css";
 
 export default function Footer() {
   const [wcbDark, setWcbDark] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+
+  // Helper to read current theme
+  const getIsDark = () =>
+    document.documentElement.classList.contains("dark") ||
+    localStorage.getItem("theme") === "dark";
+
+  // Apply theme to DOM, persist, and announce
+  const applyTheme = (theme) => {
+    const root = document.documentElement;
+    if (theme === "dark") root.classList.add("dark");
+    else root.classList.remove("dark");
+    localStorage.setItem("theme", theme);
+    setIsDark(theme === "dark");
+    setWcbDark(theme === "dark");
+    document.dispatchEvent(new CustomEvent("themechange", { detail: { theme } }));
+  };
+
+  const toggleTheme = () => applyTheme(isDark ? "light" : "dark");
 
   useEffect(() => {
-    const getIsDark = () =>
-      document.documentElement.classList.contains("dark") ||
-      localStorage.getItem("theme") === "dark";
-
     setWcbDark(getIsDark());
+    setIsDark(getIsDark());
 
     let scriptInjected = false;
 
@@ -38,7 +53,7 @@ export default function Footer() {
     inject();
 
     let attempts = 0;
-    const maxAttempts = 2; // Reduced from 3
+    const maxAttempts = 2;
     const timers = [];
     let badgeLoaded = false;
 
@@ -87,7 +102,9 @@ export default function Footer() {
     timers.push(setTimeout(retry, 8000)); // Increased initial wait
 
     const onThemeChange = (e) => {
-      setWcbDark((e?.detail?.theme || (getIsDark() ? "dark" : "light")) === "dark");
+      const next = (e?.detail?.theme || (getIsDark() ? "dark" : "light"));
+      setWcbDark(next === "dark");
+      setIsDark(next === "dark");
     };
     document.addEventListener("themechange", onThemeChange);
 
@@ -96,6 +113,14 @@ export default function Footer() {
       timers.forEach(clearTimeout);
     };
   }, []);
+
+  // Keyboard support for the switch
+  const onSwitchKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleTheme();
+    }
+  };
 
   return (
     <footer className="site-footer">
@@ -143,8 +168,24 @@ export default function Footer() {
       {/* Theme toggle centered below the columns */}
       <div className="footer-toggle" style={{ marginBottom: "0.5rem" }}>
         <h4 id="theme-toggle-heading">Toggle Theme:</h4>
-        <div aria-labelledby="theme-toggle-heading">
-          <ThemeIcon client:load />
+        <div className="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
+          <span className="label">Light</span>
+          <button
+            type="button"
+            className="toggle-track"
+            role="switch"
+            aria-checked={isDark}
+            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+            onClick={toggleTheme}
+            onKeyDown={onSwitchKeyDown}
+          >
+            <span className="icons" aria-hidden="true">
+              <span className="sun">☀︎</span>
+              <span className="moon">☾</span>
+            </span>
+            <span className="toggle-thumb" aria-hidden="true" />
+          </button>
+          <span className="label">Dark</span>
         </div>
       </div>
 
@@ -156,7 +197,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          Brighton and Co Website – Made by Harry Brighton | Version 4.0.3a - 06/11/2025
+          Brighton and Co Website – Made by Harry Brighton | Version 4.0.4 - 10/11/2025
         </p>
       </div>
     </footer>
