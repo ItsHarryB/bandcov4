@@ -168,8 +168,24 @@ export default function Footer() {
       {/* Theme toggle centered below the columns */}
       <div className="footer-toggle" style={{ marginBottom: "0.5rem" }}>
         <h4 id="theme-toggle-heading">Toggle Theme:</h4>
-        <div aria-labelledby="theme-toggle-heading">
-          <ThemeIcon client:load />
+        <div className="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
+          <span className="label">Light</span>
+          <button
+            type="button"
+            className="toggle-track"
+            role="switch"
+            aria-checked={isDark}
+            aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
+            onClick={toggleTheme}
+            onKeyDown={onSwitchKeyDown}
+          >
+            <span className="icons" aria-hidden="true">
+              <span className="sun">☀︎</span>
+              <span className="moon">☾</span>
+            </span>
+            <span className="toggle-thumb" aria-hidden="true" />
+          </button>
+          <span className="label">Dark</span>
         </div>
       </div>
 
@@ -181,7 +197,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          Brighton and Co Website – Made by Harry Brighton | Version 4.0.3 - 05/11/2025
+          Brighton and Co Website – Made by Harry Brighton | Version 4.0.4a - 10/11/2025
         </p>
       </div>
     </footer>
