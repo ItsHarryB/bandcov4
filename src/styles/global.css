@@ -634,8 +634,6 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
   justify-content: center;
 }
 
-/* Remove label styles since we're not using them */
-
 /* Switch track (role="switch") */
 .toggle-track {
   position: relative;
@@ -698,7 +696,8 @@ html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
   border-radius: 50%;
   background: #ffffff;
   box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease;
+  transition: left 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
 }
 .toggle-track[aria-checked="true"] .toggle-thumb {
   left: calc(100% - 30px);
@@ -735,83 +734,6 @@ html.dark .toggle-track .icons .sun {
 html.dark .toggle-track[aria-checked="true"] .icons .moon {
   color: #fbbf24;
   filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container for labels + switch */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-/* Labels left/right of the switch */
-.theme-toggle-switch .label {
-  font-size: 0.9rem;
-  color: inherit;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;            /* light gray */
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
-  font-size: 0.95rem;
-  pointer-events: none;
-}
-.toggle-track .icons .sun { opacity: 1; }
-.toggle-track .icons .moon { opacity: 0.6; }
-.toggle-track[aria-checked="true"] .icons .sun { opacity: 0.6; }
-.toggle-track[aria-checked="true"] .icons .moon { opacity: 1; }
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: transform 0.25s ease;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  transform: translateX(32px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;            /* slate-700-ish */
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #111827;            /* near black thumb */
 }
 
 /* ===============================
