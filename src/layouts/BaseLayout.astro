@@ -2,6 +2,7 @@
 import '@fontsource-variable/raleway'; // variable font, includes all weights
 import { Image } from 'astro:assets';
 import Footer from "../components/Footer.jsx";
+import WebsiteSwitcher from "../components/WebsiteSwitcher.jsx";
 import "../styles/global.css";
 
 // Import the logo from src/assets
@@ -23,6 +24,9 @@ import logo from '../assets/favicon.png';
         <span class="line line3"></span>
       </div>
 
+      <!-- Place WebsiteSwitcher BEFORE site-title so it appears to the left -->
+      <WebsiteSwitcher client:load />
+
       <div class="site-title">
         <a href="/" class="site-logo-link">
           <Image 
@@ -36,7 +40,7 @@ import logo from '../assets/favicon.png';
             loading="eager"
             decoding="sync"
           />
-          <span>TEST: Brighton and Co</span>
+          <span class="site-title-text">TEST: Brighton and Co</span>
         </a>
       </div>
 
