@@ -195,7 +195,7 @@ export default function Footer() {
       {/* Footer meta */}
       <div className="footer-meta" style={{ marginTop: "1.25rem" }}>
         <p>
-          Brighton and Co Website – Made by Harry Brighton | Version 4.0.4b - 10/11/2025
+          Brighton and Co Website – Made by Harry Brighton | Version 4.0.5 - 24/02/2026
         </p>
       </div>
     </footer>
