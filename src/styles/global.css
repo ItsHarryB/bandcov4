@@ -1,9 +1,125 @@
 /* ===============================
-   Theme Variables
+   Theme Variables (Master List)
+   =============================== */
+:root {
+  /* Base Site Colors */
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --accent-color: #d85300; 
+  --focus-ring: rgba(216, 83, 0, 0.45);
+
+  /* Header, Navigation & Switcher (Light Mode - Brighter Orange) */
+  --header-bg-solid: linear-gradient(135deg, #d85300, #ce6000); 
+  --header-bg-transparent: linear-gradient(135deg, rgba(216, 83, 0, 0.85), rgba(206, 96, 0, 0.85));
+  --header-bg: var(--header-bg-transparent);
+  --header-text: #ffffff;
+  --hamburger-color: #ffffff;
+  --nav-hover-bg: #ff5900; 
+  --nav-active-bg: #b85400; 
+  --nav-outline: rgba(255, 255, 255, 0.6);
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+  --switcher-toggle-bg: rgba(255, 255, 255, 0.15);
+  --switcher-toggle-hover: #ff5900;
+
+  /* Footer */
+  --footer-bg: #f8f8f8;
+  --footer-border: #dddddd;
+  --footer-text: #333333;
+  --footer-heading: #000000;
+  --footer-meta-text: #666666;
+  --link-color: #d85300;
+  --link-hover: #ff5900;
+  --link-underline: #ffffff; 
+  
+  /* Social Links */
+  --social-bg: #f0f0f0;
+  --social-icon: #333333;
+
+  /* Theme Toggle Switch */
+  --toggle-track-bg: #e5e7eb;
+  --toggle-track-border: #d1d5db;
+  --toggle-track-hover: #d1d5db;
+  --toggle-thumb-bg: #ffffff;
+  --sun-icon: #f59e0b;
+  --moon-icon: #64748b;
+  --moon-icon-active: #fbbf24;
+
+  /* Custom Bullets */
+  --bullet-l1: #ff5900;
+  --bullet-l2: #f77700;
+  --bullet-l3: #ff922c;
+
+  /* Inline Links */
+  --inline-link: #d85300; 
+  --inline-link-hover: #ff5900;
+
+  /* Dividers */
+  --divider-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Dark-mode overrides */
+html.dark {
+  /* Base Site Colors */
+  --bg-color: #1b1b1b;
+  --text-color: #ffffff;
+  --accent-color: #f77700;
+  --focus-ring: rgba(247, 119, 0, 0.68);
+
+  /* Header, Navigation & Switcher (Dark Mode - Darker Orange) */
+  --header-bg-solid: linear-gradient(135deg, #d66700, #ca6200); 
+  --header-bg-transparent: linear-gradient(135deg, rgba(214, 103, 0, 0.85), rgba(202, 98, 0, 0.85));
+  --header-bg: var(--header-bg-transparent);
+  --header-text: #ffffff;
+  --hamburger-color: #ffffff;
+  --nav-hover-bg: #c14400; 
+  --nav-active-bg: #a13900; 
+  --nav-outline: #ff922c;
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --switcher-toggle-bg: rgba(255, 255, 255, 0.1);
+  --switcher-toggle-hover: #c14400;
+
+  /* Footer */
+  --footer-bg: #222222;
+  --footer-border: #444444;
+  --footer-text: #7b7b7b;
+  --footer-heading: #ffffff;
+  --footer-meta-text: #696969;
+  --link-color: #d66700;
+  --link-hover: #f77700; 
+  --link-underline: #ffffff;
+
+  /* Social Links */
+  --social-bg: #333333;
+  --social-icon: #ffffff;
+
+  /* Theme Toggle Switch */
+  --toggle-track-bg: #334155;
+  --toggle-track-border: #475569;
+  --toggle-track-hover: #1e293b;
+  --toggle-thumb-bg: #f1f5f9;
+  --sun-icon: #94a3b8;
+  --moon-icon: #64748b; 
+  --moon-icon-active: #fbbf24;
+
+  /* Custom Bullets */
+  --bullet-l1: #c14400;
+  --bullet-l2: #c35400;
+  --bullet-l3: #d15b00;
+
+  /* Inline Links */
+  --inline-link: #f77700; 
+  --inline-link-hover: #ff922c;
+
+  /* Dividers */
+  --divider-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ===============================
+   Base Styles
    =============================== */
 html {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: "Raleway Variable", sans-serif;
   scroll-behavior: smooth;
   transition: background-color 0.5s ease, color 0.5s ease;
@@ -18,15 +134,11 @@ body {
   padding-top: calc(70px + env(safe-area-inset-top));
 }
 
-/* Theme color variables (header & switcher sync) */
-:root {
-  --header-bg: #0094b6; /* light mode header */
-  --header-bg-dark: #004166; /* dark mode header */
-}
-
-/* Dark-mode overrides: update variables so components can inherit */
-html.dark {
-  --header-bg: var(--header-bg-dark);
+body.menu-active {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 * { box-sizing: border-box; }
@@ -78,29 +190,28 @@ button, a { display: inline-block; width: auto; }
   min-height: 70px;
   max-height: 70px;
   z-index: 1000;
-
-  overflow: visible; /* allow the mobile dropdown to render outside the header */
+  overflow: visible;
   display: flex;
-  align-items: center;      /* Vertically center children */
-  justify-content: center;  /* Center content horizontally */
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
-
-  /* Remove vertical padding, only keep horizontal */
   padding: 0 clamp(1rem, 5vw, 6rem);
-  /* Remove: padding-top: env(safe-area-inset-top); */
-
-  background-color: #0094b6;
+  background: var(--header-bg); /* Defaults to transparent variant */
+  backdrop-filter: blur(8px); /* Optional: Adds a nice frosted glass effect behind the transparency */
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: box-shadow 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
 }
 
-/* Use header color variable so switcher can match header in both themes */
-.site-header {
-  background-color: var(--header-bg);
+/* Remove transparency when mobile menu is active */
+body.menu-active .site-header,
+body:has(.nav-links.expanded) .site-header {
+  background: var(--header-bg-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
-/* Adjustments for mobile */
 @media (max-width: 500px) {
   .site-header {
     height: 70px;
@@ -110,7 +221,6 @@ button, a { display: inline-block; width: auto; }
   }
 }
 
-/* Shadow when menu is active */
 .site-header.menu-shadow {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.638);
 }
@@ -127,7 +237,6 @@ button, a { display: inline-block; width: auto; }
   min-width: auto;
 }
 
-/* Update base logo size - keep it consistent */
 .site-title img {
   height: 100%;
   max-height: 100%;
@@ -141,40 +250,21 @@ button, a { display: inline-block; width: auto; }
   height: 100%;
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* add space between logo and text */
+  gap: 0.5rem;
   padding: 0 20px;
   box-sizing: border-box;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--header-text);
   font-weight: bold;
-  font-size: 1.2rem; /* consistent size */
+  font-size: 1.2rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: color 0.5s ease; /* remove font-size transition */
+  transition: color 0.5s ease;
 }
 
-/* Add new breakpoint for title text hiding */
-/* REMOVE this duplicate block that used display:none; rely on the accessible hide below */
-/*
 @media (max-width: 900px) {
-  .site-title-text {
-    display: none;
-  }
-
-  .site-title a {
-    padding: 0 8px;
-    font-size: 1.2rem; 
-  }
-}
-*/
-
-/* Hide title text earlier to prevent collision with the hamburger.
-   Narrow this to 900px so text is only hidden on very small screens. */
-@media (max-width: 900px) {
-  .site-title a { padding: 0 8px; } /* tighter padding when only logo visible */
-
-  /* visually hide the textual title but keep it accessible to screen readers */
+  .site-title a { padding: 0 8px; }
   .site-title .site-title-text {
     position: absolute !important;
     width: 1px !important;
@@ -189,13 +279,8 @@ button, a { display: inline-block; width: auto; }
   }
 }
 
-/* Robust hide for site title text on small screens (keep logo img/svg visible) */
 @media (max-width: 500px) {
-  /* collapse any raw text nodes inside the link */
-  .site-title a {
-    font-size: 0 !important; /* hide text even if not wrapped */
-  }
-  /* visually hide any non-logo child elements (leave img/svg visible) */
+  .site-title a { font-size: 0 !important; }
   .site-title a > :not(img):not(svg) {
     position: absolute !important;
     width: 1px !important;
@@ -210,21 +295,17 @@ button, a { display: inline-block; width: auto; }
   }
 }
 
-/* Restore defaults from 901px and up */
 @media (min-width: 501px) {
-  .site-title a {
-    font-size: 1.2rem !important; /* restore readable text size */
-  }
+  .site-title a { font-size: 1.2rem !important; }
 }
 
 /* ===============================
    Hamburger Menu
    =============================== */
-/* Wrap hamburger absolutely to not disturb center alignment */
 .hamburger {
   position: absolute;
   left: calc(1rem + env(safe-area-inset-left));
-  top: 50%; /* vertically center */
+  top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   display: flex;
@@ -244,7 +325,7 @@ button, a { display: inline-block; width: auto; }
 .hamburger .line {
   height: 3px;
   width: 100%;
-  background-color: #ffffff;
+  background-color: var(--hamburger-color);
   border-radius: 2px;
   transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55),
               opacity 0.2s ease;
@@ -268,10 +349,7 @@ button, a { display: inline-block; width: auto; }
 .hamburger.active:hover { transform: translateY(-50%) scale(1.2); }
 .hamburger.active:active { transform: translateY(-50%) scale(1.1); transition: transform 0.1s ease; }
 
-/* Subtle pop when activating the hamburger */
-.hamburger.is-activating {
-  animation: hamburgerPop 300ms ease-out;
-}
+.hamburger.is-activating { animation: hamburgerPop 300ms ease-out; }
 @keyframes hamburgerPop {
   0% { transform: translateY(-50%) scale(1); }
   40% { transform: translateY(-50%) scale(1.12); }
@@ -279,7 +357,7 @@ button, a { display: inline-block; width: auto; }
 }
 
 /* ===============================
-   Navigation Links (Mobile)
+   Navigation Links (Mobile/Base)
    =============================== */
 .nav-links {
   display: flex;
@@ -288,34 +366,31 @@ button, a { display: inline-block; width: auto; }
   top: calc(70px + env(safe-area-inset-top));
   left: 0;
   width: 100%;
-  max-height: 0;                 /* collapsed height */
+  max-height: 0;
   overflow: hidden;
-  background-color: #0094b6;
-  color: #ffffff;
+  background: var(--header-bg-solid); /* Dropdown is always solid */
   text-align: left;
   z-index: 1200;
   gap: 0.75rem;
   padding: 0.75rem 1.25rem;
-
-  /* refined slide in/out */
   opacity: 0;
-  visibility: hidden;            /* hide after close finishes (see transition below) */
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(-12px);
   will-change: opacity, transform, max-height, padding-top, visibility;
   transition:
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),   /* was 240ms */
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1), /* was 260ms */
-    max-height 480ms ease,                          /* was 320ms */
-    padding-top 480ms ease,                         /* was 320ms */
-    visibility 0s linear 380ms;                     /* was 260ms */
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 480ms ease,
+    padding-top 480ms ease,
+    visibility 0s linear 380ms;
 }
 
 .nav-links.expanded {
-  max-height: 80vh;              /* allow enough height */
-  padding-top: 1rem;           /* keep your existing padding tweak */
+  max-height: 80vh;
+  padding-top: 1rem;
   opacity: 1;
-  visibility: visible;           /* show immediately on open */
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
   transition:
@@ -323,52 +398,43 @@ button, a { display: inline-block; width: auto; }
     transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
     max-height 480ms ease,
     padding-top 480ms ease,
-    visibility 0s linear 0s;     /* ensure visible without delay on open */
-}
-
-/* Keep per-link fade-in; it will also animate out via their transitions */
-.nav-links.expanded a {
-  animation: fadeInUp 0.3s forwards;
-}
-@keyframes menuExpand {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+    visibility 0s linear 0s;
 }
 
 .nav-links a {
   display: block;
   width: fit-content;
-  padding: 0.5rem 0.85rem; /* Increased padding for larger clickable area */
+  padding: 0.5rem 0.85rem;
   font-weight: bold;
   text-transform: uppercase;
-  color: #ffffff !important;
+  color: var(--header-text) !important;
   text-decoration: none;
   opacity: 0;
   --scale: 1;
   transform: translateY(-10px) scale(var(--scale));
   transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
-  margin: 0.2rem 0; /* Remove auto margins to allow left alignment */
+  margin: 0.2rem 0;
 }
 
 .nav-links a[aria-current="page"],
-.nav-links a.active { /* Ensure both selectors are applied */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)); /* Gradient highlight */
-  color: #ffffff !important; /* Ensure text color remains white */
-  border-radius: 8px; /* Rounded corners for a nicer appearance */
+.nav-links a.active {
+  background: var(--nav-active-bg);
+  color: var(--header-text) !important;
+  border-radius: 8px;
 }
 
-.nav-links.expanded a {
-  animation: fadeInUp 0.3s forwards;
-}
+.nav-links.expanded a { animation: fadeInUp 0.3s forwards; }
 .nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
 .nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
 .nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
 .nav-links.expanded a:nth-child(4) { animation-delay: 0.20s; }
 .nav-links.expanded a:nth-child(5) { animation-delay: 0.25s; }
 .nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
+.nav-links.expanded a:last-child { margin-bottom: 1rem; }
+
+@keyframes menuExpand {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInUp {
@@ -377,9 +443,9 @@ button, a { display: inline-block; width: auto; }
 
 .nav-links a:hover,
 .nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
+  background-color: var(--nav-hover-bg);
+  border-radius: 8px;
+  color: var(--header-text) !important;
   --scale: 1.05;
 }
 
@@ -388,16 +454,16 @@ button, a { display: inline-block; width: auto; }
    =============================== */
 .nav-overlay {
   position: fixed;
-  top: 70px; /* Match new header height */
+  top: 70px;
   left: 0;
   width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
+  height: calc(100vh - 70px);
+  background: var(--overlay-bg);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease, background 0.3s ease;
   z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
+  -webkit-overflow-scrolling: touch;
 }
 
 .nav-overlay.active {
@@ -406,787 +472,8 @@ button, a { display: inline-block; width: auto; }
 }
 
 /* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
-}
-
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
-}
-
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* Header layout tweaks for small screens: keep logo centered and place
-   website-switcher to the left of the logo and hamburger to the right. */
-@media (max-width: 900px) {
-  .site-header {
-    position: fixed; /* keep header fixed to top to avoid white gap */
-    top: 0;
-    left: 0;
-    right: 0;
-    justify-content: center; /* centre the header items visually */
-    padding: 0 1rem;
-    z-index: 2100;
-  }
-
-  /* Center the site logo/title absolutely so it remains visually centred
-     even when other controls sit to its sides */
-  .site-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Place the website switcher to the right of the hamburger (between hamburger and centered logo) */
-  .website-switcher {
-    position: absolute;
-    left: calc(1rem + 44px); /* place to the right of the hamburger (40px) + small gap */
-    transform: none;
-    z-index: 2150;
-    display: flex;
-    align-items: center;
-  }
-
-  /* Place hamburger to the left edge (consistent with default) */
-  .hamburger {
-    position: absolute;
-    left: calc(1rem + env(safe-area-inset-left));
-    z-index: 2200;
-  }
-
-  /* When site-title text is hidden and only the logo remains,
-     ensure logo itself is visually centered (no left padding from flex) */
-  .site-title a { padding: 0 8px; }
-}
-
-/* Strong override for small/medium screens where the switcher may jump
-   (e.g. inner width ~892px). Pin the switcher immediately to the right of
-   the hamburger and prevent other rules from pushing it to the right. */
-@media (max-width: 900px) {
-  .website-switcher {
-    position: absolute !important;
-    left: calc(env(safe-area-inset-left, 0px) + 1rem + 44px) !important;
-    right: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    display: flex !important;
-    align-items: center !important;
-    z-index: 2150 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-  }
-
-  /* Ensure site-title stays centered and doesn't steal layout space */
-  .site-title {
-    position: absolute !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    z-index: 2100 !important;
-  }
-}
-
-@media (max-width: 500px) {
-  /* Tweak positions for smallest screens: keep hamburger left, switcher next to it */
-  .website-switcher { left: calc(1rem + 40px); }
-  .hamburger { left: calc(1rem + env(safe-area-inset-left)); }
-  .site-title img { max-width: 40px; height: auto; }
-}
-
-/* Ensure the website switcher remains visible and accessible on smaller screens
-   even when the mobile nav is expanded. Keep hiding behavior only on very
-   large screens where necessary. */
-@media (max-width: 1399px) {
-  body:has(.nav-links.expanded) .website-switcher,
-  .site-header.menu-open .website-switcher {
-    visibility: visible !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
-  }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
-  .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-  }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
-  }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
    Website Switcher Dropdown
    =============================== */
-/* Add base rule to ensure consistent z-index and display */
 .website-switcher {
   position: relative;
   z-index: 2100;
@@ -1194,23 +481,9 @@ body.menu-active {
   align-items: center;
 }
 
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
+body:has(.nav-links.expanded) .website-switcher,
 .site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
+  visibility: hidden;
 }
 
 .switcher-toggle {
@@ -1219,18 +492,18 @@ body:has(.nav-links.expanded) .website-switcher {
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255,255,255,0.08);
+  background: var(--switcher-toggle-bg);
   border: none;
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
+  color: var(--header-text);
   padding: 0;
   border-radius: 8px;
 }
 
 .switcher-toggle:hover,
 .switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
+  background: var(--switcher-toggle-hover);
   transform: scale(1.08);
 }
 
@@ -1239,48 +512,29 @@ body:has(.nav-links.expanded) .website-switcher {
   transition: transform 0.1s ease;
 }
 
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.switcher-icon { display: flex; align-items: center; justify-content: center; }
+.switcher-icon .chevron { transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+.switcher-icon .chevron.rotated { transform: rotate(180deg); }
 
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
 .switcher-dropdown {
   position: fixed;
   top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
+  background: var(--header-bg-solid); /* Switcher dropdown is always solid */
+  color: var(--header-text);
   border-radius: 0 0 12px 12px;
-  
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
   opacity: 0;
   visibility: hidden;
   transform: translateY(-12px);
-  
   transition: 
     opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
+    box-shadow 0.3s ease;
   pointer-events: none;
   z-index: 1850;
   overflow: hidden;
-  
   min-width: 260px;
   max-width: 500px;
   width: auto;
@@ -1289,21 +543,22 @@ body:has(.nav-links.expanded) .website-switcher {
   -webkit-overflow-scrolling: touch;
 }
 
+/* Dark mode shadow adjustment */
+html.dark .switcher-dropdown {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: none;
+}
+
 .switcher-dropdown.open {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
   transition: 
     opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
 }
 
 .dropdown-header {
@@ -1328,14 +583,12 @@ body:has(.nav-links.expanded) .website-switcher {
 
 .website-list li {
   margin: 0;
-  padding: 0;
   opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
+  --scale: 1;
   transform: translateY(-10px) scale(var(--scale));
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* Website link styling - main interactive element */
 .website-link {
   display: flex;
   align-items: center;
@@ -1343,28 +596,28 @@ body:has(.nav-links.expanded) .website-switcher {
   padding: 0.75rem 1rem;
   border-radius: 8px;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--header-text);
   font-size: 0.95rem;
   font-weight: 500;
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
   cursor: pointer;
 }
 
 .website-link:hover,
 .website-link:focus {
-  background-color: rgba(255,255,255,0.15);
+  background-color: var(--nav-hover-bg);
   transform: translateX(4px);
   outline: none;
 }
 
 .website-link:active {
-  background-color: rgba(255,255,255,0.2);
+  background-color: var(--nav-hover-bg);
   transform: translateX(2px);
 }
 
 .website-list li:focus-within .website-link {
-  background-color: rgba(255,255,255,0.15);
-  outline: 2px solid rgba(255,255,255,0.3);
+  background-color: var(--nav-hover-bg);
+  outline: 2px solid var(--nav-outline);
   outline-offset: -2px;
 }
 
@@ -1379,9 +632,20 @@ body:has(.nav-links.expanded) .website-switcher {
   object-fit: cover;
 }
 
-.website-link:hover .website-logo {
+html.dark .website-list img,
+html.dark .website-list .logo {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.website-link:hover .logo,
+.website-link:hover img {
   box-shadow: 0 3px 12px rgba(0,0,0,0.25);
   transform: scale(1.05);
+}
+
+html.dark .website-link:hover .logo,
+html.dark .website-link:hover img {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.5);
 }
 
 .website-name {
@@ -1391,5386 +655,66 @@ body:has(.nav-links.expanded) .website-switcher {
   white-space: nowrap;
 }
 
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
+.switcher-dropdown.open li { animation: fadeInUp 0.3s forwards; }
 .switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
 .switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
 .switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
 .switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
 .switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
 .switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
 
 /* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
+   Responsive Adjustments (Mobile/Tablet)
    =============================== */
 @media (max-width: 1000px) {
   .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
 }
 
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
+@media (min-width: 601px) and (max-width: 1000px) {
+  .switcher-dropdown { max-width: 400px; }
+  .website-link { padding: 0.7rem 0.95rem; }
 }
 
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
+@media (max-width: 900px) {
+  .site-header {
+    position: fixed;
     top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
     left: 0;
     right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
     justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
+    padding: 0 1rem;
+    z-index: 2100;
   }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
   .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
+    position: absolute !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 2100 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
+  .website-switcher {
+    position: absolute !important;
+    left: calc(env(safe-area-inset-left, 0px) + 1rem + 44px) !important;
+    right: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    align-items: center !important;
+    z-index: 2150 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
+  .hamburger {
+    position: absolute;
+    left: calc(1rem + env(safe-area-inset-left));
+    z-index: 2200;
   }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
-   Website Switcher Dropdown
-   =============================== */
-/* Add base rule to ensure consistent z-index and display */
-.website-switcher {
-  position: relative;
-  z-index: 2100;
-  display: flex;
-  align-items: center;
-}
-
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
-.site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-.switcher-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.08);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.switcher-toggle:hover,
-.switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
-}
-
-.switcher-toggle:active {
-  transform: scale(1.05);
-  transition: transform 0.1s ease;
-}
-
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
-.switcher-dropdown {
-  position: fixed;
-  top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
-  border-radius: 0 0 12px 12px;
-  
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
-  pointer-events: none;
-  z-index: 1850;
-  overflow: hidden;
-  
-  min-width: 260px;
-  max-width: 500px;
-  width: auto;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.switcher-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.website-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.website-list li {
-  margin: 0;
-  /* UPDATED: Prepare for animation */
-  opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
-  transform: translateY(-10px) scale(var(--scale));
-}
-
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
-.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
-.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
-.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
-.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
-.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
-.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
-
-/* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
 }
 
 @media (max-width: 600px) {
   .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
-}
-
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
-  }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
-  .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-  }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
-  }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
-   Website Switcher Dropdown
-   =============================== */
-/* Add base rule to ensure consistent z-index and display */
-.website-switcher {
-  position: relative;
-  z-index: 2100;
-  display: flex;
-  align-items: center;
-}
-
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
-.site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-.switcher-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.08);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.switcher-toggle:hover,
-.switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
-}
-
-.switcher-toggle:active {
-  transform: scale(1.05);
-  transition: transform 0.1s ease;
-}
-
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
-.switcher-dropdown {
-  position: fixed;
-  top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
-  border-radius: 0 0 12px 12px;
-  
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
-  pointer-events: none;
-  z-index: 1850;
-  overflow: hidden;
-  
-  min-width: 260px;
-  max-width: 500px;
-  width: auto;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.switcher-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.website-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.website-list li {
-  margin: 0;
-  /* UPDATED: Prepare for animation */
-  opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
-  transform: translateY(-10px) scale(var(--scale));
-}
-
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
-.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
-.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
-.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
-.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
-.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
-.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
-
-/* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
-}
-
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
-}
-
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
-  }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
-  .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-  }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
-  }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
-   Website Switcher Dropdown
-   =============================== */
-/* Add base rule to ensure consistent z-index and display */
-.website-switcher {
-  position: relative;
-  z-index: 2100;
-  display: flex;
-  align-items: center;
-}
-
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
-.site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-.switcher-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.08);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.switcher-toggle:hover,
-.switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
-}
-
-.switcher-toggle:active {
-  transform: scale(1.05);
-  transition: transform 0.1s ease;
-}
-
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
-.switcher-dropdown {
-  position: fixed;
-  top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
-  border-radius: 0 0 12px 12px;
-  
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
-  pointer-events: none;
-  z-index: 1850;
-  overflow: hidden;
-  
-  min-width: 260px;
-  max-width: 500px;
-  width: auto;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.switcher-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.website-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.website-list li {
-  margin: 0;
-  /* UPDATED: Prepare for animation */
-  opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
-  transform: translateY(-10px) scale(var(--scale));
-}
-
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
-.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
-.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
-.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
-.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
-.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
-.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
-
-/* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
-}
-
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
-}
-
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
-  }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
-  .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-  }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
-  }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
-   Website Switcher Dropdown
-   =============================== */
-/* Add base rule to ensure consistent z-index and display */
-.website-switcher {
-  position: relative;
-  z-index: 2100;
-  display: flex;
-  align-items: center;
-}
-
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
-.site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-.switcher-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.08);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.switcher-toggle:hover,
-.switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
-}
-
-.switcher-toggle:active {
-  transform: scale(1.05);
-  transition: transform 0.1s ease;
-}
-
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
-.switcher-dropdown {
-  position: fixed;
-  top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
-  border-radius: 0 0 12px 12px;
-  
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
-  pointer-events: none;
-  z-index: 1850;
-  overflow: hidden;
-  
-  min-width: 260px;
-  max-width: 500px;
-  width: auto;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.switcher-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.website-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.website-list li {
-  margin: 0;
-  /* UPDATED: Prepare for animation */
-  opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
-  transform: translateY(-10px) scale(var(--scale));
-}
-
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
-.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
-.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
-.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
-.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
-.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
-.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
-
-/* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
-}
-
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
-}
-
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
-  }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
-  .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-  }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
-  }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
-   Website Switcher Dropdown
-   =============================== */
-/* Add base rule to ensure consistent z-index and display */
-.website-switcher {
-  position: relative;
-  z-index: 2100;
-  display: flex;
-  align-items: center;
-}
-
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
-.site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-.switcher-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.08);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.switcher-toggle:hover,
-.switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
-}
-
-.switcher-toggle:active {
-  transform: scale(1.05);
-  transition: transform 0.1s ease;
-}
-
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
-.switcher-dropdown {
-  position: fixed;
-  top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
-  border-radius: 0 0 12px 12px;
-  
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
-  pointer-events: none;
-  z-index: 1850;
-  overflow: hidden;
-  
-  min-width: 260px;
-  max-width: 500px;
-  width: auto;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.switcher-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.website-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.website-list li {
-  margin: 0;
-  /* UPDATED: Prepare for animation */
-  opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
-  transform: translateY(-10px) scale(var(--scale));
-}
-
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
-.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
-.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
-.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
-.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
-.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
-.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
-
-/* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
-}
-
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
-}
-
-@media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
-  }
-}
-
-/* ===============================
-   Desktop Adjustments
-   =============================== */
-@media (min-width: 1400px) {
-  .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start; /* keep logo on left */
-  }
-
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
-  }
-
-  .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
-    max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
-  }
-
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
-  }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
-
-  .nav-links a:hover,
-  .nav-links a:focus { 
-    background-color: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    color: #ffffff !important;
-    --scale: 1.05;
-  }
-
-  html.dark .nav-links a[aria-current="page"],
-  html.dark .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-  }
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark .nav-links a { color: #ccc; }
-html.dark .nav-links a:hover,
-html.dark .nav-links a:focus { color: #00bcd4; --scale: 1.05; }
-
-/* ===============================
-   Footer Styles
-   =============================== */
-.site-footer {
-  width: 100%;
-  padding: 1.5rem 1rem; /* was 2rem 1rem */
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  font-size: 0.9rem;
-  color: #333;
-  box-sizing: border-box;
-}
-
-.footer-container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.25rem; /* was 2rem */
-}
-
-.footer-section {
-  flex: 1 1 200px;
-  min-width: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;  /* change from flex-start to center */
-}
-
-/* Align Quick Links column left so heading and list share the same left edge */
-.footer-section.footer-right {
-  align-items: flex-start;
-}
-.footer-section.footer-right h4,
-.footer-section.footer-right ul {
-  text-align: left;
-}
-
-.footer-section h4 {
-  margin-bottom: 0.4rem; /* was 0.5rem */
-  font-size: 1rem;
-  color: #000;
-}
-
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-
-.footer-section ul li { margin-bottom: 0.3rem; }
-
-.footer-section ul li a {
-  color: var(--link);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
-}
-
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: #ffffff;
-  opacity: 0.15;
-  transition: width 0.3s ease;
-  z-index: -1;
-  border-radius: 2px;
-}
-
-.footer-section ul li a:hover {
-  color: #0094b6;
-}
-
-.footer-section ul li a:hover::after {
-  width: 100%;
-}
-
-.social-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;       /* was 0.5rem */
-  justify-content: flex-start;
-  margin-top: 0.15rem; /* was 0.25rem */
-}
-
-.social-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f0f0f0;
-  color: #333;
-  text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.social-link:hover { transform: translateY(-2px); }
-.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
-.social-link.github:hover { background: #24292f; color: #fff; }
-.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
-
-.footer-meta {
-  margin-top: 1rem; /* was 2rem */
-  text-align: center;
-  font-size: 0.8rem;
-  color: #666;
-}
-
-/* Footer Theme Toggle */
-.footer-toggle {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  margin: 1rem 0;
-  width: 100%;
-  gap: 0.75rem;
-}
-
-.footer-toggle h4 {
-  margin: 0;
-}
-
-/* ===============================
-   Footer Theme Toggle
-   =============================== */
-/* Container now only holds the switch itself */
-.theme-toggle-switch {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Switch track (role="switch") */
-.toggle-track {
-  position: relative;
-  width: 64px;
-  height: 32px;
-  border-radius: 999px;
-  background: #e5e7eb;
-  border: 1px solid #d1d5db;
-  cursor: pointer;
-  padding: 0;
-  outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Icons inside track (left sun, right moon) */
-.toggle-track .icons {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 6px;
-  font-size: 1.1rem;
-  pointer-events: none;
-  font-weight: 400;
-}
-.toggle-track .icons .sun { 
-  opacity: 1;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #f59e0b;
-  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
-}
-.toggle-track .icons .moon { 
-  opacity: 0.6;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  color: #64748b;
-}
-.toggle-track[aria-checked="true"] .icons .sun { 
-  opacity: 0.5;
-  transform: scale(0.9);
-  filter: none;
-}
-.toggle-track[aria-checked="true"] .icons .moon { 
-  opacity: 1;
-  color: #fbbf24;
-  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
-}
-
-/* Thumb that slides left->right */
-.toggle-track .toggle-thumb {
-  position: absolute;
-  top: 50%;
-  left: 2px;
-  transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
-  transition: left 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-.toggle-track[aria-checked="true"] .toggle-thumb {
-  left: calc(100% - 30px);
-}
-
-/* Focus ring */
-.toggle-track:focus-visible {
-  box-shadow: 0 0 0 3px rgba(0,148,182,0.35);
-  border-color: #0094b6;
-}
-
-/* Hover effect */
-.toggle-track:hover {
-  background: #d1d5db;
-}
-.toggle-track[aria-checked="true"]:hover {
-  background: #1e293b;
-}
-
-/* Dark mode adjustments for the switch track and thumb */
-html.dark .toggle-track {
-  background: #334155;
-  border-color: #475569;
-}
-html.dark .toggle-track .toggle-thumb {
-  background: #f1f5f9;
-}
-html.dark .toggle-track:hover {
-  background: #1e293b;
-}
-html.dark .toggle-track .icons .sun {
-  color: #94a3b8;
-}
-html.dark .toggle-track[aria-checked="true"] .icons .moon {
-  color: #fbbf24;
-  filter: drop-shadow(0 0 3px rgba(251, 191, 36, 0.6));
-}
-
-/* ===============================
-   Dark Mode
-   =============================== */
-html.dark {
-  background-color: #1b1b1b;
-  color: #ffffff;
-}
-html.dark a { color: #66aaff; }
-html.dark a:hover, html.dark a:focus { color: #99cfff; }
-html.dark .site-header { background-color: #004166; }
-html.dark .site-title a { color: #ffffff; }
-html.dark .hamburger .line { background-color: #ffffff; }
-html.dark .nav-links { background-color: #004166; color: #ffffff; }
-html.dark .nav-links a { color: #ffffff !important; }
-html.dark .nav-links a:hover, html.dark .nav-links a:focus { background-color: rgba(255,255,255,0.2); border-radius: 4px; }
-html.dark .site-footer { 
-  background-color: #222; 
-  color: #7b7b7b; 
-  border-top: 1px solid #444;
-}
-html.dark .footer-section h4 { color: #ffffff; }
-html.dark .footer-section ul li a { color: #7b7b7b; }
-html.dark .footer-section ul li a:hover { color: #0078be; }
-html.dark .footer-meta { color: #696969; }
-
-/* ===============================
-   Responsive Footer Adjustments
-   =============================== */
-@media (max-width: 800px) {
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
-  .footer-section { flex: 1 1 100%; align-items: center; }
-  .social-links { justify-content: center; }
-
-  /* On small screens, center Quick Links like other sections */
-  .footer-section.footer-right {
-    align-items: center;
-  }
-  .footer-section.footer-right h4,
-  .footer-section.footer-right ul {
-    text-align: center;
-  }
-}
-
-/* ===============================
-   Custom bullet points with nested support and clear indentation
-   =============================== */
-ul.custom-bullets {
-  list-style: none;        
-  padding-left: 0;          
-  margin: 0;
-}
-
-/* Level 1 bullets */
-ul.custom-bullets > li {
-  position: relative;
-  margin-bottom: 0.5rem;   
-  padding-left: 2.5rem;       /* increased space for bullet */
-  opacity: 0;
-  transform: translateX(-20px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s);
-}
-ul.custom-bullets > li::before {
-  content: "•";
-  position: absolute;
-  left: 0;                
-  top: 0;                 
-  color: #0094b6;          
-  font-size: 1.5rem;       
-  line-height: 1;
-}
-
-/* Level 2 bullets */
-ul.custom-bullets li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.25rem;
-}
-ul.custom-bullets li ul li {
-  position: relative;
-  margin-bottom: 0.25rem;
-  padding-left: 2.8rem;      /* slightly more indentation than level 1 */
-  opacity: 0;
-  transform: translateX(-15px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
-}
-ul.custom-bullets li ul li::before {
-  content: "◦";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #0078a0;
-  font-size: 1.3rem;
-  line-height: 1;
-}
-
-/* Level 3 bullets */
-ul.custom-bullets li ul li ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0.15rem;
-}
-ul.custom-bullets li ul li ul li {
-  position: relative;
-  margin-bottom: 0.15rem;
-  padding-left: 3.2rem;      /* increased indentation for level 3 */
-  opacity: 0;
-  transform: translateX(-10px); 
-  animation: slideInBullet 0.5s forwards;
-  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
-}
-ul.custom-bullets li ul li ul li::before {
-  content: "■";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #005577;
-  font-size: 1.1rem;
-  line-height: 1;
-}
-
-/* Animation keyframes */
-@keyframes slideInBullet {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Dark mode bullet colors */
-html.dark ul.custom-bullets > li::before { color: #004166; }
-html.dark ul.custom-bullets li ul li::before { color: #006699; }
-html.dark ul.custom-bullets li ul li ul li::before { color: #0080cc; }
-
-/* Mobile adjustments for bullets */
-@media (max-width: 600px) {
-  ul.custom-bullets > li::before { font-size: 2.2rem; }
-  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
-  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
-}
-
-/* ===============================
-   Inline Link Styling (for About Me page)
-   =============================== */
-.inline-link {
-  color: #0094b6; /* match your brand accent color */
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: #007a95; /* slightly darker shade on hover */
-  text-decoration: underline;
-}
-
-/* Dark mode adjustments */
-html.dark .inline-link {
-  color: #5bc0de; /* softer cyan for dark backgrounds */
-}
-
-html.dark .inline-link:hover {
-  color: #7dd3fc; /* lighter cyan for hover contrast */
-  text-decoration: underline;
-}
-
-/* ===============================
-   avoid hamburger / logo overlap on small screens:
-   - keep hamburger pinned to the left (respect safe-area)
-   - absolutely center the site title on small/medium screens so it never collides
-   - restore normal flow on large (desktop) screens */
-.hamburger {
-  left: calc(1rem + env(safe-area-inset-left));
-}
-
-/* 
-   UPDATED: This block previously forced absolute positioning which conflicted 
-   with the Website Switcher layout. We now rely on the "Mobile/Tablet Layout Fixes" 
-   block above to handle centering via Flexbox. 
-   
-   We keep the media query structure but remove the conflicting absolute positioning properties.
-*/
-@media (max-width: 1299px) {
-  /* 
-     Conflicting properties removed/commented out. 
-     The layout is now handled by the !important rules in the block above.
-  */
-  /*
-  .site-title {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    transform: none;
-    z-index: 1500;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding-left: calc(1rem + env(safe-area-inset-left) + 56px);
-    padding-right: calc(1rem + env(safe-area-inset-right) + 56px);
-    box-sizing: border-box;
-  }
-  */
-  
-  /* Keep the link styling adjustments if needed, but ensure they don't break flex */
-  .site-title a {
-    /* padding: 0 8px; */ /* Already handled above */
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
-
-/* Restore normal flow on wide screens */
-@media (min-width: 1300px) {
-  .site-title {
-    position: static;
-    transform: none;
-    left: auto;
-    right: auto;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: left;
-  }
-  .site-title a {
-    gap: 0.6rem; /* slightly larger gap on wide screens */
-  }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
-}
-
-/* Add this to your existing body styles */
-body.menu-active {
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
-
-/* ===============================
-   Reduced Motion
-   =============================== */
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
-}
-.section-divider {
-  width: 85%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-
-  /* Subtle gradient line that adapts to theme */
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--divider-color, rgba(0, 0, 0, 0.3)),
-    transparent
-  );
-
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
-  border-radius: 2px;
-}
-
-/* Dark mode support */
-:root.dark .section-divider {
-  --divider-color: rgba(255, 255, 255, 0.25);
-  opacity: 0.5;
-}
-
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .section-divider {
-    width: 90%;
-    margin: 2rem auto;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-divider {
-    width: 95%;
-    margin: 1.5rem auto;
-    height: 1.5px;
-  }
-}
-
-/* ===============================
-   Tighten spacing between carbon badge and footer meta
-   =============================== */
-.footer-carbon-badge {
-  /* if you wrap the badge, reduce its vertical margins slightly */
-  margin: 0.75rem 0; /* was ~1.5rem from generic spacing */
-}
-.footer-carbon-badge + .footer-meta {
-  margin-top: 1.25rem; /* was 2rem */
-}
-
-/* Fallback when badge is inserted directly without wrapper */
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0; /* reduced vertical spacing */
-}
-.site-footer .carbonbadge + .footer-meta {
-  margin-top: 1.25rem; /* override default 2rem when following the badge */
-}
-
-/* ===============================
-   Website Switcher Dropdown
-   =============================== */
-/* Add base rule to ensure consistent z-index and display */
-.website-switcher {
-  position: relative;
-  z-index: 2100;
-  display: flex;
-  align-items: center;
-}
-
-/* Hide switcher when hamburger menu is active (expanded) */
-/* This assumes the nav-links or a parent gets an 'expanded' class, 
-   or we target the sibling state if possible. 
-   Since CSS can't easily select a previous sibling based on a later one's class 
-   without :has(), we will use the :has() selector which is widely supported now,
-   or rely on the fact that the hamburger usually toggles a class on the header or nav.
-   
-   Based on your BaseLayout script: nav.classList.toggle("expanded");
-   The switcher is a sibling of nav.
-*/
-body:has(.nav-links.expanded) .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-/* Fallback for older browsers */
-.site-header.menu-open .website-switcher {
-  visibility: hidden; /* was display: none */
-}
-
-.switcher-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: rgba(255,255,255,0.08);
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  color: #ffffff;
-  padding: 0;
-  border-radius: 8px;
-}
-
-.switcher-toggle:hover,
-.switcher-toggle:focus {
-  background: rgba(255,255,255,0.18);
-  transform: scale(1.08);
-}
-
-.switcher-toggle:active {
-  transform: scale(1.05);
-  transition: transform 0.1s ease;
-}
-
-.switcher-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.switcher-icon .chevron {
-  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.switcher-icon .chevron.rotated {
-  transform: rotate(180deg);
-}
-
-/* Dropdown container */
-.switcher-dropdown {
-  position: fixed;
-  top: calc(70px + env(safe-area-inset-top)); 
-  
-  background-color: #0094b6;
-  color: #ffffff;
-  
-  border-radius: 0 0 12px 12px;
-  
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
-    
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-12px);
-  
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 380ms,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
-    
-  pointer-events: none;
-  z-index: 1850;
-  overflow: hidden;
-  
-  min-width: 260px;
-  max-width: 500px;
-  width: auto;
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.switcher-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-  pointer-events: auto;
-  
-  /* UPDATED: Match nav-links transition timing */
-  transition: 
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0s linear 0s;
-}
-
-.switcher-dropdown::before {
-  display: none;
-}
-
-.dropdown-header {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  text-align: left;
-}
-
-.website-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.website-list li {
-  margin: 0;
-  /* UPDATED: Prepare for animation */
-  opacity: 0;
-  --scale: 1; /* Define scale for fadeInUp animation */
-  transform: translateY(-10px) scale(var(--scale));
-}
-
-/* UPDATED: Staggered animation when open */
-.switcher-dropdown.open li {
-  animation: fadeInUp 0.3s forwards;
-}
-.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
-.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
-.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
-.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
-.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
-.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
-/* Extra padding below the last link when menu is expanded */
-.nav-links.expanded a:last-child {
-  margin-bottom: 1rem; /* increase this value to taste */
-}
-
-@keyframes fadeInUp {
-  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
-}
-
-.nav-links a:hover,
-.nav-links a:focus {
-  background-color: rgba(255,255,255,0.15);
-  border-radius: 8px; /* Ensure consistent border-radius */
-  color: #ffffff !important;
-  --scale: 1.05;
-}
-
-/* ===============================
-   Website Switcher - Dark Mode & Responsive
-   =============================== */
-
-/* Dark mode support for website switcher */
-html.dark .switcher-dropdown {
-  background-color: #004166;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-/* Ensure switcher dropdown always matches the header color (light/dark via variable) */
-.switcher-dropdown {
-  background-color: var(--header-bg);
-}
-
-html.dark .switcher-toggle {
-  background: rgba(0, 188, 212, 0.15);
-}
-
-html.dark .switcher-toggle:hover,
-html.dark .switcher-toggle:focus {
-  background: rgba(0, 188, 212, 0.25);
-}
-
-html.dark .website-link {
-  color: #e0e0e0;
-}
-
-html.dark .website-link:hover,
-html.dark .website-link:focus {
-  background-color: rgba(0, 188, 212, 0.2);
-  color: #00bcd4;
-}
-
-html.dark .website-link:active {
-  background-color: rgba(0, 188, 212, 0.15);
-}
-
-html.dark .website-list li:focus-within .website-link {
-  background-color: rgba(0, 188, 212, 0.2);
-  outline-color: rgba(0, 188, 212, 0.5);
-}
-
-html.dark .website-logo,
-html.dark .website-list img {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-html.dark .website-link:hover .website-logo {
-  box-shadow: 0 3px 12px rgba(0,0,0,0.4);
-}
-
-/* Responsive styles for mobile */
-@media (max-width: 600px) {
   .switcher-dropdown {
     min-width: calc(100vw - 2rem);
     max-width: calc(100vw - 2rem);
@@ -6778,118 +722,91 @@ html.dark .website-link:hover .website-logo {
     right: 1rem !important;
     width: auto;
   }
-  
-  .website-link {
-    padding: 0.65rem 0.85rem;
-    font-size: 0.9rem;
-  }
-  
-  .website-list img,
-  .website-list .logo {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-  }
-  
-  .website-name {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 500px) {
-  .switcher-dropdown {
-    border-radius: 0;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100vw;
-  }
-  
-  .website-link {
-    padding: 0.6rem 0.8rem;
-    gap: 0.6rem;
-  }
-  
-  .website-list img,
-  .website-list .logo {
-    width: 32px;
-    height: 32px;
-    min-width: 32px;
-  }
-}
-
-/* Tablet responsive */
-@media (min-width: 601px) and (max-width: 1000px) {
-  .switcher-dropdown {
-    max-width: 400px;
-  }
-  
-  .website-link {
-    padding: 0.7rem 0.95rem;
-  }
-}
-
-
-/* ===============================
-   Navigation Overlay
-   =============================== */
-.nav-overlay {
-  position: fixed;
-  top: 70px; /* Match new header height */
-  left: 0;
-  width: 100%;
-  height: calc(100vh - 70px); /* Full viewport height minus header */
-  background: rgba(0,0,0,0.35);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1100;
-  -webkit-overflow-scrolling: touch; /* For iOS momentum scrolling */
-}
-
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* ===============================
-   Responsive tweaks
-   =============================== */
-@media (max-width: 1000px) {
-  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
-}
-
-@media (max-width: 600px) {
-  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
+  .website-link { padding: 0.65rem 0.85rem; font-size: 0.9rem; }
+  .website-list img, .website-list .logo { width: 36px; height: 36px; min-width: 36px; }
+  .website-name { font-size: 0.9rem; }
 }
 
 @media (max-width: 500px) {
   .site-header { justify-content: space-between; padding: 0 1rem; }
-  .nav-links {
-    top: calc(70px + env(safe-area-inset-top));
-    padding: 1rem 0; /* was 1.25rem 0 */
+  .nav-links { top: calc(70px + env(safe-area-inset-top)); padding: 1rem 0; }
+  .website-switcher { left: calc(1rem + 40px); }
+  .hamburger { left: calc(1rem + env(safe-area-inset-left)); }
+  .site-title img { max-width: 40px; height: auto; }
+  
+  .switcher-dropdown {
+    border-radius: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    min-width: auto !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    top: calc(70px + env(safe-area-inset-top)) !important;
+  }
+  .website-link { padding: 0.6rem 0.8rem; gap: 0.6rem; }
+  .website-list img, .website-list .logo { width: 32px; height: 32px; min-width: 32px; }
+}
+
+@media (max-width: 1399px) {
+  body:has(.nav-links.expanded) .website-switcher,
+  .site-header.menu-open .website-switcher {
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+  }
+  .site-title a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 0.5rem;
   }
 }
 
 /* ===============================
-   Desktop Adjustments
+   Desktop Adjustments (Min-Width 1400px)
    =============================== */
+@media (min-width: 1300px) {
+  .site-title {
+    position: static;
+    transform: none;
+    left: auto;
+    right: auto;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+  }
+  .site-title a { gap: 0.6rem; }
+  .site-title .site-title-text {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: nowrap;
+    display: inline-block;
+  }
+}
+
 @media (min-width: 1400px) {
   .hamburger { display: none; }
 
   .site-header { 
     height: 70px;
-    justify-content: flex-start; /* keep logo on left */
+    justify-content: flex-start;
   }
 
-  /* 
-     Prevent Title from overlapping the centered Nav Links.
-     Updated calculation: 50vw (center) - 480px (Nav Half Width + Switcher + Padding + Buffer)
-  */
   .site-title {
     position: relative;    
     z-index: 2100;
-    max-width: calc(50vw - 480px); /* Increased buffer to strictly prevent overlap */
-    min-width: 0; /* Allow flex item to shrink/truncate properly */
+    max-width: calc(50vw - 480px);
+    min-width: 0; 
   }
 
   .nav-links {
@@ -6901,23 +818,19 @@ html.dark .website-link:hover .website-logo {
     flex-direction: row;
     justify-content: center;
     flex-wrap: nowrap;
-
-    /* key fixes: don't span the full header or overlay the logo */
-    width: max-content;           /* shrink to content width */
+    width: max-content;
     max-height: none;
-    background: transparent !important; /* no solid bg on desktop */
+    background: transparent !important; 
     gap: 4px;
     padding-left: 0;
     padding-right: 0;
     overflow: visible;
     height: 100%;
-    z-index: 1000 !important;        /* Ensure nav sits below title and switcher */
-
-    /* override mobile hidden states to ensure visible on desktop */
+    z-index: 1000 !important;
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    transition: none; /* desktop has no open/close animation */
+    transition: none; 
   }
 
   .nav-links a {
@@ -6925,70 +838,350 @@ html.dark .website-link:hover .website-logo {
     align-items: center;
     justify-content: center;
     height: 100%;
-    padding: 0 22px; /* Reduced from 28px to give Title more space */
+    padding: 0 22px;
     white-space: nowrap;
     opacity: 1 !important;
     transform: translateY(0) scale(var(--scale)) !important;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
   }
-
-  .nav-links a[aria-current="page"],
-  .nav-links a.active {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
-    color: #ffffff !important;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: background 0.3s ease, color 0.3s ease;
-  }
 }
 
-/* Medium screens: ensure centered logo and switcher stays left of logo
-   This prevents the switcher jumping to the right of the logo on medium widths */
-@media (min-width: 901px) and (max-width: 1399px) {
-  .site-header { justify-content: center; }
-
-  .site-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2100;
-  }
-
-  .hamburger {
-    position: absolute;
-    left: calc(1rem + env(safe-area-inset-left));
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2200;
-  }
-
-  .website-switcher {
-    position: absolute;
-    left: calc(1rem + 44px) !important; /* right of hamburger */
-    right: auto !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 2150 !important;
-    display: flex !important;
-    align-items: center !important;
-  }
+/* ===============================
+   Footer Styles
+   =============================== */
+.site-footer {
+  width: 100%;
+  padding: 1.5rem 1rem;
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  font-size: 0.9rem;
+  color: var(--footer-text);
+  box-sizing: border-box;
+  transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
 }
 
-/* Smallest screens: make switcher dropdown full width while still appearing under the header
-   and under the button visually. We ensure the dropdown is not clipped. */
-@media (max-width: 500px) {
-  .switcher-dropdown {
-    left: 0 !important;
-    right: 0 !important;
-    width: 100vw !important;
-    min-width: auto !important;
-    max-width: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-  }
+.footer-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+}
 
-  /* Keep the dropdown visually under the header by using the top value from CSS (header height) */
-  .switcher-dropdown {
-    top: calc(70px + env(safe-area-inset-top)) !important;
+.footer-section {
+  flex: 1 1 200px;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.footer-section.footer-right { align-items: flex-start; }
+.footer-section.footer-right h4,
+.footer-section.footer-right ul { text-align: left; }
+
+.footer-section h4 {
+  margin-bottom: 0.4rem;
+  font-size: 1rem;
+  color: var(--footer-heading);
+  transition: color 0.5s ease;
+}
+
+.footer-section ul { list-style: none; padding: 0; margin: 0; }
+.footer-section ul li { margin-bottom: 0.3rem; }
+
+.footer-section ul li a {
+  color: var(--link-color);
+  text-decoration: none;
+  position: relative;
+  padding: 2px 4px;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 100%;
+  background-color: var(--link-underline);
+  opacity: 0.15;
+  transition: width 0.3s ease, background-color 0.5s ease;
+  z-index: -1;
+  border-radius: 2px;
+}
+
+.footer-section ul li a:hover { color: var(--link-hover); }
+.footer-section ul li a:hover::after { width: 100%; }
+
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: flex-start;
+  margin-top: 0.15rem;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--social-bg);
+  color: var(--social-icon);
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.social-link:hover { transform: translateY(-2px); }
+/* Brand colors usually remain hardcoded */
+.social-link.twitter:hover { background: #1DA1F2; color: #fff; }
+.social-link.github:hover { background: #24292f; color: #fff; }
+.social-link.linkedin:hover { background: #0A66C2; color: #fff; }
+
+.footer-meta {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--footer-meta-text);
+  transition: color 0.5s ease;
+}
+
+.footer-carbon-badge { margin: 0.75rem 0; }
+.footer-carbon-badge + .footer-meta { margin-top: 1.25rem; }
+
+.site-footer .carbonbadge {
+  display: flex;
+  justify-content: center;
+  margin: 0.75rem 0;
+}
+.site-footer .carbonbadge + .footer-meta { margin-top: 1.25rem; }
+
+@media (max-width: 800px) {
+  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
+  .footer-section { flex: 1 1 100%; align-items: center; }
+  .social-links { justify-content: center; }
+  .footer-section.footer-right { align-items: center; }
+  .footer-section.footer-right h4, .footer-section.footer-right ul { text-align: center; }
+}
+
+/* ===============================
+   Footer Theme Toggle
+   =============================== */
+.footer-toggle {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.footer-toggle h4 { margin: 0; }
+
+.theme-toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-track {
+  position: relative;
+  width: 64px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--toggle-track-bg);
+  border: 1px solid var(--toggle-track-border);
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-track .icons {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+  font-size: 1.1rem;
+  pointer-events: none;
+  font-weight: 400;
+}
+
+.toggle-track .icons .sun { 
+  opacity: 1;
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  color: var(--sun-icon);
+  filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.5));
+}
+.toggle-track .icons .moon { 
+  opacity: 0.6;
+  transition: opacity 0.25s ease, transform 0.25s ease, color 0.25s ease;
+  color: var(--moon-icon);
+}
+.toggle-track[aria-checked="true"] .icons .sun { 
+  opacity: 0.5;
+  transform: scale(0.9);
+  filter: none;
+}
+.toggle-track[aria-checked="true"] .icons .moon { 
+  opacity: 1;
+  color: var(--moon-icon-active);
+  filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.4));
+}
+
+.toggle-track .toggle-thumb {
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--toggle-thumb-bg);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: left 0.25s ease, transform 0.25s ease, background 0.25s ease;
+  pointer-events: none;
+}
+.toggle-track[aria-checked="true"] .toggle-thumb { left: calc(100% - 30px); }
+
+.toggle-track:focus-visible {
+  box-shadow: 0 0 0 3px var(--focus-ring);
+  border-color: var(--accent-color);
+}
+
+.toggle-track:hover { background: var(--toggle-track-hover); }
+
+/* ===============================
+   Typography & Elements
+   =============================== */
+.section-divider {
+  width: 85%;
+  max-width: 1000px;
+  margin: 3rem auto;
+  border: none;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--divider-color), transparent);
+  transition: background 0.3s ease, opacity 0.3s ease;
+  opacity: 0.7;
+  border-radius: 2px;
+}
+
+@media (max-width: 768px) { .section-divider { width: 90%; margin: 2rem auto; } }
+@media (max-width: 480px) { .section-divider { width: 95%; margin: 1.5rem auto; height: 1.5px; } }
+
+.inline-link {
+  color: var(--inline-link);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.inline-link:hover {
+  color: var(--inline-link-hover);
+  text-decoration: underline;
+}
+
+/* Custom bullet points with nested support */
+ul.custom-bullets { list-style: none; padding-left: 0; margin: 0; }
+
+ul.custom-bullets > li {
+  position: relative;
+  margin-bottom: 0.5rem;   
+  padding-left: 2.5rem;       
+  opacity: 0;
+  transform: translateX(-20px); 
+  animation: slideInBullet 0.5s forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s);
+}
+ul.custom-bullets > li::before {
+  content: "•";
+  position: absolute;
+  left: 0;                
+  top: 0;                 
+  color: var(--bullet-l1);         
+  font-size: 1.5rem;       
+  line-height: 1;
+  transition: color 0.5s ease;
+}
+
+ul.custom-bullets li ul { list-style: none; padding-left: 0; margin-top: 0.25rem; }
+ul.custom-bullets li ul li {
+  position: relative;
+  margin-bottom: 0.25rem;
+  padding-left: 2.8rem;      
+  opacity: 0;
+  transform: translateX(-15px); 
+  animation: slideInBullet 0.5s forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s + 0.1s);
+}
+ul.custom-bullets li ul li::before {
+  content: "◦";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--bullet-l2);
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: color 0.5s ease;
+}
+
+ul.custom-bullets li ul li ul { list-style: none; padding-left: 0; margin-top: 0.15rem; }
+ul.custom-bullets li ul li ul li {
+  position: relative;
+  margin-bottom: 0.15rem;
+  padding-left: 3.2rem;      
+  opacity: 0;
+  transform: translateX(-10px); 
+  animation: slideInBullet 0.5s forwards;
+  animation-delay: calc(var(--index, 0) * 0.1s + 0.2s);
+}
+ul.custom-bullets li ul li ul li::before {
+  content: "■";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--bullet-l3);
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: color 0.5s ease;
+}
+
+@keyframes slideInBullet {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 600px) {
+  ul.custom-bullets > li::before { font-size: 2.2rem; }
+  ul.custom-bullets li ul li::before { font-size: 1.9rem; }
+  ul.custom-bullets li ul li ul li::before { font-size: 1.6rem; }
+}
+
+/* ===============================
+   Reduced Motion
+   =============================== */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger,
+  .hamburger .line,
+  .nav-links,
+  .nav-links a,
+  .nav-overlay,
+  .switcher-dropdown,
+  ul.custom-bullets > li,
+  ul.custom-bullets li ul li,
+  ul.custom-bullets li ul li ul li {
+    transition: none !important;
+    animation: none !important;
   }
 }
