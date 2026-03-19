@@ -168,7 +168,6 @@ button, a { display: inline-block; width: auto; }
 }
 .layout-content h1 { text-align: center; }
 
-/* Sticky footer wrapper */
 .page-wrapper {
   display: flex;
   flex-direction: column;
@@ -196,20 +195,23 @@ button, a { display: inline-block; width: auto; }
   justify-content: center;
   gap: 0.5rem;
   padding: 0 clamp(1rem, 5vw, 6rem);
-  background: var(--header-bg); /* Defaults to transparent variant */
-  backdrop-filter: blur(8px); /* Optional: Adds a nice frosted glass effect behind the transparency */
+  background: var(--header-bg); 
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   transition: background 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
 }
 
-/* Remove transparency when mobile menu is active */
 body.menu-active .site-header,
 body:has(.nav-links.expanded) .site-header {
   background: var(--header-bg-solid);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
+}
+
+.site-header.menu-shadow {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.638);
 }
 
 @media (max-width: 500px) {
@@ -219,10 +221,6 @@ body:has(.nav-links.expanded) .site-header {
     max-height: 70px;
     padding: 0 1rem;
   }
-}
-
-.site-header.menu-shadow {
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.638);
 }
 
 /* ===============================
@@ -263,8 +261,13 @@ body:has(.nav-links.expanded) .site-header {
   transition: color 0.5s ease;
 }
 
-@media (max-width: 900px) {
-  .site-title a { padding: 0 8px; }
+/* Master text hide breakpoint synced with layout shift */
+@media (max-width: 768px) {
+  .site-title a { 
+    padding: 0 8px; 
+    font-size: 0 !important; 
+  }
+  .site-title a > :not(img):not(svg),
   .site-title .site-title-text {
     position: absolute !important;
     width: 1px !important;
@@ -279,23 +282,7 @@ body:has(.nav-links.expanded) .site-header {
   }
 }
 
-@media (max-width: 500px) {
-  .site-title a { font-size: 0 !important; }
-  .site-title a > :not(img):not(svg) {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    margin: -1px !important;
-    padding: 0 !important;
-    border: 0 !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    clip-path: inset(50%) !important;
-    white-space: nowrap !important;
-  }
-}
-
-@media (min-width: 501px) {
+@media (min-width: 769px) { 
   .site-title a { font-size: 1.2rem !important; }
 }
 
@@ -368,7 +355,7 @@ body:has(.nav-links.expanded) .site-header {
   width: 100%;
   max-height: 0;
   overflow: hidden;
-  background: var(--header-bg-solid); /* Dropdown is always solid */
+  background: var(--header-bg-solid); 
   text-align: left;
   z-index: 1200;
   gap: 0.75rem;
@@ -519,7 +506,7 @@ body:has(.nav-links.expanded) .website-switcher,
 .switcher-dropdown {
   position: fixed;
   top: calc(70px + env(safe-area-inset-top)); 
-  background: var(--header-bg-solid); /* Switcher dropdown is always solid */
+  background: var(--header-bg-solid); 
   color: var(--header-text);
   border-radius: 0 0 12px 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -675,7 +662,8 @@ html.dark .website-link:hover img {
   .website-link { padding: 0.7rem 0.95rem; }
 }
 
-@media (max-width: 900px) {
+/* Structuring for small to large-medium screens (up to 1599px) */
+@media (max-width: 1599px) {
   .site-header {
     position: fixed;
     top: 0;
@@ -696,7 +684,7 @@ html.dark .website-link:hover img {
   }
   .website-switcher {
     position: absolute !important;
-    left: calc(env(safe-area-inset-left, 0px) + 1rem + 44px) !important;
+    left: calc(clamp(1rem, 5vw, 6rem) + 40px + 0.5rem + 20px) !important;
     right: auto !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
@@ -710,6 +698,22 @@ html.dark .website-link:hover img {
     position: absolute;
     left: calc(1rem + env(safe-area-inset-left));
     z-index: 2200;
+  }
+  
+  body:has(.nav-links.expanded) .website-switcher,
+  .site-header.menu-open .website-switcher {
+    visibility: visible !important;
+    pointer-events: auto !important;
+    opacity: 1 !important;
+  }
+  .site-title a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 0.5rem;
   }
 }
 
@@ -728,10 +732,8 @@ html.dark .website-link:hover img {
 }
 
 @media (max-width: 500px) {
-  .site-header { justify-content: space-between; padding: 0 1rem; }
+  .site-header { height: 70px; min-height: 70px; max-height: 70px; padding: 0 1rem; }
   .nav-links { top: calc(70px + env(safe-area-inset-top)); padding: 1rem 0; }
-  .website-switcher { left: calc(1rem + 40px); }
-  .hamburger { left: calc(1rem + env(safe-area-inset-left)); }
   .site-title img { max-width: 40px; height: auto; }
   
   .switcher-dropdown {
@@ -748,28 +750,11 @@ html.dark .website-link:hover img {
   .website-list img, .website-list .logo { width: 32px; height: 32px; min-width: 32px; }
 }
 
-@media (max-width: 1399px) {
-  body:has(.nav-links.expanded) .website-switcher,
-  .site-header.menu-open .website-switcher {
-    visibility: visible !important;
-    pointer-events: auto !important;
-    opacity: 1 !important;
-  }
-  .site-title a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
-}
 
 /* ===============================
-   Desktop Adjustments (Min-Width 1400px)
+   Desktop Adjustments (Min-Width 1600px)
    =============================== */
-@media (min-width: 1300px) {
+@media (min-width: 1500px) {
   .site-title {
     position: static;
     transform: none;
@@ -794,7 +779,7 @@ html.dark .website-link:hover img {
   }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1600px) {
   .hamburger { display: none; }
 
   .site-header { 
@@ -807,6 +792,12 @@ html.dark .website-link:hover img {
     z-index: 2100;
     max-width: calc(50vw - 480px);
     min-width: 0; 
+  }
+
+  /* Dynamically align switcher dropdown precisely with the start of the title text */
+  .switcher-dropdown {
+    left: calc(clamp(1rem, 5vw, 6rem) + 40px + 0.5rem + 20px) !important;
+    right: auto !important;
   }
 
   .nav-links {
@@ -952,16 +943,6 @@ html.dark .website-link:hover img {
   transition: color 0.5s ease;
 }
 
-.footer-carbon-badge { margin: 0.75rem 0; }
-.footer-carbon-badge + .footer-meta { margin-top: 1.25rem; }
-
-.site-footer .carbonbadge {
-  display: flex;
-  justify-content: center;
-  margin: 0.75rem 0;
-}
-.site-footer .carbonbadge + .footer-meta { margin-top: 1.25rem; }
-
 @media (max-width: 800px) {
   .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; width: 95%; }
   .footer-section { flex: 1 1 100%; align-items: center; }
@@ -1001,7 +982,7 @@ html.dark .website-link:hover img {
   cursor: pointer;
   padding: 0;
   outline: none;
-  transition: background 0.25s ease, border-color 0.25s ease;
+  transition: background 0.2s ease, border-color 0.25s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1062,6 +1043,65 @@ html.dark .website-link:hover img {
 }
 
 .toggle-track:hover { background: var(--toggle-track-hover); }
+
+/* ===============================
+   Website Carbon Badge Fixes
+   =============================== */
+.footer-carbon-badge {
+  display: block;
+  text-align: center;
+  margin: 0.75rem auto;
+  width: 100%;
+}
+
+/* Ensure the main container respects text alignment */
+#wcb.carbonbadge {
+  display: block !important;
+  text-align: center !important;
+}
+
+/* Explicitly hide the injected style block from showing on page */
+#wcb.carbonbadge style {
+  display: none !important;
+}
+
+/* Force the left and right halves of the badge to stay together */
+#wcb #wcb_g, 
+#wcb #wcb_a {
+  display: inline-flex !important;
+  width: auto !important;
+  margin: 0 !important;
+}
+
+/* Restore the native border-radius of the badge */
+#wcb #wcb_g {
+  border-radius: 0.3em 0 0 0.3em !important;
+  border-right: 0 !important;
+}
+#wcb #wcb_a {
+  border-radius: 0 0.3em 0.3em 0 !important;
+  border-left: 0 !important;
+}
+
+/* The "Cleaner than X%" text configuration */
+#wcb #wcb_2 {
+  display: inline-flex !important;
+  margin-left: 0.5em !important; /* Space it neatly next to badge on desktop */
+}
+
+/* Mobile override: Drop the text safely beneath the badge */
+@media (max-width: 600px) {
+  #wcb #wcb_2 {
+    display: block !important;
+    margin-left: 0 !important;
+    margin-top: 0.5em !important; /* Space it neatly below the badge */
+  }
+}
+
+.footer-carbon-badge + .footer-meta,
+.site-footer .carbonbadge + .footer-meta { 
+  margin-top: 1.25rem; 
+}
 
 /* ===============================
    Typography & Elements
@@ -1138,7 +1178,7 @@ ul.custom-bullets li ul li::before {
 }
 
 ul.custom-bullets li ul li ul { list-style: none; padding-left: 0; margin-top: 0.15rem; }
-ul.custom-bullets li ul li ul li {
+ul.custom-bullets li ul li ul {
   position: relative;
   margin-bottom: 0.15rem;
   padding-left: 3.2rem;      

@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image, getImage } from 'astro:assets';
-import PhotoCarousel from '../components/PhotoCarousel.jsx';
 import '../styles/about-me.css';
+import PhotoCarousel from '../components/PhotoCarousel.jsx';
 
 const pageTitle = "About Me";
 
@@ -96,7 +96,7 @@ const hobbiesImages = await Promise.all([
         <li>Poppy (the grey-coloured cat)</li>
         <li>Luna (the big cat)</li>
       </ul>
-      <PhotoCarousel client:load images={petImages} />
+      <PhotoCarousel client:visible images={petImages} />
     </div>
     
     <div class="card">
@@ -105,7 +105,7 @@ const hobbiesImages = await Promise.all([
       <p>Another one of my favourite hobbies is 
      <a href="/photography" class="inline-link">photography</a>.
       </p>
-      <PhotoCarousel client:load images={hobbiesImages} />
+      <PhotoCarousel client:visible images={hobbiesImages} />
     </div>
   </section>
 </BaseLayout>
