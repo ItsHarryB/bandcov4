@@ -1,7 +1,7 @@
 {
   "name": "bandcov4",
   "type": "module",
-  "version": "4.0.6",
+  "version": "4.0.6a",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
