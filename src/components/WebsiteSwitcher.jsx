@@ -34,40 +34,21 @@ export default function WebsiteSwitcher() {
     };
   }, [isOpen]);
 
-  const updatePosition = () => {
-    if (buttonRef.current && window.innerWidth >= 1300) {
-      // On desktop, align with the button using fixed positioning
+const updatePosition = () => {
+    if (buttonRef.current) {
       const rect = buttonRef.current.getBoundingClientRect();
-      
-      // Get header bottom
       const header = document.querySelector('.site-header');
       const headerBottom = header ? header.getBoundingClientRect().bottom : 70;
 
-      // Get site title width to match exactly
-      const siteTitle = document.querySelector('.site-title');
-      // Calculate width: siteTitle width + switcher button width + gap
-      // Or just match the visual block of "Logo + Text"
-      // The user wants to align left with switcher button, but expand width to match title
-      
-      let width = 'auto';
-      if (siteTitle) {
-        const titleRect = siteTitle.getBoundingClientRect();
-        // Calculate total width from switcher left edge to title right edge
-        const totalWidth = titleRect.right - rect.left;
-        width = `${totalWidth}px`;
-      }
-
+      // On desktop (wider screens), align with the button but allow it to be at least 260px
+      // This prevents it from looking disjointed from the logo
       setDropdownStyle({
         position: 'fixed',
         top: `${headerBottom}px`,
         left: `${rect.left}px`,
-        width: 'auto',    
-        minWidth: width   
+        width: '350px',
+        minWidth: '260px' 
       });
-    } else {
-      // On mobile/tablet, use fixed positioning defined in CSS
-      // 2. Ensure full width style is applied via CSS class
-      setDropdownStyle({});
     }
   };
 

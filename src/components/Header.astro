@@ -1,0 +1,746 @@
+---
+import { Image } from 'astro:assets';
+import WebsiteSwitcher from "./WebsiteSwitcher.jsx";
+import logo from '../assets/favicon.png';
+
+const currentPath = Astro.url.pathname; 
+---
+
+<header class="site-header">
+  <button type="button" class="hamburger" id="hamburger" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">
+    <span class="line line1"></span>
+    <span class="line line2"></span>
+    <span class="line line3"></span>
+  </button>
+
+  <div class="site-title">
+    <WebsiteSwitcher client:load />
+    
+    <a href="/" class="site-logo-link">
+      <Image 
+        src={logo} 
+        alt="Site Logo" 
+        width={40}
+        height={40}
+        densities={[1, 2, 3]}
+        quality={100}
+        format="png"
+        loading="eager"
+        decoding="sync"
+      />
+      <span class="site-title-text">TEST: Brighton and Co</span>
+    </a>
+  </div>
+
+  <nav class="nav-links" id="nav" aria-label="Main navigation">
+    <a href="/" class={currentPath === "/" ? "active" : ""} aria-current={currentPath === "/" ? "page" : undefined}>Home</a>
+    <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
+    <a href="/about-me/" class={currentPath.startsWith("/about-me") ? "active" : ""} aria-current={currentPath.startsWith("/about-me") ? "page" : undefined}>About Me</a>
+    <a href="/blog/" class={currentPath.startsWith("/blog") ? "active" : ""} aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Blog</a>
+    <a href="/photography/" class={currentPath.startsWith("/photography") ? "active" : ""} aria-current={currentPath.startsWith("/photography") ? "page" : undefined}>Photography</a>
+    <a href="/links/" class={currentPath.startsWith("/links") ? "active" : ""} aria-current={currentPath.startsWith("/links") ? "page" : undefined}>Links</a>
+  </nav>
+
+  <div class="nav-overlay" id="nav-overlay"></div>
+</header>
+
+<style is:global>
+/* ===============================
+   Accessibility Polish (Focus Rings)
+   =============================== */
+a:focus-visible, 
+button:focus-visible,
+.hamburger:focus-visible,
+.switcher-toggle:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+html.dark a:focus-visible, 
+html.dark button:focus-visible,
+html.dark .switcher-toggle:focus-visible {
+  outline: 3px solid var(--accent-color);
+}
+
+/* ===============================
+   Header (Sticky on all screens)
+   =============================== */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  min-height: 70px;
+  max-height: 70px;
+  z-index: 1000;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* This naturally centers the logo group! */
+  gap: 0.5rem;
+  padding: 0 clamp(1rem, 5vw, 6rem);
+  background: var(--header-bg); 
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+body.menu-active .site-header,
+body:has(.nav-links.expanded) .site-header {
+  background: var(--header-bg-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.site-header.menu-shadow {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.638);
+}
+
+@media (max-width: 500px) {
+  .site-header {
+    height: 70px;
+    min-height: 70px;
+    max-height: 70px;
+    padding: 0 1rem;
+  }
+}
+
+/* ===============================
+   Site Title + Logo + Switcher Group
+   =============================== */
+.site-title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; 
+  flex-shrink: 0;
+  min-width: auto;
+  position: relative; /* Keeps the dropdown safely anchored */
+  z-index: 2100;
+}
+
+.site-title img {
+  height: 100%;
+  max-height: 100%;
+  width: auto;
+  max-width: 40px;
+  object-fit: contain;
+  transition: width 0.25s ease, height 0.25s ease;
+}
+
+.site-title a {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 10px;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: var(--header-text);
+  font-weight: bold;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .site-title a { 
+    padding: 0 8px; 
+    font-size: 0 !important; 
+  }
+  .site-title a > :not(img):not(svg),
+  .site-title .site-title-text {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important;
+    white-space: nowrap !important;
+  }
+}
+
+@media (min-width: 769px) { 
+  .site-title a { font-size: 1.2rem !important; }
+}
+
+/* ===============================
+   Hamburger Menu
+   =============================== */
+.hamburger {
+  position: absolute;
+  left: calc(1rem + env(safe-area-inset-left));
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 40px;
+  height: 30px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  z-index: 2000;
+  touch-action: manipulation;
+  transition: transform 0.2s ease;
+}
+
+.hamburger .line {
+  height: 3px;
+  width: 100%;
+  background-color: var(--hamburger-color);
+  border-radius: 2px;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.2s ease;
+  transform-origin: center;
+}
+
+.hamburger:hover { transform: translateY(-50%) scale(1.1); }
+.hamburger:active { transform: translateY(-50%) scale(1.05); transition: transform 0.1s ease; }
+
+.hamburger.active .line1,
+.hamburger.active .line3 {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+}
+.hamburger.active .line1 { transform: translateY(-50%) rotate(45deg) scaleX(1.05); }
+.hamburger.active .line2 { opacity: 0; transition: opacity 0.2s ease 0.15s; }
+.hamburger.active .line3 { transform: translateY(-50%) rotate(-45deg) scaleX(1.05); }
+
+.hamburger.active:hover { transform: translateY(-50%) scale(1.2); }
+.hamburger.active:active { transform: translateY(-50%) scale(1.1); transition: transform 0.1s ease; }
+
+/* ===============================
+   Navigation Links
+   =============================== */
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: calc(70px + env(safe-area-inset-top));
+  left: 0;
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  background: var(--header-bg-solid); 
+  text-align: left;
+  z-index: 1200;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-12px);
+  will-change: opacity, transform, max-height, padding-top, visibility;
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 480ms ease,
+    padding-top 480ms ease,
+    visibility 0s linear 380ms;
+}
+
+.nav-links.expanded {
+  max-height: 80vh;
+  padding-top: 1rem;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 480ms ease,
+    padding-top 480ms ease,
+    visibility 0s linear 0s;
+}
+
+.nav-links a {
+  display: block;
+  width: fit-content;
+  padding: 0.5rem 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--header-text) !important;
+  text-decoration: none;
+  opacity: 0;
+  --scale: 1;
+  transform: translateY(-10px) scale(var(--scale));
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  margin: 0.2rem 0;
+}
+
+.nav-links a[aria-current="page"],
+.nav-links a.active {
+  background: var(--nav-active-bg);
+  color: var(--header-text) !important;
+  border-radius: 8px;
+}
+
+.nav-links.expanded a { animation: fadeInUp 0.3s forwards; }
+.nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
+.nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
+.nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
+.nav-links.expanded a:nth-child(4) { animation-delay: 0.20s; }
+.nav-links.expanded a:nth-child(5) { animation-delay: 0.25s; }
+.nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
+.nav-links.expanded a:last-child { margin-bottom: 1rem; }
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+  background-color: var(--nav-hover-bg);
+  border-radius: 8px;
+  color: var(--header-text) !important;
+  --scale: 1.05;
+}
+
+/* ===============================
+   Navigation Overlay
+   =============================== */
+.nav-overlay {
+  position: fixed;
+  top: 70px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 70px);
+  background: var(--overlay-bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, background 0.3s ease;
+  z-index: 1100;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===============================
+   Website Switcher Dropdown
+   =============================== */
+.website-switcher {
+  position: relative;
+  z-index: 2100;
+  display: flex;
+  align-items: center;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* HIDE SWITCHER WHEN MOBILE MENU IS EXPANDED */
+body.menu-active .website-switcher,
+body:has(.nav-links.expanded) .website-switcher {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.switcher-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--switcher-toggle-bg);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  color: var(--header-text);
+  padding: 0;
+  border-radius: 8px;
+}
+
+/* MATCH NAV LINKS REACTIVITY */
+.switcher-toggle:hover,
+.switcher-toggle:focus {
+  background-color: var(--nav-hover-bg);
+  transform: scale(1.05);
+}
+
+.switcher-toggle:active {
+  transform: scale(0.95);
+}
+
+.switcher-icon { display: flex; align-items: center; justify-content: center; }
+.switcher-icon .chevron { transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+.switcher-icon .chevron.rotated { transform: rotate(180deg); }
+
+.switcher-dropdown {
+  position: absolute;
+  top: calc(100% + 15px);
+  left: 0; /* Aligns squarely beneath the left edge of the switcher */
+  background: var(--header-bg-solid); 
+  color: var(--header-text);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: clamp(0.75rem, 2vw, 1.5rem) clamp(1rem, 3vw, 1.5rem);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-12px);
+  transition: 
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 380ms,
+    box-shadow 0.3s ease;
+  pointer-events: none;
+  z-index: 1850;
+  overflow: hidden;
+  min-width: 260px;
+  max-width: 90vw; /* Hard stop to prevent sideways clipping */
+  width: max-content;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+html.dark .switcher-dropdown {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: none;
+}
+
+.switcher-dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: 
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0s;
+}
+
+.dropdown-header {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+.website-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.website-list li {
+  margin: 0;
+  opacity: 0;
+  --scale: 1;
+  transform: translateY(-10px) scale(var(--scale));
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.website-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--header-text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.15s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.website-link:hover,
+.website-link:focus {
+  background-color: var(--nav-hover-bg);
+  transform: translateX(4px);
+  outline: none;
+}
+
+.website-link:active {
+  background-color: var(--nav-hover-bg);
+  transform: translateX(2px);
+}
+
+.website-list li:focus-within .website-link {
+  background-color: var(--nav-hover-bg);
+  outline: 2px solid var(--nav-outline);
+  outline-offset: -2px;
+}
+
+.website-list img,
+.website-list .logo {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  object-fit: cover;
+}
+
+html.dark .website-list img,
+html.dark .website-list .logo {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.website-link:hover .logo,
+.website-link:hover img {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  transform: scale(1.05);
+}
+
+html.dark .website-link:hover .logo,
+html.dark .website-link:hover img {
+  box-shadow: 0 3px 12px rgba(0,0,0,0.5);
+}
+
+.website-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.switcher-dropdown.open li { animation: fadeInUp 0.3s forwards; }
+.switcher-dropdown.open li:nth-child(1) { animation-delay: 0.05s; }
+.switcher-dropdown.open li:nth-child(2) { animation-delay: 0.10s; }
+.switcher-dropdown.open li:nth-child(3) { animation-delay: 0.15s; }
+.switcher-dropdown.open li:nth-child(4) { animation-delay: 0.20s; }
+.switcher-dropdown.open li:nth-child(5) { animation-delay: 0.25s; }
+.switcher-dropdown.open li:nth-child(6) { animation-delay: 0.30s; }
+
+/* ===============================
+   Responsive Adjustments (Mobile/Tablet)
+   =============================== */
+@media (max-width: 1000px) {
+  .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
+}
+
+@media (min-width: 601px) and (max-width: 1000px) {
+  .switcher-dropdown { max-width: 400px; }
+  .website-link { padding: 0.7rem 0.95rem; }
+}
+
+@media (max-width: 1599px) {
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    justify-content: center; /* Beautiful natural centering without the transform trap! */
+    padding: 0 1rem;
+    z-index: 2100;
+  }
+  
+  .hamburger {
+    position: absolute;
+    left: calc(1rem + env(safe-area-inset-left));
+    z-index: 2200;
+  }
+  .site-title a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-links a { font-size: 0.9rem; margin: 0 0.6rem; }
+  .website-link { padding: 0.65rem 0.85rem; font-size: 0.9rem; }
+  .website-list img, .website-list .logo { width: 36px; height: 36px; min-width: 36px; }
+  .website-name { font-size: 0.9rem; }
+}
+
+@media (max-width: 500px) {
+  .site-header { height: 70px; min-height: 70px; max-height: 70px; padding: 0 1rem; }
+  .nav-links { top: calc(70px + env(safe-area-inset-top)); padding: 1rem 0; }
+  .site-title img { max-width: 40px; height: auto; }
+  
+  /* On very tiny screens, drop down from top of screen rather than relative to button */
+  .switcher-dropdown {
+    position: fixed !important;
+    border-radius: 0 0 12px 12px !important;
+    left: 0 !important;
+    width: 100vw !important;
+    min-width: auto !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    top: calc(70px + env(safe-area-inset-top)) !important;
+    transform: translateY(-12px) !important;
+  }
+  .switcher-dropdown.open {
+    transform: translateY(0) !important;
+  }
+  
+  .website-link { padding: 0.6rem 0.8rem; gap: 0.6rem; }
+  .website-list img, .website-list .logo { width: 32px; height: 32px; min-width: 32px; }
+}
+
+/* ===============================
+   Desktop Adjustments (Min-Width 1600px)
+   =============================== */
+@media (min-width: 1500px) {
+  .site-title {
+    position: static;
+    text-align: left;
+  }
+  .site-title a { gap: 0.6rem; }
+  .site-title .site-title-text {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: nowrap;
+    display: inline-block;
+  }
+}
+
+@media (min-width: 1600px) {
+  .hamburger { display: none; }
+
+  .site-header { 
+    height: 70px;
+    justify-content: flex-start;
+  }
+
+  .site-title {
+    position: relative;    
+    z-index: 2100;
+    max-width: calc(50vw - 480px);
+    min-width: 0; 
+  }
+
+  .nav-links {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+    width: max-content;
+    max-height: none;
+    background: transparent !important; 
+    gap: 4px;
+    padding-left: 0;
+    padding-right: 0;
+    overflow: visible;
+    height: 100%;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    transition: none; 
+  }
+
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 22px;
+    white-space: nowrap;
+    opacity: 1 !important;
+    transform: translateY(0) scale(var(--scale)) !important;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+  }
+}
+
+/* ===============================
+   Reduced Motion
+   =============================== */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger,
+  .hamburger .line,
+  .nav-links,
+  .nav-links a,
+  .nav-overlay,
+  .switcher-dropdown {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("nav");
+    const navOverlay = document.getElementById("nav-overlay");
+
+    // Hamburger toggle
+    if (hamburger && nav && navOverlay) {
+      hamburger.addEventListener("click", () => {
+        nav.classList.toggle("expanded");
+        hamburger.classList.toggle("active");
+        navOverlay.classList.toggle("active");
+        document.body.classList.toggle("menu-active");
+        
+        hamburger.setAttribute("aria-expanded", nav.classList.contains("expanded").toString());
+      });
+
+      navOverlay.addEventListener("click", () => {
+        nav.classList.remove("expanded");
+        hamburger.classList.remove("active");
+        navOverlay.classList.remove("active");
+        document.body.classList.remove("menu-active");
+        
+        hamburger.setAttribute("aria-expanded", "false");
+      });
+    }
+
+    // Active link highlighting & closing mobile menu on click
+    if (nav) {
+      const navLinks = nav.querySelectorAll("a");
+      const currentPath = window.location.pathname;
+      
+      navLinks.forEach((link) => {
+        const linkPath = new URL(link.href).pathname;
+        if (linkPath === currentPath) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+
+        link.addEventListener("click", () => {
+          if (nav.classList.contains("expanded")) {
+            nav.classList.remove("expanded");
+            hamburger?.classList.remove("active");
+            navOverlay?.classList.remove("active");
+            document.body.classList.remove("menu-active");
+            
+            hamburger?.setAttribute("aria-expanded", "false");
+          }
+        });
+      });
+    }
+  });
+</script>
