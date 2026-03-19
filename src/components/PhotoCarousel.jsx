@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, memo } from "react";
 import ReactDOM from "react-dom";
 import { useSwipeable } from "react-swipeable";
-import "../styles/PhotoCarousel.css";
+import "../styles/photocarousel.css";
 
 function PhotoCarousel({ images, priority = false }) {
   const [currentIndex, setCurrentIndex] = useState(0);
