@@ -23,13 +23,14 @@
 
   /* Footer */
   --footer-bg: #f8f8f8;
-  --footer-border: #dddddd;
+  --footer-border: #ff5900;
   --footer-text: #333333;
   --footer-heading: #000000;
   --footer-meta-text: #666666;
   --link-color: #d85300;
   --link-hover: #ff5900;
-  --link-underline: #ffffff; 
+  --link-hover-dark: #a84100; /* NEW: Darker shade for light mode */
+  --link-underline: #a84100;
   
   /* Social Links */
   --social-bg: #f0f0f0;
@@ -52,9 +53,11 @@
   /* Inline Links */
   --inline-link: #d85300; 
   --inline-link-hover: #ff5900;
+  --link-hover-dark: #a84100; /* Darker orange for light mode hover */
+  --link-underline: #a84100;
 
   /* Dividers */
-  --divider-color: rgba(0, 0, 0, 0.3);
+  --divider-color: #222222;
 }
 
 /* Dark-mode overrides */
@@ -80,13 +83,14 @@ html.dark {
 
   /* Footer */
   --footer-bg: #222222;
-  --footer-border: #444444;
+  --footer-border: #d66700;
   --footer-text: #7b7b7b;
   --footer-heading: #ffffff;
   --footer-meta-text: #696969;
   --link-color: #d66700;
   --link-hover: #f77700; 
-  --link-underline: #ffffff;
+  --link-hover-dark: #f77700; /* NEW: Darker shade for dark mode */
+  --link-underline: #f77700;
 
   /* Social Links */
   --social-bg: #333333;
@@ -109,9 +113,11 @@ html.dark {
   /* Inline Links */
   --inline-link: #f77700; 
   --inline-link-hover: #ff922c;
+  --link-hover-dark: #f77700; /* NEW: Darker shade for dark mode */
+  --link-underline: #f77700;
 
   /* Dividers */
-  --divider-color: rgba(255, 255, 255, 0.25);
+  --divider-color: #e0e0e0;
 }
 
 /* ===============================
@@ -185,7 +191,7 @@ button, a { display: inline-block; width: auto; }
   width: 100%;
   padding: 1.5rem 1rem;
   background-color: var(--footer-bg);
-  border-top: 1px solid var(--footer-border);
+  border-top: 5px solid var(--footer-border);
   font-size: 0.9rem;
   color: var(--footer-text);
   box-sizing: border-box;
@@ -220,34 +226,55 @@ button, a { display: inline-block; width: auto; }
   color: var(--footer-heading);
   transition: color 0.5s ease;
 }
+/* Removes default bullets and spacing from all footer lists */
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-.footer-section ul { list-style: none; padding: 0; margin: 0; }
-.footer-section ul li { margin-bottom: 0.3rem; }
-
+/* Adds a tiny bit of breathing room between list items */
+.footer-section ul li {
+  margin-bottom: 0.5rem;
+}
+/* ===============================
+   Footer Link Styles
+   =============================== */
 .footer-section ul li a {
   color: var(--link-color);
-  text-decoration: none;
-  position: relative;
-  padding: 2px 4px;
-  transition: color 0.3s ease;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none; /* <-- ADD THIS HERE */
+  padding: 2px 0;
+  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
 }
 
-.footer-section ul li a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 0%;
-  height: 100%;
-  background-color: var(--link-underline);
-  opacity: 0.15;
-  transition: width 0.3s ease, background-color 0.5s ease;
-  z-index: -1;
-  border-radius: 2px;
+.footer-section ul li a:hover { 
+  color: var(--link-hover-dark); 
+  text-decoration-thickness: 3px;
 }
 
-.footer-section ul li a:hover { color: var(--link-hover); }
-.footer-section ul li a:hover::after { width: 100%; }
+/* ===============================
+   Global Content Link Styles
+   =============================== */
+/* Applies to standard links in your pages and the .inline-link class */
+.layout-content a,
+.inline-link {
+  color: var(--inline-link);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none; /* <-- AND ADD THIS HERE */
+  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
+}
+
+.layout-content a:hover,
+.inline-link:hover {
+  color: var(--link-hover-dark);
+  text-decoration-thickness: 3px;
+}
 
 .social-links {
   display: flex;
@@ -448,31 +475,20 @@ button, a { display: inline-block; width: auto; }
    Typography & Elements
    =============================== */
 .section-divider {
-  width: 85%;
+  width: 100%;
   max-width: 1000px;
   margin: 3rem auto;
   border: none;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--divider-color), transparent);
-  transition: background 0.3s ease, opacity 0.3s ease;
-  opacity: 0.7;
+  background: var(--divider-color);
+  transition: background 0.5s ease, opacity 0.3s ease;
+  opacity: 1;
   border-radius: 2px;
 }
 
-@media (max-width: 768px) { .section-divider { width: 90%; margin: 2rem auto; } }
-@media (max-width: 480px) { .section-divider { width: 95%; margin: 1.5rem auto; height: 1.5px; } }
+@media (max-width: 768px) { .section-divider { width: 100%; margin: 2rem auto; } }
+@media (max-width: 480px) { .section-divider { width: 100%; margin: 1.5rem auto; height: 1.5px; } }
 
-.inline-link {
-  color: var(--inline-link);
-  font-weight: 500;
-  text-decoration: none;
-  transition: color 0.2s ease, text-decoration 0.2s ease;
-}
-
-.inline-link:hover {
-  color: var(--inline-link-hover);
-  text-decoration: underline;
-}
 
 /* Custom bullet points with nested support */
 ul.custom-bullets { list-style: none; padding-left: 0; margin: 0; }

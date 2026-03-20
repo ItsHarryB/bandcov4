@@ -1,7 +1,7 @@
 {
   "name": "galactic-group",
   "type": "module",
-  "version": "0.12.2",
+  "version": "0.13.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,12 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.5",
-    "@astrojs/mdx": "^4.3.9",
-    "@astrojs/react": "^4.3.1",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/cloudflare": "^13.1.2",
+    "@astrojs/mdx": "^5.0.2",
+    "@astrojs/react": "^5.0.1",
+    "@astrojs/sitemap": "^3.7.1",
     "@fontsource-variable/raleway": "^5.2.8",
-    "astro": "^5.13.8",
+    "astro": "^6.0.7",
     "lucide-preact": "^0.544.0",
     "lucide-react": "^0.544.0",
     "mdx": "^0.2.3",
