@@ -9,48 +9,26 @@ const currentYear = new Date().getFullYear();
   <link rel="sitemap" href="/sitemap-index.xml" />
 
   <div class="footer-container">
-    <div class="footer-section footer-left">    
-      <div class="other-websites" style="margin-bottom: 1.5rem;">
-        <h4 id="other-sites-heading">My Other Websites:</h4>
-        <ul aria-labelledby="other-sites-heading">
-          <li>
-            <a href="https://web.brightonandco.co.uk" target="_blank" rel="noopener noreferrer" class="footer-site-link">
-                <img src="/webfavicon.png" alt="" class="footer-site-logo" width="28" height="28" loading="lazy" decoding="async" />
-              Brighton and Co
-            </a>
-          </li>
-          <li>
-            <a href="https://old.brightonandco.co.uk" target="_blank" rel="noopener noreferrer" class="footer-site-link">
-                <img src="/oldfavicon.png" alt="" class="footer-site-logo" width="28" height="28" loading="lazy" decoding="async" />
-              OLD: Brighton and Co
-            </a>
-          </li>
-        </ul>
-      </div>
-      <p>
-        &copy; {currentYear} Brighton and Co. <br />
-        All rights reserved.
-      </p>
+    
+    <div class="footer-section">
+      <h4 id="other-sites-heading">My Other Websites:</h4>
+      <ul aria-labelledby="other-sites-heading">
+        <li>
+          <a href="https://web.brightonandco.co.uk" target="_blank" rel="noopener noreferrer" class="footer-site-link">
+            <img src="/webfavicon.png" alt="" class="footer-site-logo" width="28" height="28" loading="lazy" decoding="async" />
+            Brighton and Co
+          </a>
+        </li>
+        <li>
+          <a href="https://old.brightonandco.co.uk" target="_blank" rel="noopener noreferrer" class="footer-site-link">
+            <img src="/oldfavicon.png" alt="" class="footer-site-logo" width="28" height="28" loading="lazy" decoding="async" />
+            OLD: Brighton and Co
+          </a>
+        </li>
+      </ul>
     </div>
 
-    <div class="footer-section footer-middle">
-      <h4 id="social-heading">Follow Me:</h4>
-      <div class="social-links" role="list" aria-labelledby="social-heading">
-        <Social platform="Twitter" username="ItsHarryB_" url="" iconOnly client:visible />
-        
-        <Social platform="GitHub" username="ItsHarryB" url="" iconOnly client:visible />
-        
-        <Social
-          platform="LinkedIn"
-          username=""
-          url="https://www.linkedin.com/in/harry-brighton-8a2b971a4/"
-          iconOnly
-          client:visible
-        />
-      </div>
-    </div>
-
-    <div class="footer-section footer-right">
+    <div class="footer-section">
       <h4 id="quick-links-heading">Quick Links:</h4>
       <ul aria-labelledby="quick-links-heading">
         <li><a href="/">Home</a></li>
@@ -62,36 +40,49 @@ const currentYear = new Date().getFullYear();
         <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
       </ul>
     </div>
-  </div>
 
-  <div class="footer-toggle" style="margin-bottom: 0.5rem;">
-    <h4 id="theme-toggle-heading">Toggle Theme:</h4>
-    <div class="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
-      <button
-        type="button"
-        class="toggle-track"
-        id="theme-toggle-btn"
-        role="switch"
-        aria-checked="false"
-        aria-label="Toggle dark mode"
-      >
-        <span class="icons" aria-hidden="true">
-          <span class="sun">☀︎</span>
-          <span class="moon">☾</span>
-        </span>
-        <span class="toggle-thumb" aria-hidden="true"></span>
-      </button>
+    <div class="footer-section">
+      <h4 id="social-heading">Follow Me:</h4>
+      <div class="social-links" role="list" aria-labelledby="social-heading">
+        <Social platform="Twitter" username="ItsHarryB_" url="" iconOnly client:visible />
+        <Social platform="GitHub" username="ItsHarryB" url="" iconOnly client:visible />
+        <Social platform="LinkedIn" username="" url="https://www.linkedin.com/in/harry-brighton-8a2b971a4/" iconOnly client:visible />
+      </div>
     </div>
-  </div>
 
-  <div class="footer-carbon-badge">
-    <div id="wcb" class="carbonbadge"></div>
-  </div>
+    <div class="footer-section">
+      <h4 id="theme-toggle-heading">Toggle Theme:</h4>
+      <div class="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
+        <button
+          type="button"
+          class="toggle-track"
+          id="theme-toggle-btn"
+          role="switch"
+          aria-checked="false"
+          aria-label="Toggle dark mode"
+        >
+          <span class="icons" aria-hidden="true">
+            <span class="sun">☀︎</span>
+            <span class="moon">☾</span>
+          </span>
+          <span class="toggle-thumb" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
 
-  <div class="footer-meta" style="margin-top: 1.25rem;">
-    <p>
-      TEST: Brighton and Co Website – Made by Harry Brighton | Version 0.13.0a - 21/03/2026
-    </p>
+  </div> <div class="footer-bottom">
+    <div class="footer-copyright">
+      &copy; {currentYear} Brighton and Co. All rights reserved.
+    </div>
+
+    <div class="footer-carbon-badge">
+      <div id="wcb" class="carbonbadge"></div>
+    </div>
+
+    <div class="footer-meta">
+      TEST: Brighton and Co Website – Made by Harry Brighton <br />
+      Version 0.14.0 - 21/03/2026
+    </div>
   </div>
 </footer>
 

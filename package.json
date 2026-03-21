@@ -1,7 +1,7 @@
 {
   "name": "galactic-group",
   "type": "module",
-  "version": "0.13.0a",
+  "version": "0.14.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -14,6 +14,7 @@
     "@astrojs/react": "^5.0.1",
     "@astrojs/sitemap": "^3.7.1",
     "@fontsource-variable/raleway": "^5.2.8",
+    "@fontsource/raleway": "^5.2.8",
     "astro": "^6.0.7",
     "lucide-preact": "^0.544.0",
     "lucide-react": "^0.544.0",

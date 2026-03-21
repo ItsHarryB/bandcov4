@@ -1,5 +1,6 @@
 ---
-import '@fontsource-variable/raleway'; // variable font, includes all weights
+// 1. Import the Font component
+import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
@@ -11,6 +12,8 @@ import "../styles/global.css";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TEST: Brighton and Co</title>
     <link rel="icon" href="/favicon.png" type="image/png" />
+    
+    <Font cssVariable="--font-raleway" preload />
   </head>
   <body>
     
@@ -21,7 +24,7 @@ import "../styles/global.css";
         <slot />
       </main>
 
-      <Footer client:load />
+      <Footer />
     </div>
 
     <script type="module">

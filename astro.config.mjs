@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 import cloudflare from '@astrojs/cloudflare';
 
@@ -18,6 +18,16 @@ export default defineConfig({
     sitemap({
       // configuration options
     }),
+  ],
+  fonts: [
+    {
+      name: 'Raleway',
+      cssVariable: '--font-raleway',
+      provider: fontProviders.fontsource(), // Switched to Fontsource!
+      weights: [400, 500, 600, 700, 800],
+      styles: ['normal', 'italic'], // This will reliably grab the true italics from the NPM package
+      display: 'swap',
+    },
   ],
   markdown: {
     // Automatically optimize images in markdown
