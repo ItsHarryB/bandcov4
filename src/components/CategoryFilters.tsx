@@ -68,7 +68,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
         ))}
       </div>
 
-      {/* Blog posts grid */}
+{/* Blog posts grid */}
       <div className="posts-grid">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (

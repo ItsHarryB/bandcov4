@@ -53,5 +53,5 @@ const categories = Array.from(
     <h1>Blog</h1>
   </div>
   <h2>{pageTitle}</h2>
-  <CategoryFilters client:load categories={categories} allPosts={postsWithOptimizedImages} />  <!-- React Island handles category filtering and post cards -->
+  <CategoryFilters client:only="react" categories={categories} allPosts={postsWithOptimizedImages} />  <!-- React Island handles category filtering and post cards -->
 </BaseLayout>
