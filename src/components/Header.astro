@@ -1,7 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../assets/favicon.png';
-
 const currentPath = Astro.url.pathname; 
 ---
 
@@ -14,16 +11,13 @@ const currentPath = Astro.url.pathname;
 
   <div class="site-title">
     <a href="/" class="site-logo-link">
-      <Image 
-        src={logo} 
+      <img 
+        src="/favicon.png" 
         alt="Site Logo" 
-        width={40}
-        height={40}
-        densities={[1, 2, 3]}
-        quality={100}
-        format="png"
-        loading="eager"
-        decoding="sync"
+        width="40" 
+         height="40" 
+           loading="eager" 
+            decoding="sync" 
       />
       <span class="site-title-text">TEST: Brighton and Co</span>
     </a>
