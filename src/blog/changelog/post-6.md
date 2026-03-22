@@ -1,10 +1,13 @@
 ---
-title: "v0.1.0"
-author: Harry Brighton
-description: "Changes resulting in v0.1.0"
-pubDate: 24/09/2025
+title: "Launching Brighton and Co v4"
+author: "Harry Brighton"
+description: "Launching Version 4 of Brighton and Co"
+pubDate: 04/11/2025
 category: "Changelog"
 tags: ["Web Dev", "Changelog"]
 ---
-For the version of this website to change from v0.0.1 to v0.1.0 on 22/09/2025, significant changes were made to the general formatting, appearance and layout of this website.
-Examples of such changes are updating the hamburger menu to make it more adaptive and responsive, as well as minor alterations and updates to the header and footer of the site.
+Version 4 of the Brighton and Co website launched on 4th November 2025, replacing the OLD: Brighton and Co website, based on Google Sites.
+
+Version 4 is based primarily on Astro, allowing a more responsive, efficient, and customisable site.
+
+As well, ongoing efforts have been focused on making the website more lightweight and sustainable.

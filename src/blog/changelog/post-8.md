@@ -1,12 +1,13 @@
 ---
-title: "v0.3.0"
-author: Harry Brighton
-description: "Changes resulting in v0.3.0"
-pubDate: 02/10/2025
+title: "v4.1.0"
+author: "Harry Brighton"
+description: "Changes resulting in v4.1.0"
+pubDate: 22/03/2026
 category: "Changelog"
 tags: ["Web Dev", "Changelog"]
 ---
-For the version of this website to change from v0.2.0 to 0.3.0 on 02/10/2025, some changes were made to the formatting, appearance and layout of this website - mainly to the links page.
-Examples of such changes is the implementation of social media and other links (Instagram, Twitter, LinkedIn, Bluesky and GitHub, Vinted and eBay). There have also been behind-the-scenes tweaks as well.
+With the launch of v4.1.0, there have been significant visual changes to the Brighton and Co website. These include a new footer design, as well as updates to the header.
 
-For v0.3.1-0.3.3, some more minor formatting changes were made to the overall website - largely in the form of implementing a "sticky" header on both desktop and mobile versions of the site..
+However, more significant changes come in the backend of how the website functions. Version 4.1.0 runs on Astro 6.0, resulting in changes in the implementation of the website's custom font.
+
+As well, changes have been made to some components to ensure the website is as efficient and as lightweight as possible.
