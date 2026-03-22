@@ -1,5 +1,5 @@
 ---
-// 1. Import the Font component
+import { ClientRouter, fade } from 'astro:transitions';
 import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from "../components/Footer.astro";
@@ -8,19 +8,22 @@ import "../styles/global.css";
 
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
     <title>TEST: Brighton and Co</title>
     <link rel="icon" href="/favicon.png" type="image/png" />
     
     <Font cssVariable="--font-raleway" preload />
+    
+    <ClientRouter />
   </head>
   <body>
     
     <Header />
 
     <div class="page-wrapper">
-      <main class="layout-content">
+      <main class="layout-content" transition:animate={fade({ duration: '0.4s' })}>        
         <slot />
       </main>
 
@@ -28,7 +31,8 @@ import "../styles/global.css";
     </div>
 
     <script type="module">
-      document.addEventListener("DOMContentLoaded", () => {
+      // 2. Changed DOMContentLoaded to astro:page-load so scripts survive transitions!
+      document.addEventListener("astro:page-load", () => {
         const themeToggle = document.getElementById("theme-toggle");
         const themeIcon = themeToggle?.querySelector(".theme-icon");
 
@@ -55,7 +59,11 @@ import "../styles/global.css";
           // Initialize theme
           setTheme(localStorage.getItem("theme") || "light");
 
-          themeToggle.addEventListener("click", () => {
+          // We must remove old event listeners first to prevent duplicates during view transitions!
+          const newToggle = themeToggle.cloneNode(true);
+          themeToggle.parentNode.replaceChild(newToggle, themeToggle);
+
+          newToggle.addEventListener("click", () => {
             const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
             setTheme(current === "dark" ? "light" : "dark");
           });
