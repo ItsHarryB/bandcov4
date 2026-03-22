@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, memo } from "react";
-import ReactDOM from "react-dom";
+import { useState, useEffect, useCallback } from "preact/hooks";
+import { memo, createPortal } from "preact/compat";
 import { useSwipeable } from "react-swipeable";
 import "../styles/photocarousel.css";
 
@@ -129,7 +129,7 @@ function PhotoCarousel({ images, priority = false }) {
       </div>
 
       {/* Lightbox Portal */}
-      {lightboxIndex !== null && ReactDOM.createPortal(
+      {lightboxIndex !== null && createPortal(
         <div className="lightbox-overlay" {...lightboxHandlers} onClick={closeLightbox}>
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <img

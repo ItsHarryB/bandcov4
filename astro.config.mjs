@@ -1,22 +1,21 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
-
 import cloudflare from '@astrojs/cloudflare';
-
 import sitemap from '@astrojs/sitemap';
-
-import react from '@astrojs/react'
-
 import mdx from '@astrojs/mdx';
 
-// https://astro.build/config
+// 1. Swap the React import for Preact
+import preact from '@astrojs/preact';
+
 export default defineConfig({
   adapter: cloudflare({
-    imageService: 'compile',
+    imageService: 'compile', 
   }),
-  site: 'https://test.brightonandco.co.uk',
-  // @ts-ignore
-  integrations: [react(), mdx(),     
+  site: 'https://web.brightonandco.co.uk',
+  integrations: [
+    // 2. Replace react() with preact({ compat: true })
+    preact({ compat: true }), 
+    mdx(),     
     sitemap({
       // configuration options
     }),
@@ -26,13 +25,12 @@ export default defineConfig({
       name: 'Raleway',
       cssVariable: '--font-raleway',
       provider: fontProviders.fontsource(), 
-      weights: [400, 700], /* Slimmed down from [400, 500, 600, 700, 800] */
+      weights: [400, 700],
       styles: ['normal', 'italic'], 
       display: 'swap',
     },
   ],
   markdown: {
-    // Automatically optimize images in markdown
     shikiConfig: {
       theme: 'github-dark',
     },

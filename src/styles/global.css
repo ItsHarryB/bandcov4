@@ -377,10 +377,11 @@ button, a { display: inline-block; width: auto; }
   width: 100%;
   max-width: 1000px;
   margin: 3rem auto;
-  border: none;
+  border: none !important; /* Kills default browser 3D borders */
   height: 2px;
-  background: var(--divider-color);
-  transition: background 0.5s ease, opacity 0.3s ease;
+  background-color: var(--divider-color); /* Forces a solid color */
+  background-image: none !important; /* Explicitly prevents any gradients */
+  transition: background-color 0.5s ease, opacity 0.3s ease;
   opacity: 1;
   border-radius: 2px;
 }

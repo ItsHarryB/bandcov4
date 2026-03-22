@@ -14,8 +14,11 @@
     "public",
     "src/components/Header.astro"
   ],
-  "compilerOptions": {
+"compilerOptions": {
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "preact", /* Changed from "react" */
+    "types": ["astro/client"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true 
   }
 }
