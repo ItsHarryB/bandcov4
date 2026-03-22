@@ -203,20 +203,18 @@ button, a { display: inline-block; width: auto; }
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid; /* Swapped from flex to grid to permanently kill the 3+1 wrap! */
+  grid-template-columns: repeat(4, 1fr); /* Strictly 4 equal columns on desktop */
   gap: 2rem;
-  padding-bottom: 2rem; /* Space between the columns and the bottom divider line */
+  padding-bottom: 2rem;
 }
 
-/* Universal Column Style - Everything aligns perfectly to the left */
+/* Universal Column Style */
 .footer-section {
-  flex: 1 1 200px; /* Allows 4 columns to fit comfortably */
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
+  align-items: flex-start; /* Forces left alignment */
+  text-align: left;        /* Forces left text */
 }
 
 .footer-section h4 {
@@ -285,7 +283,7 @@ button, a { display: inline-block; width: auto; }
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  border-top: 1px solid var(--divider-color); /* Perfectly matches your other dividers */
+  border-top: 1px solid var(--divider-color);
   padding-top: 1.5rem;
   display: flex;
   flex-wrap: wrap;
@@ -317,7 +315,7 @@ button, a { display: inline-block; width: auto; }
 
 .footer-meta {
   flex: 1 1 250px;
-  text-align: right; /* Pushes the version text to the far right */
+  text-align: right; 
   font-size: 0.8rem;
   color: var(--footer-meta-text);
   line-height: 1.5;
@@ -339,17 +337,25 @@ button, a { display: inline-block; width: auto; }
 .toggle-track:hover { background: var(--toggle-track-hover); }
 
 /* ===============================
-   Footer Mobile View
+   Footer Responsive Layout
    =============================== */
+/* Tablet & Large Mobile: 2x2 Grid */
 @media (max-width: 900px) {
-  /* On mobile, stack everything vertically and center it */
-  .footer-container { flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
-  .footer-section { align-items: center; text-align: center; }
-  .theme-toggle-switch { justify-content: center; }
-  
+  .footer-container { 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem 1rem; 
+  }
   .footer-bottom { flex-direction: column; text-align: center; gap: 1.5rem; }
   .footer-copyright, .footer-meta { text-align: center; flex: auto; }
   #wcb #wcb_2 { display: block !important; margin-left: 0 !important; margin-top: 0.5em !important; }
+}
+
+/* Small Mobile: 1 Column */
+@media (max-width: 500px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
 }
 /* ===============================
    Global Content Link Styles
