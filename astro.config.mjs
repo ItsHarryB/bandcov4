@@ -11,7 +11,9 @@ import mdx from '@astrojs/mdx';
 
 // https://astro.build/config
 export default defineConfig({
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: 'compile',
+  }),
   site: 'https://web.brightonandco.co.uk',
   // @ts-ignore
   integrations: [react(), mdx(),     
@@ -34,12 +36,5 @@ export default defineConfig({
     shikiConfig: {
       theme: 'github-dark',
     },
-  },
-  image: {
-    // Configure image optimization
-    service: {
-      entrypoint: 'astro/assets/services/sharp',
-    },
-    domains: [], // Add external domains if needed
   },
 });
