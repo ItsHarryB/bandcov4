@@ -67,16 +67,15 @@ function PhotoCarousel({ images, priority = false }) {
   const prefersReducedMotion = typeof window !== 'undefined' &&
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Helper to get image src and alt - improved to handle Astro image objects
+// Helper to get image src, srcSet, and alt
   const getImageData = (img) => {
     if (typeof img === 'string') {
-      return { src: img, alt: '' };
+      return { src: img, srcSet: undefined, alt: '' };
     }
-    // Astro returns { src: { src: string, width: number, height: number, format: string } }
-    // or just { src: string } depending on how it's imported
     const srcValue = img?.src?.src || img?.src || img;
     return {
       src: typeof srcValue === 'string' ? srcValue : srcValue?.src || '',
+      srcSet: img?.srcSet || undefined, // THIS is the missing link!
       alt: img?.alt || ''
     };
   };
@@ -94,19 +93,20 @@ function PhotoCarousel({ images, priority = false }) {
           }}
         >
           {images.map((img, idx) => {
-            const { src, alt } = getImageData(img);
+            const { src, srcSet, alt } = getImageData(img); // Extract srcSet
             const isHero = priority && idx === 0;
             return (
               <img
                 key={idx}
                 src={src}
+                srcSet={srcSet} /* Added srcSet here! */
                 alt={alt}
                 className="carousel-image"
                 style={{ width: `${100 / Math.max(total, 1)}%` }}
                 loading={isHero ? "eager" : "lazy"}
                 decoding="async"
                 fetchpriority={isHero ? "high" : "low"}
-                sizes="100vw"
+                sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1400px" /* Gives the browser rules for which size to pick */
                 onClick={() => openLightbox(idx)}
                 draggable={false}
               />

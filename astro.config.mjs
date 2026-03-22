@@ -25,9 +25,9 @@ export default defineConfig({
     {
       name: 'Raleway',
       cssVariable: '--font-raleway',
-      provider: fontProviders.fontsource(), // Switched to Fontsource!
-      weights: [400, 500, 600, 700, 800],
-      styles: ['normal', 'italic'], // This will reliably grab the true italics from the NPM package
+      provider: fontProviders.fontsource(), 
+      weights: [400, 700], /* Slimmed down from [400, 500, 600, 700, 800] */
+      styles: ['normal', 'italic'], 
       display: 'swap',
     },
   ],

@@ -43,11 +43,12 @@ import londonSkylineImg from '../assets/images/londonskyline.jpg';
 
 // Pre-process with getImage for optimization
 const recentfavouriteImages = await Promise.all([
-  getImage({ src: iwmLondonImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: coneOnRoofImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: birdInWaterImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: iwmLondonImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: coneOnRoofImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: birdInWaterImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
+  srcSet: img.srcSet?.attribute, // Extracts the responsive sizes!
   alt: [
     'A big naval gun at IWM London',
     'An orange traffic cone on a high up roof',
@@ -56,12 +57,13 @@ const recentfavouriteImages = await Promise.all([
 })));
 
 const morecatphotosImages = await Promise.all([
-  getImage({ src: poppy2Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: lunaLargeImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: penny2Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: poppyDivaImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: poppy2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: lunaLargeImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: penny2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: poppyDivaImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
+  srcSet: img.srcSet?.attribute,
   alt: [
     'Poppy in a window',
     'Luna on her back looking kind of large',
@@ -71,16 +73,17 @@ const morecatphotosImages = await Promise.all([
 })));
 
 const pragueImages = await Promise.all([
-  getImage({ src: goldCeilingImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: viewOfPrague1Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pragueMuseumImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pragueMeerkatImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pragueBuilding1Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: r2d2PragueImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pragueTram1Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pragueRiverImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: goldCeilingImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: viewOfPrague1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pragueMuseumImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pragueMeerkatImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pragueBuilding1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: r2d2PragueImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pragueTram1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pragueRiverImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
+  srcSet: img.srcSet?.attribute,
   alt: [
     "The ceiling in Prague's main museum",
     'A view of Prague',
@@ -94,16 +97,17 @@ const pragueImages = await Promise.all([
 })));
 
 const pefkosrhodesImages = await Promise.all([
-  getImage({ src: rhodesOldTownStreetImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: rhodesOldTownArchImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: lindosRock1Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: lindosRock2Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pefkosBeachView1Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pefkosRhodesCats1Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pefkosRhodesCats2Img, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: pefkosRhodesCats3Img, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: rhodesOldTownStreetImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: rhodesOldTownArchImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: lindosRock1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: lindosRock2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pefkosBeachView1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pefkosRhodesCats1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pefkosRhodesCats2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: pefkosRhodesCats3Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
+  srcSet: img.srcSet?.attribute,
   alt: [
     'A view down a narrow street of Rhodes Old Town',
     'A view down an arch in Rhodes Old Town',
@@ -117,12 +121,13 @@ const pefkosrhodesImages = await Promise.all([
 })));
 
 const londonImages = await Promise.all([
-  getImage({ src: victoriaTheatreImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: nhmSkeletonImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: swanLondonImg, width: 1400, format: 'webp', quality: 85 }),
-  getImage({ src: londonSkylineImg, width: 1400, format: 'webp', quality: 85 }),
+  getImage({ src: victoriaTheatreImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: nhmSkeletonImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: swanLondonImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: londonSkylineImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
+  srcSet: img.srcSet?.attribute,
   alt: [
     'A view from high up in the Victoria Theatre',
     'A skeleton from the Natural History Museum',

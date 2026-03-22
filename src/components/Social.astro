@@ -1,0 +1,63 @@
+---
+import { Twitter, Github, Linkedin, Instagram, Cloud } from "lucide-react";
+import { TbBrandVinted } from "react-icons/tb";
+import { SiEbay } from "react-icons/si";
+import "../styles/social.css";
+
+const { platform, username, url, iconOnly = false } = Astro.props;
+
+// Determine link
+let link = "#";
+switch (platform) {
+  case "Twitter": link = username ? `https://twitter.com/${username}` : "#"; break;
+  case "GitHub": link = username ? `https://github.com/${username}` : "#"; break;
+  case "LinkedIn": link = url || (username ? `https://www.linkedin.com/in/${username}/` : "#"); break;
+  case "Instagram": link = username ? `https://instagram.com/${username}` : "#"; break;
+  case "Bluesky": link = username ? `https://${username}` : "#"; break;
+  case "Vinted": link = url || "#"; break;
+  case "eBay": link = username ? `https://www.ebay.co.uk/usr/${username}` : "#"; break;
+  default: break;
+}
+
+// Determine Icon
+let Icon = null;
+switch (platform) {
+  case "Twitter": Icon = Twitter; break;
+  case "GitHub": Icon = Github; break;
+  case "LinkedIn": Icon = Linkedin; break;
+  case "Instagram": Icon = Instagram; break;
+  case "Bluesky": Icon = Cloud; break;
+  case "Vinted": Icon = TbBrandVinted; break;
+  case "eBay": Icon = SiEbay; break;
+  default: break;
+}
+
+const platformClass = platform.toLowerCase();
+---
+
+{iconOnly ? (
+  <a
+    href={link}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`social-link ${platformClass}`}
+    data-platform={platformClass}
+    aria-label={`Visit my ${platform} profile`}
+  >
+    {Icon && <Icon size={24} aria-hidden="true" />}
+  </a>
+) : (
+  <a
+    href={link}
+    target="_blank"
+    rel="noopener noreferrer"
+    class={`social-card ${platformClass}`}
+    data-platform={platformClass}
+    aria-label={`Visit my ${platform} profile`}
+  >
+    <div class={`social-link ${platformClass}`} aria-hidden="true">
+      {Icon && <Icon size={24} aria-hidden="true" />}
+    </div>
+    <span class="social-label">{platform}</span>
+  </a>
+)}
