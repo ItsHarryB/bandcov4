@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image, getImage } from 'astro:assets';
-import PhotoCarousel from '../components/PhotoCarousel.jsx';
 import '../styles/about-me.css';
+import PhotoCarousel from '../components/PhotoCarousel.jsx';
 
 const pageTitle = "About Me";
 
 // Import images
-import graduationPhoto from '../assets/images/harry-brighton-graduation-2024.jpg'; // Changed to lowercase
+import graduationPhoto from '../assets/images/harry-brighton-graduation-2024.jpg';
 import pennyImg from '../assets/images/penny.jpg';
 import poppyImg from '../assets/images/poppy.jpg';
 import lunaImg from '../assets/images/luna.jpg';
@@ -17,9 +17,9 @@ import atgymImg from '../assets/images/atgym.jpg';
 
 // Pre-process images with aggressive optimization
 const petImages = await Promise.all([
-  getImage({ src: pennyImg, width: 800, height: 600, format: 'webp', quality: 80 }),
-  getImage({ src: poppyImg, width: 800, height: 600, format: 'webp', quality: 80 }),
-  getImage({ src: lunaImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+  getImage({ src: pennyImg, widths: [400, 800], format: 'webp', quality: 80 }),
+  getImage({ src: poppyImg, widths: [400, 800], format: 'webp', quality: 80 }),
+  getImage({ src: lunaImg, widths: [400, 800], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute, // Include srcset if available
@@ -27,9 +27,9 @@ const petImages = await Promise.all([
 })));
 
 const hobbiesImages = await Promise.all([
-  getImage({ src: badmintonImg, width: 800, height: 600, format: 'webp', quality: 80 }),
-  getImage({ src: mycomputerImg, width: 800, height: 600, format: 'webp', quality: 80 }),
-  getImage({ src: atgymImg, width: 800, height: 600, format: 'webp', quality: 80 }),
+  getImage({ src: badmintonImg, widths: [400, 800], format: 'webp', quality: 80 }),
+  getImage({ src: mycomputerImg, widths: [400, 800], format: 'webp', quality: 80 }),
+  getImage({ src: atgymImg, widths: [400, 800], format: 'webp', quality: 80 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute,
@@ -96,7 +96,7 @@ const hobbiesImages = await Promise.all([
         <li>Poppy (the grey-coloured cat)</li>
         <li>Luna (the big cat)</li>
       </ul>
-      <PhotoCarousel client:load images={petImages} />
+      <PhotoCarousel client:visible images={petImages} />
     </div>
     
     <div class="card">
@@ -105,7 +105,7 @@ const hobbiesImages = await Promise.all([
       <p>Another one of my favourite hobbies is 
      <a href="/photography" class="inline-link">photography</a>.
       </p>
-      <PhotoCarousel client:load images={hobbiesImages} />
+      <PhotoCarousel client:visible images={hobbiesImages} />
     </div>
   </section>
 </BaseLayout>

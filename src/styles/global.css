@@ -374,15 +374,12 @@ button, a { display: inline-block; width: auto; }
    Typography & Elements
    =============================== */
 .section-divider {
-  width: 100%;
-  max-width: 1000px;
-  margin: 3rem auto;
-  border: none;
-  height: 2px;
-  background: var(--divider-color);
-  transition: background 0.5s ease, opacity 0.3s ease;
-  opacity: 1;
-  border-radius: 2px;
+  width: 100%; max-width: 1000px; margin: 3rem auto;
+  border: none !important; height: 2px;
+  background-color: var(--divider-color);
+  background-image: none !important;
+  transition: background-color 0.5s ease, opacity 0.3s ease;
+  opacity: 1; border-radius: 2px;
 }
 
 @media (max-width: 768px) { .section-divider { width: 100%; margin: 2rem auto; } }

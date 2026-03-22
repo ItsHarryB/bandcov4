@@ -29,17 +29,30 @@ const optimizedImages = {
   "/images/blog/default-og-image.png": (await getImage({ src: defaultOgImg, width: 800, height: 600, format: 'webp', quality: 80 })).src,
 };
 
-// Replace image URLs in posts with optimized versions
-const postsWithOptimizedImages = allPosts.map(post => ({
-  ...post,
-  data: {
-    ...post.data,
-    image: post.data.image ? {
-      ...post.data.image,
-      url: (optimizedImages as Record<string, string>)[post.data.image.url] || post.data.image.url
-    } : undefined
+/// STRIP OUT THE HEAVY MARKDOWN: Replace image URLs and create lightweight objects
+const lightweightPosts = allPosts.map(post => {
+  let optimizedImage;
+  if (post.data.image) {
+    optimizedImage = {
+      url: optimizedImages[post.data.image.url as keyof typeof optimizedImages] || post.data.image.url,
+      alt: post.data.image.alt || ''
+    };
   }
-}));
+
+  return {
+    id: post.id,
+    collection: "blog", // <-- Added so TypeScript knows what this is
+    data: {
+      title: post.data.title,
+      pubDate: post.data.pubDate,
+      description: post.data.description,
+      author: post.data.author, // <-- Added to satisfy your blog schema requirements
+      category: post.data.category,
+      tags: post.data.tags || [],
+      image: optimizedImage
+    }
+  } as any; // <-- This tells strict TypeScript to accept our heavily optimized custom object
+});
 
 // Extract unique categories
 const categories = Array.from(
@@ -53,5 +66,6 @@ const categories = Array.from(
     <h1>Blog</h1>
   </div>
   <h2>{pageTitle}</h2>
-  <CategoryFilters client:load categories={categories} allPosts={postsWithOptimizedImages} />  <!-- React Island handles category filtering and post cards -->
+  
+<CategoryFilters client:only="preact" categories={categories} allPosts={lightweightPosts} />
 </BaseLayout>

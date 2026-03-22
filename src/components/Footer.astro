@@ -1,5 +1,5 @@
 ---
-import Social from "./Social.jsx";
+import Social from "./Social.astro";
 import "../styles/global.css";
 
 const currentYear = new Date().getFullYear();
@@ -44,9 +44,9 @@ const currentYear = new Date().getFullYear();
     <div class="footer-section">
       <h4 id="social-heading">Follow Me:</h4>
       <div class="social-links" role="list" aria-labelledby="social-heading">
-        <Social platform="Twitter" username="ItsHarryB_" url="" iconOnly client:only="react" />
-        <Social platform="GitHub" username="ItsHarryB" url="" iconOnly client:only="react" />
-        <Social platform="LinkedIn" username="" url="https://www.linkedin.com/in/harry-brighton-8a2b971a4/" iconOnly client:only="react" />
+        <Social platform="Twitter" username="ItsHarryB_" url="" iconOnly />
+        <Social platform="GitHub" username="ItsHarryB" url="" iconOnly />
+        <Social platform="LinkedIn" username="" url="https://www.linkedin.com/in/harry-brighton-8a2b971a4/" iconOnly />
       </div>
     </div>
 
@@ -81,7 +81,7 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       Brighton and Co Website – Made by Harry Brighton <br />
-      Version 4.1.1 - 22/03/2026
+      Version 4.2.0 - 22/03/2026
     </div>
   </div>
 </footer>

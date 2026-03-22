@@ -1,18 +1,30 @@
-import React, { useState, useMemo } from "react";
-import type { CollectionEntry } from "astro:content";
-import "../styles/categoryfilters.css"; // lowercase, plain CSS
+import { useState, useMemo } from "preact/hooks";
+import "../styles/categoryfilters.css";
+
+export interface MinimalPost {
+  id: string;
+  data: {
+    title: string;
+    pubDate: Date;
+    description: string;
+    category?: string;
+    tags: string[];
+    image?: { url: string; alt?: string };
+  };
+}
 
 interface CategoryFiltersProps {
   categories?: string[];
   tags?: string[];
-  allPosts: CollectionEntry<"blog">[];
+  allPosts: MinimalPost[];
 }
 
-const CategoryFilters: React.FC<CategoryFiltersProps> = ({
+// 2. Remove React.FC and just type the props directly
+const CategoryFilters = ({
   categories = [],
   tags = [],
   allPosts,
-}) => {
+}: CategoryFiltersProps) => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
@@ -68,7 +80,7 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
         ))}
       </div>
 
-      {/* Blog posts grid */}
+{/* Blog posts grid */}
       <div className="posts-grid">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (
