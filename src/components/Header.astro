@@ -2,7 +2,7 @@
 const currentPath = Astro.url.pathname; 
 ---
 
-<header class="site-header">
+<header class="site-header" transition:persist="site-header">
   <button type="button" class="hamburger" id="hamburger" aria-expanded="false" aria-controls="nav" aria-label="Open navigation menu">
     <span class="line line1"></span>
     <span class="line line2"></span>
@@ -456,13 +456,38 @@ body:has(.nav-links.expanded) .site-header {
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  // 2. Changed to astro:page-load so it fires on every view transition
+  document.addEventListener("astro:page-load", () => {
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
     const navOverlay = document.getElementById("nav-overlay");
+    const navLinks = nav?.querySelectorAll("a");
 
-    // Hamburger toggle
-    if (hamburger && nav && navOverlay) {
+    // --- ACTIVE LINK HIGHLIGHTING ---
+    // Because the header is persisted, we must manually update the active link on every page load
+    if (navLinks) {
+      const currentPath = window.location.pathname;
+      
+      navLinks.forEach((link) => {
+        const linkPath = new URL(link.href).pathname;
+        // Check if root ("/") or subpage
+        const isActive = linkPath === "/" ? currentPath === "/" : currentPath.startsWith(linkPath);
+        
+        if (isActive) {
+          link.classList.add("active");
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.classList.remove("active");
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    // --- HAMBURGER MENU LOGIC ---
+    // We check for 'data-initialized' so we don't attach multiple click listeners to the persisted header!
+    if (hamburger && nav && navOverlay && !hamburger.hasAttribute("data-initialized")) {
+      hamburger.setAttribute("data-initialized", "true"); // Mark as initialized
+
       hamburger.addEventListener("click", () => {
         nav.classList.toggle("expanded");
         hamburger.classList.toggle("active");
@@ -480,29 +505,17 @@ body:has(.nav-links.expanded) .site-header {
         
         hamburger.setAttribute("aria-expanded", "false");
       });
-    }
 
-    // Active link highlighting & closing mobile menu on click
-    if (nav) {
-      const navLinks = nav.querySelectorAll("a");
-      const currentPath = window.location.pathname;
-      
-      navLinks.forEach((link) => {
-        const linkPath = new URL(link.href).pathname;
-        if (linkPath === currentPath) {
-          link.classList.add("active");
-        } else {
-          link.classList.remove("active");
-        }
-
+      // Close mobile menu when a link is clicked
+      navLinks?.forEach((link) => {
         link.addEventListener("click", () => {
           if (nav.classList.contains("expanded")) {
             nav.classList.remove("expanded");
-            hamburger?.classList.remove("active");
-            navOverlay?.classList.remove("active");
+            hamburger.classList.remove("active");
+            navOverlay.classList.remove("active");
             document.body.classList.remove("menu-active");
             
-            hamburger?.setAttribute("aria-expanded", "false");
+            hamburger.setAttribute("aria-expanded", "false");
           }
         });
       });
