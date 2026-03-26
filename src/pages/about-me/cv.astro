@@ -1,8 +1,8 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import "../styles/about-me.css";
-import BackButton from "../components/BackButton.astro";
-import "../styles/blog.css";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/about-me.css";
+import BackButton from "../../components/BackButton.astro";
+import "../../styles/blog.css";
 
 
 const pageTitle = "My CV:";
@@ -23,7 +23,7 @@ const pageTitle = "My CV:";
 
     <div class="pdf-container" id="pdfContainer">
       <iframe
-        src="/cv/my-cv.pdf"
+        src="../../cv/my-cv.pdf"
         frameborder="0"
         title="My CV PDF Viewer"
         allowfullscreen

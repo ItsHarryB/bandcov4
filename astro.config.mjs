@@ -10,6 +10,10 @@ export default defineConfig({
     imageService: 'compile', // 2. Fixes live images
   }),
   site: 'https://web.brightonandco.co.uk',
+  redirects: {
+    '/cv': '/about-me/cv/',
+    '/cv/': '/about-me/cv/'
+  },
   integrations: [
     preact({ compat: true }), // 3. Preact with React compatibility
     mdx(),     
