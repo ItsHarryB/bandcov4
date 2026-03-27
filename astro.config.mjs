@@ -20,6 +20,9 @@ export default defineConfig({
       // configuration options
     }),
   ],
+redirects: {
+    '/cv': '/about-me/cv/',
+  },
   fonts: [
     {
       name: 'Raleway',

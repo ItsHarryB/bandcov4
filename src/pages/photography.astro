@@ -43,9 +43,9 @@ import londonSkylineImg from '../assets/images/londonskyline.jpg';
 
 // Pre-process with getImage for optimization
 const recentfavouriteImages = await Promise.all([
-  getImage({ src: iwmLondonImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: coneOnRoofImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: birdInWaterImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: iwmLondonImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: coneOnRoofImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: birdInWaterImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute, // Extracts the responsive sizes!
@@ -57,10 +57,10 @@ const recentfavouriteImages = await Promise.all([
 })));
 
 const morecatphotosImages = await Promise.all([
-  getImage({ src: poppy2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: lunaLargeImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: penny2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: poppyDivaImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: poppy2Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: lunaLargeImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: penny2Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: poppyDivaImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute,
@@ -73,14 +73,14 @@ const morecatphotosImages = await Promise.all([
 })));
 
 const pragueImages = await Promise.all([
-  getImage({ src: goldCeilingImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: viewOfPrague1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pragueMuseumImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pragueMeerkatImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pragueBuilding1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: r2d2PragueImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pragueTram1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pragueRiverImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: goldCeilingImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: viewOfPrague1Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pragueMuseumImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pragueMeerkatImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pragueBuilding1Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: r2d2PragueImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pragueTram1Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pragueRiverImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute,
@@ -97,14 +97,14 @@ const pragueImages = await Promise.all([
 })));
 
 const pefkosrhodesImages = await Promise.all([
-  getImage({ src: rhodesOldTownStreetImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: rhodesOldTownArchImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: lindosRock1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: lindosRock2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pefkosBeachView1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pefkosRhodesCats1Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pefkosRhodesCats2Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: pefkosRhodesCats3Img, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: rhodesOldTownStreetImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: rhodesOldTownArchImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: lindosRock1Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: lindosRock2Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pefkosBeachView1Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pefkosRhodesCats1Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pefkosRhodesCats2Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: pefkosRhodesCats3Img, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute,
@@ -121,10 +121,10 @@ const pefkosrhodesImages = await Promise.all([
 })));
 
 const londonImages = await Promise.all([
-  getImage({ src: victoriaTheatreImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: nhmSkeletonImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: swanLondonImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
-  getImage({ src: londonSkylineImg, widths: [400, 800, 1400], format: 'webp', quality: 80 }),
+  getImage({ src: victoriaTheatreImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: nhmSkeletonImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: swanLondonImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
+  getImage({ src: londonSkylineImg, widths: [400, 800, 1400], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute,
