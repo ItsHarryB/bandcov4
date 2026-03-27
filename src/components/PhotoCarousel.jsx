@@ -20,24 +20,6 @@ function PhotoCarousel({ images, priority = false }) {
     return () => observer.disconnect();
   }, []);
 
-  // Prefetch next/prev images to avoid swipe stalls
-  useEffect(() => {
-    if (!total) return;
-    const next = (currentIndex + 1) % total;
-    const prev = (currentIndex - 1 + total) % total;
-    [next, prev].forEach(i => {
-      const img = images[i];
-      // Handle both string paths and Astro image objects
-      const src = typeof img === 'string' ? img : (img?.src?.src || img?.src);
-      if (src) {
-        const im = new Image();
-        im.decoding = "async";
-        im.loading = "eager";
-        im.src = src;
-      }
-    });
-  }, [currentIndex, images, total]);
-
   // Lock body scroll when lightbox is open
   useEffect(() => {
     document.body.style.overflow = (lightboxIndex !== null) ? 'hidden' : '';
@@ -67,23 +49,46 @@ function PhotoCarousel({ images, priority = false }) {
   const prefersReducedMotion = typeof window !== 'undefined' &&
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Helper to get image src, srcSet, and alt
-  const getImageData = (img) => {
+  // Helper to get image src, srcSet, and alt (Moved up for scope access)
+  const getImageData = useCallback((img) => {
     if (typeof img === 'string') {
       return { src: img, srcSet: undefined, alt: '' };
     }
     const srcValue = img?.src?.src || img?.src || img;
     return {
       src: typeof srcValue === 'string' ? srcValue : srcValue?.src || '',
-      srcSet: img?.srcSet || undefined, // THIS is the missing link!
+      srcSet: img?.srcSet || undefined,
       alt: img?.alt || ''
     };
-  };
+  }, []);
+
+  // NEW: Interaction-based prefetch (Saves massive network data!)
+  const handleInteractionPrefetch = useCallback(() => {
+    if (!total) return;
+    const nextIdx = (currentIndex + 1) % total;
+    const prevIdx = (currentIndex - 1 + total) % total;
+    
+    // Silently load the next and previous images in the background
+    [nextIdx, prevIdx].forEach(idx => {
+      const { src, srcSet } = getImageData(images[idx]);
+      if (src) {
+        const im = new Image();
+        im.decoding = "async";
+        if (srcSet) im.srcset = srcSet; // Ensure we fetch the optimized AVIF size!
+        im.src = src;
+      }
+    });
+  }, [currentIndex, images, total, getImageData]);
 
   return (
     <>
       {/* Main Carousel */}
-      <div className={`carousel ${isDark ? 'dark-mode' : ''}`} {...carouselHandlers}>
+      <div 
+        className={`carousel ${isDark ? 'dark-mode' : ''}`} 
+        {...carouselHandlers}
+        onMouseEnter={handleInteractionPrefetch} /* Triggers on desktop hover */
+        onTouchStart={handleInteractionPrefetch} /* Triggers on mobile touch */
+      >
         <div
           className="carousel-track"
           style={{
@@ -93,20 +98,20 @@ function PhotoCarousel({ images, priority = false }) {
           }}
         >
           {images.map((img, idx) => {
-            const { src, srcSet, alt } = getImageData(img); // Extract srcSet
+            const { src, srcSet, alt } = getImageData(img); 
             const isHero = priority && idx === 0;
             return (
               <img
                 key={idx}
                 src={src}
-                srcSet={srcSet} /* Added srcSet here! */
+                srcSet={srcSet}
                 alt={alt}
                 className="carousel-image"
                 style={{ width: `${100 / Math.max(total, 1)}%` }}
                 loading={isHero ? "eager" : "lazy"}
                 decoding="async"
                 fetchpriority={isHero ? "high" : "low"}
-                sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1400px" /* Gives the browser rules for which size to pick */
+                sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1400px" 
                 onClick={() => openLightbox(idx)}
                 draggable={false}
               />
@@ -134,6 +139,8 @@ function PhotoCarousel({ images, priority = false }) {
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <img
               src={getImageData(images[lightboxIndex]).src}
+              srcSet={getImageData(images[lightboxIndex]).srcSet} /* Added srcSet to lightbox for better resolution! */
+              sizes="100vw"
               alt={getImageData(images[lightboxIndex]).alt}
               className="lightbox-image"
               loading="eager"

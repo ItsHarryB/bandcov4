@@ -17,9 +17,9 @@ import atgymImg from '../assets/images/atgym.jpg';
 
 // Pre-process images with aggressive optimization
 const petImages = await Promise.all([
-  getImage({ src: pennyImg, widths: [400, 800], format: 'webp', quality: 80 }),
-  getImage({ src: poppyImg, widths: [400, 800], format: 'webp', quality: 80 }),
-  getImage({ src: lunaImg, widths: [400, 800], format: 'webp', quality: 80 }),
+  getImage({ src: pennyImg, widths: [400, 800], format: 'avif', quality: 65 }),
+  getImage({ src: poppyImg, widths: [400, 800], format: 'avif', quality: 65 }),
+  getImage({ src: lunaImg, widths: [400, 800], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute, // Include srcset if available
@@ -27,9 +27,9 @@ const petImages = await Promise.all([
 })));
 
 const hobbiesImages = await Promise.all([
-  getImage({ src: badmintonImg, widths: [400, 800], format: 'webp', quality: 80 }),
-  getImage({ src: mycomputerImg, widths: [400, 800], format: 'webp', quality: 80 }),
-  getImage({ src: atgymImg, widths: [400, 800], format: 'webp', quality: 80 }),
+  getImage({ src: badmintonImg, widths: [400, 800], format: 'avif', quality: 65 }),
+  getImage({ src: mycomputerImg, widths: [400, 800], format: 'avif', quality: 65 }),
+  getImage({ src: atgymImg, widths: [400, 800], format: 'avif', quality: 65 }),
 ]).then(images => images.map((img, i) => ({
   src: img.src,
   srcSet: img.srcSet?.attribute,
@@ -56,8 +56,8 @@ const hobbiesImages = await Promise.all([
             alt="Harry Brighton portrait"
             width={600}
             height={600}
-            quality={80}
-            format="webp"
+            quality={65}
+            format="avif"
             loading="eager"
             densities={[1, 2]}
           />
