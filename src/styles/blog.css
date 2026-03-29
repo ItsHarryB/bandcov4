@@ -66,6 +66,7 @@ html.dark .category-buttons button.active {
     grid-template-columns: repeat(3, 1fr); /* two columns on larger screens */
   }
 }
+
 /* ================= Post / Blog Card ================= */
 .post-card, .blog-card {
   display: flex;
@@ -75,13 +76,27 @@ html.dark .category-buttons button.active {
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.5s ease 0s,
-              background-color 0.5s,
-              color 0.5s;
   min-height: 450px;
   padding: 1rem;
   text-decoration: none !important;
+  
+  transition: transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out !important;
+}
+
+/* ================= Card Hover Animations ================= */
+.post-card:hover, .blog-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  
+  /* The "Mouse Enter" Transition (Faster with a slight, playful bounce) */
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+
+/* Dark Mode for Cards (Background) */
+html.dark .post-card, html.dark .blog-card {
+  background-color: #222;
+  color: #fff;
 }
 
 /* ================= Post Title Underlines ================= */
@@ -317,4 +332,3 @@ html.dark .post-card:hover .read-more, html.dark .blog-card:hover .read-more {
     margin-bottom: 0.5rem; /* small spacing if wrapped */
   }
 }
-

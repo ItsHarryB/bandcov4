@@ -8,7 +8,11 @@ import mdx from '@astrojs/mdx';
 import preact from '@astrojs/preact';
 
 export default defineConfig({
-  security: { csp: true},
+  security: {
+    csp: {
+      algorithm: 'SHA-512'
+    }
+  },
   adapter: cloudflare({
     imageService: 'compile', 
   }),

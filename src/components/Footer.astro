@@ -1,5 +1,6 @@
 ---
 import Social from "./Social.astro";
+import ThemeToggle from "./ThemeToggle.astro"; // <-- Imported here!
 import "../styles/global.css";
 
 const currentYear = new Date().getFullYear();
@@ -40,6 +41,7 @@ const currentYear = new Date().getFullYear();
         <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
       </ul>
     </div>
+    
     <div class="footer-section">
     <h4 id="social-heading">Follow Me:</h4>
       <div class="social-links" role="list" aria-labelledby="social-heading">
@@ -52,24 +54,12 @@ const currentYear = new Date().getFullYear();
     <div class="footer-section">
       <h4 id="theme-toggle-heading">Toggle Theme:</h4>
       <div class="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
-        <button
-          type="button"
-          class="toggle-track"
-          id="theme-toggle-btn"
-          role="switch"
-          aria-checked="false"
-          aria-label="Toggle dark mode"
-        >
-          <span class="icons" aria-hidden="true">
-            <span class="sun">☀︎</span>
-            <span class="moon">☾</span>
-          </span>
-          <span class="toggle-thumb" aria-hidden="true"></span>
-        </button>
-      </div>
+        <ThemeToggle /> </div>
     </div>
 
-  </div> <div class="footer-bottom">
+  </div> 
+  
+  <div class="footer-bottom">
     <div class="footer-copyright">
       &copy; {currentYear} Brighton and Co. All rights reserved.
     </div>
@@ -80,64 +70,25 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.3.5 - 27/03/2026
+      Version 26.3.6 - 29/03/2026
     </div>
   </div>
 </footer>
 
 <script>
   // ==========================================
-  // Theme Toggle Logic
-  // ==========================================
-  const setupThemeToggle = () => {
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    const root = document.documentElement;
-    const wcbBadge = document.getElementById('wcb');
-
-    if (!themeBtn) return;
-
-    // Read current state
-    const isDark = root.classList.contains('dark') || localStorage.getItem('theme') === 'dark';
-    
-    // Set initial button state
-    themeBtn.setAttribute('aria-checked', isDark.toString());
-    if (isDark && wcbBadge) wcbBadge.classList.add('wcb-d');
-
-    const applyTheme = (theme: 'dark' | 'light') => {
-      if (theme === 'dark') {
-        root.classList.add('dark');
-        if (wcbBadge) wcbBadge.classList.add('wcb-d');
-      } else {
-        root.classList.remove('dark');
-        if (wcbBadge) wcbBadge.classList.remove('wcb-d');
-      }
-      
-      localStorage.setItem('theme', theme);
-      themeBtn.setAttribute('aria-checked', (theme === 'dark').toString());
-      document.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
-    };
-
-    themeBtn.addEventListener('click', () => {
-      const isCurrentlyDark = root.classList.contains('dark');
-      applyTheme(isCurrentlyDark ? 'light' : 'dark');
-    });
-  };
-
-  // ==========================================
-  // Carbon Badge Injection Logic
+  // Carbon Badge Injection Logic ONLY
   // ==========================================
   const setupCarbonBadge = () => {
     let scriptInjected = false;
 
     const inject = () => {
       if (document.querySelector('script[data-carbon-badge]')) return;
-
       const s = document.createElement("script");
       s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
       s.defer = true;
       s.setAttribute("data-carbon-badge", "true");
       s.onerror = () => console.warn("Website Carbon Badge script failed to load");
-      
       document.body.appendChild(s);
       scriptInjected = true;
     };
@@ -151,8 +102,7 @@ const currentYear = new Date().getFullYear();
 
     const isLoaded = () => {
       const el = document.getElementById("wcb");
-      return !!el?.querySelector("a[href*='websitecarbon.com'], svg") &&
-             !/no result/i.test(el.textContent || "");
+      return !!el?.querySelector("a[href*='websitecarbon.com'], svg") && !/no result/i.test(el.textContent || "");
     };
 
     const retry = () => {
@@ -162,6 +112,9 @@ const currentYear = new Date().getFullYear();
 
       if (isLoaded()) {
         badgeLoaded = true;
+        // Keep badge synced with theme on initial load
+        if (document.documentElement.classList.contains('dark')) el.classList.add('wcb-d');
+        else el.classList.remove('wcb-d');
         return;
       }
 
@@ -171,12 +124,10 @@ const currentYear = new Date().getFullYear();
         el.innerHTML = "";
         scriptInjected = false;
         
-        timers.push(
-          window.setTimeout(() => {
+        timers.push(window.setTimeout(() => {
             inject();
             timers.push(window.setTimeout(retry, 6000));
-          }, 4000 * attempts)
-        );
+        }, 4000 * attempts));
       } else {
         el.style.display = "none";
         el.closest('.footer-carbon-badge')?.setAttribute('style', 'display: none;');
@@ -184,46 +135,48 @@ const currentYear = new Date().getFullYear();
     };
 
     timers.push(window.setTimeout(retry, 8000));
+
+    // Listen for the custom event fired by ThemeToggle.astro to update the badge color
+    document.addEventListener('themechange', ((e: CustomEvent) => {
+        const el = document.getElementById("wcb");
+        if (el) {
+            if (e.detail.theme === 'dark') {
+                el.classList.add('wcb-d');
+            } else {
+                el.classList.remove('wcb-d');
+            }
+        }
+    }) as EventListener);
   };
 
-  // Run scripts on load (and handle Astro View Transitions)
+  // Run scripts on load AND after view transitions
   document.addEventListener('astro:page-load', () => {
-    setupThemeToggle();
     setupCarbonBadge();
   });
   
-  // Fallback for initial load if View Transitions aren't used
+  // Fallback
   if (!document.querySelector('meta[name="astro-view-transitions-enabled"]')) {
-    setupThemeToggle();
     setupCarbonBadge();
   }
 </script>
+
 <style>
-  /* The layout for the logo and text */
   .footer-site-link {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    /* We removed text-decoration: none here so it arbs the global underline! */
   }
 
   .footer-site-logo {
-    width: 28px; /* Matches the new HTML width */
-    height: 28px; /* Matches the new HTML height */
-    object-fit: contain; /* Changed from 'cover' so it doesn't crop */
-    
-    /* REMOVED border-radius and box-shadow so there is no background box */
-    
-    /* We use filter: drop-shadow instead! This makes the shadow hug the exact shape of your transparent logo, rather than casting a square shadow */
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
-    
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
   }
 
-  /* The pronounced hover effect */
   .footer-site-link:hover .footer-site-logo {
     transform: scale(1.2);
-    /* The drop shadow deepens to make the actual logo look like it's lifting off the page */
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
   }
 </style>
