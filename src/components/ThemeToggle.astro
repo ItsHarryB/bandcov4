@@ -1,0 +1,48 @@
+---
+// A clean, dedicated component just for toggling the theme.
+---
+
+<button
+  type="button"
+  class="toggle-track"
+  id="theme-toggle-btn"
+  role="switch"
+  aria-checked="false"
+  aria-label="Toggle dark mode"
+>
+  <span class="icons" aria-hidden="true">
+    <span class="sun">☀︎</span>
+    <span class="moon">☾</span>
+  </span>
+  <span class="toggle-thumb" aria-hidden="true"></span>
+</button>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    const root = document.documentElement;
+
+    if (!themeBtn || themeBtn.hasAttribute('data-listener-attached')) return;
+    themeBtn.setAttribute('data-listener-attached', 'true');
+
+    // Sync button visually with the <head> script
+    const isDark = root.classList.contains('dark');
+    themeBtn.setAttribute('aria-checked', isDark.toString());
+
+    // Handle clicks
+    themeBtn.addEventListener('click', () => {
+      const isCurrentlyDark = root.classList.contains('dark');
+      const newTheme = isCurrentlyDark ? 'light' : 'dark';
+
+      // Update HTML class and save to memory
+      root.classList.toggle('dark', newTheme === 'dark');
+      localStorage.setItem('theme', newTheme);
+      
+      // Update toggle visual state
+      themeBtn.setAttribute('aria-checked', (newTheme === 'dark').toString());
+
+      // Broadcast the change so the Carbon Badge (or anything else) can react
+      document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: newTheme } }));
+    });
+  });
+</script>

@@ -15,6 +15,23 @@ import "../styles/global.css";
     <Font cssVariable="--font-raleway" preload />
     
     <ClientRouter />
+    <script is:inline>
+      const applyTheme = () => {
+        const theme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (theme === "dark" || (!theme && prefersDark)) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      };
+
+      // 1. Run immediately on initial page load to prevent flashing
+      applyTheme();
+
+      // 2. Run immediately on every page navigation (View Transitions)
+      document.addEventListener("astro:after-swap", applyTheme);
+    </script>
   </head>
   <body>
     

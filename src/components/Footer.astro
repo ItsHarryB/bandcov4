@@ -1,5 +1,6 @@
 ---
 import Social from "./Social.astro";
+import ThemeToggle from "./ThemeToggle.astro"; // <-- Imported here!
 import "../styles/global.css";
 
 const currentYear = new Date().getFullYear();
@@ -53,24 +54,12 @@ const currentYear = new Date().getFullYear();
     <div class="footer-section">
       <h4 id="theme-toggle-heading">Toggle Theme:</h4>
       <div class="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
-        <button
-          type="button"
-          class="toggle-track"
-          id="theme-toggle-btn"
-          role="switch"
-          aria-checked="false"
-          aria-label="Toggle dark mode"
-        >
-          <span class="icons" aria-hidden="true">
-            <span class="sun">☀︎</span>
-            <span class="moon">☾</span>
-          </span>
-          <span class="toggle-thumb" aria-hidden="true"></span>
-        </button>
-      </div>
+        <ThemeToggle /> </div>
     </div>
 
-  </div> <div class="footer-bottom">
+  </div> 
+  
+  <div class="footer-bottom">
     <div class="footer-copyright">
       &copy; {currentYear} Brighton and Co. All rights reserved.
     </div>
@@ -81,51 +70,14 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       Brighton and Co Website – Made by Harry Brighton <br />
-      Version 4.2.5 - 29/03/2026
+      Version 4.2.6 - 29/03/2026
     </div>
   </div>
 </footer>
 
 <script>
   // ==========================================
-  // Theme Toggle Logic
-  // ==========================================
-  const setupThemeToggle = () => {
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    const root = document.documentElement;
-    const wcbBadge = document.getElementById('wcb');
-
-    if (!themeBtn) return;
-
-    // Read current state
-    const isDark = root.classList.contains('dark') || localStorage.getItem('theme') === 'dark';
-    
-    // Set initial button state
-    themeBtn.setAttribute('aria-checked', isDark.toString());
-    if (isDark && wcbBadge) wcbBadge.classList.add('wcb-d');
-
-    const applyTheme = (theme: 'dark' | 'light') => {
-      if (theme === 'dark') {
-        root.classList.add('dark');
-        if (wcbBadge) wcbBadge.classList.add('wcb-d');
-      } else {
-        root.classList.remove('dark');
-        if (wcbBadge) wcbBadge.classList.remove('wcb-d');
-      }
-      
-      localStorage.setItem('theme', theme);
-      themeBtn.setAttribute('aria-checked', (theme === 'dark').toString());
-      document.dispatchEvent(new CustomEvent('themechange', { detail: { theme } }));
-    };
-
-    themeBtn.addEventListener('click', () => {
-      const isCurrentlyDark = root.classList.contains('dark');
-      applyTheme(isCurrentlyDark ? 'light' : 'dark');
-    });
-  };
-
-  // ==========================================
-  // Carbon Badge Injection Logic
+  // Carbon Badge Injection Logic ONLY
   // ==========================================
   const setupCarbonBadge = () => {
     let scriptInjected = false;
@@ -163,6 +115,15 @@ const currentYear = new Date().getFullYear();
 
       if (isLoaded()) {
         badgeLoaded = true;
+        
+        // --- NEW ADDITION: KEEP BADGE SYNCED WITH THEME ---
+        // Ensure the badge updates its colors based on the current theme state
+        const isDark = document.documentElement.classList.contains('dark');
+        if (isDark) {
+            el.classList.add('wcb-d');
+        } else {
+            el.classList.remove('wcb-d');
+        }
         return;
       }
 
@@ -185,20 +146,31 @@ const currentYear = new Date().getFullYear();
     };
 
     timers.push(window.setTimeout(retry, 8000));
+    
+    // Listen for the custom event fired by ThemeToggle.astro to update the badge color
+    document.addEventListener('themechange', ((e: CustomEvent) => {
+        const el = document.getElementById("wcb");
+        if (el) {
+            if (e.detail.theme === 'dark') {
+                el.classList.add('wcb-d');
+            } else {
+                el.classList.remove('wcb-d');
+            }
+        }
+    }) as EventListener);
   };
 
   // Run scripts on load (and handle Astro View Transitions)
   document.addEventListener('astro:page-load', () => {
-    setupThemeToggle();
     setupCarbonBadge();
   });
   
   // Fallback for initial load if View Transitions aren't used
   if (!document.querySelector('meta[name="astro-view-transitions-enabled"]')) {
-    setupThemeToggle();
     setupCarbonBadge();
   }
 </script>
+
 <style>
   /* The layout for the logo and text */
   .footer-site-link {
