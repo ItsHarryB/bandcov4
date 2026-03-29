@@ -49,7 +49,7 @@ function PhotoCarousel({ images, priority = false }) {
   const prefersReducedMotion = typeof window !== 'undefined' &&
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Helper to get image src, srcSet, and alt (Moved up for scope access)
+  // Helper to get image src, srcSet, and alt
   const getImageData = useCallback((img) => {
     if (typeof img === 'string') {
       return { src: img, srcSet: undefined, alt: '' };
@@ -62,19 +62,18 @@ function PhotoCarousel({ images, priority = false }) {
     };
   }, []);
 
-  // NEW: Interaction-based prefetch (Saves massive network data!)
+  // Interaction-based prefetch (Saves network data)
   const handleInteractionPrefetch = useCallback(() => {
     if (!total) return;
     const nextIdx = (currentIndex + 1) % total;
     const prevIdx = (currentIndex - 1 + total) % total;
     
-    // Silently load the next and previous images in the background
     [nextIdx, prevIdx].forEach(idx => {
       const { src, srcSet } = getImageData(images[idx]);
       if (src) {
         const im = new Image();
         im.decoding = "async";
-        if (srcSet) im.srcset = srcSet; // Ensure we fetch the optimized AVIF size!
+        if (srcSet) im.srcset = srcSet;
         im.src = src;
       }
     });
@@ -86,14 +85,16 @@ function PhotoCarousel({ images, priority = false }) {
       <div 
         className={`carousel ${isDark ? 'dark-mode' : ''}`} 
         {...carouselHandlers}
-        onMouseEnter={handleInteractionPrefetch} /* Triggers on desktop hover */
-        onTouchStart={handleInteractionPrefetch} /* Triggers on mobile touch */
+        onMouseEnter={handleInteractionPrefetch} 
+        onTouchStart={handleInteractionPrefetch} 
       >
         <div
           className="carousel-track"
           style={{
-            width: `${100 * total}%`,
-            transform: `translate3d(-${(100 / Math.max(total, 1)) * currentIndex}%, 0, 0)`,
+            display: 'flex',
+            flexWrap: 'nowrap',
+            width: '100%', /* Lock track to exactly container width */
+            transform: `translate3d(-${currentIndex * 100}%, 0, 0)`, /* Move by exact whole slides */
             transitionDuration: prefersReducedMotion ? '0ms' : undefined
           }}
         >
@@ -107,7 +108,12 @@ function PhotoCarousel({ images, priority = false }) {
                 srcSet={srcSet}
                 alt={alt}
                 className="carousel-image"
-                style={{ width: `${100 / Math.max(total, 1)}%` }}
+                style={{ 
+                  flex: '0 0 100%', /* Force image to take 100% of container, refusing to shrink */
+                  width: '100%', 
+                  minWidth: '100%',
+                  objectFit: 'cover' /* Keeps the images looking great without distorting */
+                }}
                 loading={isHero ? "eager" : "lazy"}
                 decoding="async"
                 fetchpriority={isHero ? "high" : "low"}
@@ -139,7 +145,7 @@ function PhotoCarousel({ images, priority = false }) {
           <div className="lightbox-content" onClick={e => e.stopPropagation()}>
             <img
               src={getImageData(images[lightboxIndex]).src}
-              srcSet={getImageData(images[lightboxIndex]).srcSet} /* Added srcSet to lightbox for better resolution! */
+              srcSet={getImageData(images[lightboxIndex]).srcSet} 
               sizes="100vw"
               alt={getImageData(images[lightboxIndex]).alt}
               className="lightbox-image"
