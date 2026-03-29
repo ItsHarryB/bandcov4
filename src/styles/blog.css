@@ -81,30 +81,33 @@ html.dark .category-buttons button.active {
               color 0.5s;
   min-height: 450px;
   padding: 1rem;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
-.post-card:hover, .blog-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  animation: hoverPop 0.3s ease-out forwards;
+/* ================= Post Title Underlines ================= */
+.post-card h3, .blog-card h3 {
+  text-decoration: underline;
+  text-decoration-color: #d35400; /* Rust/Orange theme color */
+  text-decoration-thickness: 1px; /* Standard thin line normally */
+  text-underline-offset: 4px; /* Gives the text some breathing room */
+  transition: text-decoration-thickness 0.3s ease, text-decoration-color 0.3s ease;
 }
 
-/* Linger on unhover */
-.post-card:not(:hover), .blog-card:not(:hover) {
-  transition-delay: 0.15s; /* small delay before returning */
+/* Hover State: Make it bold and slightly darker */
+.post-card:hover h3, .blog-card:hover h3 {
+  text-decoration-color: #a04000; /* Darker burnt orange on hover */
+  text-decoration-thickness: 3px; /* Bold on hover */
 }
 
-@keyframes hoverPop {
-  0%   { transform: translateY(0); }
-  50%  { transform: translateY(-6px); }
-  100% { transform: translateY(-6px); }
+/* Dark Mode Defaults */
+html.dark .post-card h3, html.dark .blog-card h3 {
+  text-decoration-color: #ff8c42; /* Bright, legible orange for dark mode */
 }
 
-/* Dark Mode for Cards */
-html.dark .post-card, html.dark .blog-card {
-  background-color: #222;
-  color: #fff;
+/* Dark Mode Hover */
+html.dark .post-card:hover h3, html.dark .blog-card:hover h3 {
+  text-decoration-color: #ffb38a; /* Lighter, glowing orange on hover */
+  text-decoration-thickness: 3px;
 }
 
 /* ================= Card Image ================= */
@@ -215,22 +218,34 @@ html.dark .tag:hover {
 .read-more {
   margin-top: auto;
   font-weight: bold;
-  color: #00539F;
-  transition: color 0.3s ease, transform 0.2s ease;
+  color: #d35400; /* Rust/Orange theme color */
+  text-decoration: underline;
+  text-decoration-color: #d35400; 
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.3s ease, transform 0.2s ease, text-decoration-thickness 0.3s ease;
   cursor: pointer;
 }
 
-.read-more:hover {
-  color: #0078be;
+/* Because 'Read More' is inside the card, we want it to react when the *card* is hovered */
+.post-card:hover .read-more, .blog-card:hover .read-more {
+  color: #a04000;
+  text-decoration-color: #a04000;
+  text-decoration-thickness: 3px; /* Bold on hover */
   transform: translateX(3px);
 }
 
+/* Dark Mode Defaults */
 html.dark .read-more {
-  color: #66aaff;
+  color: #ff8c42;
+  text-decoration-color: #ff8c42;
 }
 
-html.dark .read-more:hover {
-  color: #99cfff;
+/* Dark Mode Hover */
+html.dark .post-card:hover .read-more, html.dark .blog-card:hover .read-more {
+  color: #ffb38a;
+  text-decoration-color: #ffb38a;
+  text-decoration-thickness: 3px;
   transform: translateX(3px);
 }
 
