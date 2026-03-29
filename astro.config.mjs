@@ -6,13 +6,17 @@ import mdx from '@astrojs/mdx';
 import preact from '@astrojs/preact'; // 1. Preact imported
 
 export default defineConfig({
+  security: {
+    csp: {
+      algorithm: 'SHA-512'
+    }
+  },
   adapter: cloudflare({
     imageService: 'compile', // 2. Fixes live images
   }),
   site: 'https://web.brightonandco.co.uk',
   redirects: {
     '/cv': '/about-me/cv/',
-    '/cv/': '/about-me/cv/'
   },
   integrations: [
     preact({ compat: true }), // 3. Preact with React compatibility

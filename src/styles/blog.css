@@ -81,7 +81,7 @@ html.dark .category-buttons button.active {
               color 0.5s;
   min-height: 450px;
   padding: 1rem;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .post-card:hover, .blog-card:hover {
@@ -105,6 +105,31 @@ html.dark .category-buttons button.active {
 html.dark .post-card, html.dark .blog-card {
   background-color: #222;
   color: #fff;
+}
+/* ================= Post Title Underlines ================= */
+.post-card h3, .blog-card h3 {
+  text-decoration: underline;
+  text-decoration-color: #0078be; /* Standard theme blue */
+  text-decoration-thickness: 1px; /* Thin underline normally */
+  text-underline-offset: 4px; /* Gives the text some breathing room */
+  transition: text-decoration-thickness 0.3s ease, text-decoration-color 0.3s ease;
+}
+
+/* Hover State: Make it bold and darker */
+.post-card:hover h3, .blog-card:hover h3 {
+  text-decoration-color: #00539F; 
+  text-decoration-thickness: 3px; /* Bold on hover */
+}
+
+/* Dark Mode Defaults */
+html.dark .post-card h3, html.dark .blog-card h3 {
+  text-decoration-color: #a1d1f0; /* Lighter blue for dark mode */
+}
+
+/* Dark Mode Hover */
+html.dark .post-card:hover h3, html.dark .blog-card:hover h3 {
+  text-decoration-color: #66aaff;
+  text-decoration-thickness: 3px;
 }
 
 /* ================= Card Image ================= */
@@ -216,21 +241,32 @@ html.dark .tag:hover {
   margin-top: auto;
   font-weight: bold;
   color: #00539F;
-  transition: color 0.3s ease, transform 0.2s ease;
+  text-decoration: underline;
+  text-decoration-color: #00539F; 
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.3s ease, transform 0.2s ease, text-decoration-thickness 0.3s ease;
   cursor: pointer;
 }
 
-.read-more:hover {
+/* Because 'Read More' is inside the card, we want it to react when the *card* is hovered */
+.post-card:hover .read-more, .blog-card:hover .read-more {
   color: #0078be;
+  text-decoration-thickness: 3px;
   transform: translateX(3px);
 }
 
+/* Dark Mode Defaults */
 html.dark .read-more {
   color: #66aaff;
+  text-decoration-color: #66aaff;
 }
 
-html.dark .read-more:hover {
+/* Dark Mode Hover */
+html.dark .post-card:hover .read-more, html.dark .blog-card:hover .read-more {
   color: #99cfff;
+  text-decoration-color: #99cfff;
+  text-decoration-thickness: 3px;
   transform: translateX(3px);
 }
 
