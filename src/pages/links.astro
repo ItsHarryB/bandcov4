@@ -8,7 +8,6 @@ const socials = [
   { platform: "Twitter", username: "ItsHarryB" },
   { platform: "LinkedIn", url: "https://www.linkedin.com/in/harry-brighton-8a2b971a4/" },
   { platform: "Instagram", username: "ItsHarryB_" },
-  { platform: "Bluesky", username: "harryb1.bsky.social" }
 ];
 
 const otherLinks = [
@@ -38,3 +37,32 @@ const otherLinks = [
     ))}
   </div>
 </BaseLayout>
+
+<style>
+  /* ==========================================================
+     Card Base State (The Smooth, "Parachute" Drop on Un-Hover)
+     ========================================================== */
+  .social-cards-grid a {
+    /* We use !important to guarantee it overrides any default transitions built into the Social.astro component */
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.5s,
+                color 0.5s !important;
+  }
+
+  /* ==========================================================
+     Card Hover State (The Fast, Bouncy Lift)
+     ========================================================== */
+  .social-cards-grid a:hover {
+    transform: translateY(-8px) !important;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+    
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.2s ease !important;
+  }
+
+  /* Deepen the shadow slightly in dark mode so the pop is still visible against dark backgrounds */
+  html.dark .social-cards-grid a:hover {
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5) !important;
+  }
+</style>
