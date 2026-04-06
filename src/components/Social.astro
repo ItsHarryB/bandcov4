@@ -13,7 +13,6 @@ switch (platform) {
   case "GitHub": link = username ? `https://github.com/${username}` : "#"; break;
   case "LinkedIn": link = url || (username ? `https://www.linkedin.com/in/${username}/` : "#"); break;
   case "Instagram": link = username ? `https://instagram.com/${username}` : "#"; break;
-  case "Bluesky": link = username ? `https://${username}` : "#"; break;
   case "Vinted": link = url || "#"; break;
   case "eBay": link = username ? `https://www.ebay.co.uk/usr/${username}` : "#"; break;
   default: break;
@@ -26,7 +25,6 @@ switch (platform) {
   case "GitHub": Icon = Github; break;
   case "LinkedIn": Icon = Linkedin; break;
   case "Instagram": Icon = Instagram; break;
-  case "Bluesky": Icon = Cloud; break;
   case "Vinted": Icon = TbBrandVinted; break;
   case "eBay": Icon = SiEbay; break;
   default: break;
