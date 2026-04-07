@@ -26,7 +26,20 @@ const currentPath = Astro.url.pathname;
   <nav class="nav-links" id="nav" aria-label="Main navigation">
     <a href="/" class={currentPath === "/" ? "active" : ""} aria-current={currentPath === "/" ? "page" : undefined}>Home</a>
     <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
-    <a href="/about-me/" class={currentPath.startsWith("/about-me") ? "active" : ""} aria-current={currentPath.startsWith("/about-me") ? "page" : undefined}>About Me</a>
+    
+    <div class="dropdown-group" id="about-dropdown">
+      <div class="dropdown-primary">
+        <button class="dropdown-toggle" aria-expanded="false" aria-label="Toggle About Me sub-menu">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+        <a href="/about-me/" class={currentPath === "/about-me/" || currentPath === "/about-me" ? "active" : ""} aria-current={currentPath === "/about-me/" || currentPath === "/about-me" ? "page" : undefined}>About Me</a>
+      </div>
+      <div class="dropdown-menu">
+        <a href="/about-me/" class={currentPath === "/about-me/" || currentPath === "/about-me" ? "active" : ""}>About Me</a>
+        <a href="/about-me/cv/" class={currentPath.startsWith("/about-me/cv") ? "active" : ""}>My CV</a>
+      </div>
+    </div>
+
     <a href="/blog/" class={currentPath.startsWith("/blog") ? "active" : ""} aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Blog</a>
     <a href="/photography/" class={currentPath.startsWith("/photography") ? "active" : ""} aria-current={currentPath.startsWith("/photography") ? "page" : undefined}>Photography</a>
     <a href="/links/" class={currentPath.startsWith("/links") ? "active" : ""} aria-current={currentPath.startsWith("/links") ? "page" : undefined}>Links</a>
@@ -67,7 +80,7 @@ html.dark button:focus-visible {
   overflow: visible;
   display: flex;
   align-items: center;
-  justify-content: center; /* This naturally centers the logo group! */
+  justify-content: center;
   gap: 0.5rem;
   padding: 0 clamp(1rem, 5vw, 6rem);
   background: var(--header-bg); 
@@ -139,22 +152,13 @@ body:has(.nav-links.expanded) .site-header {
 }
 
 @media (max-width: 768px) {
-  .site-title a { 
-    padding: 0 8px; 
-    font-size: 0 !important; 
-  }
+  .site-title a { padding: 0 8px; font-size: 0 !important; }
   .site-title a > :not(img):not(svg),
   .site-title .site-title-text {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    margin: -1px !important;
-    padding: 0 !important;
-    border: 0 !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    clip-path: inset(50%) !important;
-    white-space: nowrap !important;
+    position: absolute !important; width: 1px !important; height: 1px !important;
+    margin: -1px !important; padding: 0 !important; border: 0 !important;
+    overflow: hidden !important; clip: rect(0 0 0 0) !important;
+    clip-path: inset(50%) !important; white-space: nowrap !important;
   }
 }
 
@@ -197,17 +201,10 @@ body:has(.nav-links.expanded) .site-header {
 .hamburger:hover { transform: translateY(-50%) scale(1.1); }
 .hamburger:active { transform: translateY(-50%) scale(1.05); transition: transform 0.1s ease; }
 
-.hamburger.active .line1,
-.hamburger.active .line3 {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-}
+.hamburger.active .line1, .hamburger.active .line3 { position: absolute; top: 50%; left: 0; width: 100%; }
 .hamburger.active .line1 { transform: translateY(-50%) rotate(45deg) scaleX(1.05); }
 .hamburger.active .line2 { opacity: 0; transition: opacity 0.2s ease 0.15s; }
 .hamburger.active .line3 { transform: translateY(-50%) rotate(-45deg) scaleX(1.05); }
-
 .hamburger.active:hover { transform: translateY(-50%) scale(1.2); }
 .hamburger.active:active { transform: translateY(-50%) scale(1.1); transition: transform 0.1s ease; }
 
@@ -233,12 +230,7 @@ body:has(.nav-links.expanded) .site-header {
   pointer-events: none;
   transform: translateY(-12px);
   will-change: opacity, transform, max-height, padding-top, visibility;
-  transition:
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    max-height 480ms ease,
-    padding-top 480ms ease,
-    visibility 0s linear 380ms;
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 380ms cubic-bezier(0.22, 1, 0.36, 1), max-height 480ms ease, padding-top 480ms ease, visibility 0s linear 380ms;
 }
 
 .nav-links.expanded {
@@ -248,12 +240,7 @@ body:has(.nav-links.expanded) .site-header {
   visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
-  transition:
-    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
-    max-height 480ms ease,
-    padding-top 480ms ease,
-    visibility 0s linear 0s;
+  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 380ms cubic-bezier(0.22, 1, 0.36, 1), max-height 480ms ease, padding-top 480ms ease, visibility 0s linear 0s;
 }
 
 .nav-links a {
@@ -267,7 +254,7 @@ body:has(.nav-links.expanded) .site-header {
   opacity: 0;
   --scale: 1;
   transform: translateY(-10px) scale(var(--scale));
-  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease, color 0.3s ease, border-radius 0.2s ease;
   margin: 0.2rem 0;
 }
 
@@ -278,14 +265,14 @@ body:has(.nav-links.expanded) .site-header {
   border-radius: 8px;
 }
 
-.nav-links.expanded a { animation: fadeInUp 0.3s forwards; }
-.nav-links.expanded a:nth-child(1) { animation-delay: 0.05s; }
-.nav-links.expanded a:nth-child(2) { animation-delay: 0.10s; }
-.nav-links.expanded a:nth-child(3) { animation-delay: 0.15s; }
-.nav-links.expanded a:nth-child(4) { animation-delay: 0.20s; }
-.nav-links.expanded a:nth-child(5) { animation-delay: 0.25s; }
-.nav-links.expanded a:nth-child(6) { animation-delay: 0.30s; }
-.nav-links.expanded a:last-child { margin-bottom: 1rem; }
+.nav-links.expanded a, .nav-links.expanded .dropdown-group { animation: fadeInUp 0.3s forwards; }
+.nav-links.expanded > *:nth-child(1) { animation-delay: 0.05s; }
+.nav-links.expanded > *:nth-child(2) { animation-delay: 0.10s; }
+.nav-links.expanded > *:nth-child(3) { animation-delay: 0.15s; }
+.nav-links.expanded > *:nth-child(4) { animation-delay: 0.20s; }
+.nav-links.expanded > *:nth-child(5) { animation-delay: 0.25s; }
+.nav-links.expanded > *:nth-child(6) { animation-delay: 0.30s; }
+.nav-links.expanded > *:last-child { margin-bottom: 1rem; }
 
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0) scale(var(--scale)); }
@@ -297,6 +284,89 @@ body:has(.nav-links.expanded) .site-header {
   border-radius: 8px;
   color: var(--header-text) !important;
   --scale: 1.05;
+}
+
+/* ===============================
+   Split-Button Dropdown Styles
+   =============================== */
+.dropdown-group {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.dropdown-primary {
+  position: relative; /* Acts as anchor for the absolute toggle */
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.dropdown-primary a {
+  margin: 0 !important; /* Keep the text perfectly flush with other links */
+}
+
+/* Mobile: Chevron floating to the left of the text */
+.dropdown-toggle {
+  position: absolute;
+  right: calc(100% + 5px); /* Sits in the empty space just to the left of the text */
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: none;
+  color: var(--header-text);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncy feel */
+  z-index: 10;
+}
+
+.dropdown-toggle:hover, .dropdown-toggle:focus {
+  transform: translateY(-50%) scale(1.25); /* Bounces up on hover */
+}
+.dropdown-toggle:active {
+  transform: translateY(-50%) scale(0.9); /* Sinks when clicked */
+}
+
+.dropdown-toggle .chevron {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-group.open .dropdown-toggle .chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Content */
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+  padding-left: 1.5rem; 
+}
+
+.dropdown-group.open .dropdown-menu {
+  max-height: 200px;
+  opacity: 1;
+  padding-top: 0.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.dropdown-menu a {
+  font-size: 0.85rem !important; 
+  padding: 0.4rem 0.85rem !important;
+  margin: 0 !important;
+  transform: translateY(0) scale(1) !important; 
+  opacity: 1 !important;
 }
 
 /* ===============================
@@ -316,43 +386,19 @@ body:has(.nav-links.expanded) .site-header {
   -webkit-overflow-scrolling: touch;
 }
 
-.nav-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
+.nav-overlay.active { opacity: 1; visibility: visible; }
 
 /* ===============================
-   Responsive Adjustments (Mobile/Tablet)
+   Responsive Adjustments
    =============================== */
 @media (max-width: 1000px) {
   .nav-links a { font-size: 0.95rem; margin: 0 0.8rem; }
 }
 
 @media (max-width: 1599px) {
-  .site-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    justify-content: center;
-    padding: 0 1rem;
-    z-index: 2100;
-  }
-  
-  .hamburger {
-    position: absolute;
-    left: calc(1rem + env(safe-area-inset-left));
-    z-index: 2200;
-  }
-  .site-title a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    gap: 0.5rem;
-  }
+  .site-header { position: fixed; top: 0; left: 0; right: 0; justify-content: center; padding: 0 1rem; z-index: 2100; }
+  .hamburger { position: absolute; left: calc(1rem + env(safe-area-inset-left)); z-index: 2200; }
+  .site-title a { display: inline-flex; align-items: center; justify-content: center; max-width: 100%; overflow: hidden; text-overflow: ellipsis; gap: 0.5rem; }
 }
 
 @media (max-width: 600px) {
@@ -366,127 +412,153 @@ body:has(.nav-links.expanded) .site-header {
 }
 
 /* ===============================
-   Desktop Adjustments (Min-Width 1600px)
+   Desktop Layout (Min-Width 1600px)
    =============================== */
 @media (min-width: 1500px) {
-  .site-title {
-    position: static;
-    text-align: left;
-  }
+  .site-title { position: static; text-align: left; }
   .site-title a { gap: 0.6rem; }
-  .site-title .site-title-text {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    display: inline-block;
-  }
+  .site-title .site-title-text { position: static; width: auto; height: auto; margin: 0; padding: 0; overflow: visible; clip: auto; clip-path: none; white-space: nowrap; display: inline-block; }
 }
 
 @media (min-width: 1600px) {
   .hamburger { display: none; }
-
-  .site-header { 
-    height: 70px;
-    justify-content: flex-start;
-  }
-
-  .site-title {
-    position: relative;    
-    z-index: 2100;
-    max-width: calc(50vw - 480px);
-    min-width: 0; 
-  }
+  .site-header { height: 70px; justify-content: flex-start; }
+  .site-title { position: relative; z-index: 2100; max-width: calc(50vw - 480px); min-width: 0; }
 
   .nav-links {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    transform: translateX(-50%);
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-    width: max-content;
-    max-height: none;
-    background: transparent !important; 
-    gap: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    overflow: visible;
-    height: 100%;
-    z-index: 1000 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-    transition: none; 
+    position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex !important; flex-direction: row; justify-content: center; 
+    align-items: center !important; /* Forces perfect vertical centering for all links */
+    flex-wrap: nowrap; width: max-content; max-height: none; background: transparent !important; gap: 4px; padding-left: 0; padding-right: 0; overflow: visible; height: 100%; z-index: 1000 !important; opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; transition: none; 
   }
 
-  .nav-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    padding: 0 22px;
-    white-space: nowrap;
-    opacity: 1 !important;
-    transform: translateY(0) scale(var(--scale)) !important;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+  .nav-links a { 
+    display: inline-flex; align-items: center; justify-content: center; 
+    height: auto !important; 
+    padding: 0.5rem 1.2rem !important; 
+    margin: 0 !important;
+    white-space: nowrap; opacity: 1 !important; 
+    transform: translateY(0) scale(var(--scale)) !important; 
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.25s ease, border-radius 0.2s ease; 
   }
+  
+  /* Desktop Dropdown Behavior */
+  .dropdown-group {
+    flex-direction: row;
+    align-items: center;
+    height: auto !important;
+    opacity: 1;
+    transform: translateY(0) !important; 
+    margin: 0 !important;
+  }
+  
+  .dropdown-primary { 
+    height: auto !important; 
+    z-index: 2600; /* Forces button to sit ON TOP of the dropdown menu */
+  }
+  
+  /* HIDE the chevron toggle on desktop */
+  .dropdown-toggle { display: none !important; }
+
+  /* Desktop Hover Menu Alignment */
+  .dropdown-menu {
+    position: absolute;
+    top: 100% !important; /* Snaps flush to the bottom of the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--header-bg); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 0 0 12px 12px !important; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    padding: 0 !important;
+    min-width: 160px;
+    align-items: stretch;
+    z-index: 2500; /* Sits BEHIND the primary button */
+    margin-top: -2px; /* Pulls menu up slightly to hide the seam when the primary button scales up */
+  }
+  
+  /* Open the menu on HOVER */
+  .dropdown-group:hover .dropdown-menu,
+  .dropdown-group:focus-within .dropdown-menu {
+    max-height: 200px;
+    opacity: 1;
+    padding: 0.5rem !important;
+  }
+
+  /* Dropdown Group Hover Reactivity */
+  .dropdown-group:hover .dropdown-primary a,
+  .dropdown-group.open .dropdown-primary a {
+    background-color: var(--nav-hover-bg);
+    color: var(--header-text) !important;
+    --scale: 1.05; 
+    border-bottom-left-radius: 0 !important; /* Flattens bottom corners to merge seamlessly with the menu below */
+    border-bottom-right-radius: 0 !important;
+  }
+
+  .dropdown-menu a { width: 100% !important; justify-content: flex-start !important; padding: 0.8rem 1.2rem !important; border-radius: 6px !important; }
 }
 
-/* ===============================
-   Reduced Motion
-   =============================== */
 @media (prefers-reduced-motion: reduce) {
-  .hamburger,
-  .hamburger .line,
-  .nav-links,
-  .nav-links a,
-  .nav-overlay {
-    transition: none !important;
-    animation: none !important;
-  }
+  .hamburger, .hamburger .line, .nav-links, .nav-links a, .nav-overlay, .dropdown-menu, .dropdown-toggle .chevron { transition: none !important; animation: none !important; }
 }
 </style>
 
 <script>
-  // 2. Changed to astro:page-load so it fires on every view transition
   document.addEventListener("astro:page-load", () => {
     const hamburger = document.getElementById("hamburger");
     const nav = document.getElementById("nav");
     const navOverlay = document.getElementById("nav-overlay");
     const navLinks = nav?.querySelectorAll("a");
+    
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownGroup = document.querySelector('.dropdown-group');
 
-    // --- ACTIVE LINK HIGHLIGHTING ---
-    // Because the header is persisted, we must manually update the active link on every page load
+    // --- SMART ACTIVE LINK HIGHLIGHTING ---
     if (navLinks) {
       const currentPath = window.location.pathname;
       
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        link.removeAttribute("aria-current");
+      });
+
+      let bestMatchPath = "";
+      let longestMatchLength = 0;
+
       navLinks.forEach((link) => {
         const linkPath = new URL(link.href).pathname;
-        // Check if root ("/") or subpage
-        const isActive = linkPath === "/" ? currentPath === "/" : currentPath.startsWith(linkPath);
+        const isMatch = linkPath === "/" ? currentPath === "/" : currentPath.startsWith(linkPath);
         
-        if (isActive) {
-          link.classList.add("active");
-          link.setAttribute("aria-current", "page");
-        } else {
-          link.classList.remove("active");
-          link.removeAttribute("aria-current");
+        if (isMatch && linkPath.length > longestMatchLength) {
+          bestMatchPath = linkPath;
+          longestMatchLength = linkPath.length;
         }
+      });
+
+      if (bestMatchPath) {
+        navLinks.forEach(link => {
+           if (new URL(link.href).pathname === bestMatchPath) {
+              link.classList.add("active");
+              link.setAttribute("aria-current", "page");
+           }
+        });
+      }
+    }
+
+    // --- MOBILE DROPDOWN CLICK LOGIC ---
+    if (dropdownToggle && dropdownGroup && !dropdownToggle.hasAttribute('data-initialized')) {
+      dropdownToggle.setAttribute('data-initialized', 'true');
+
+      dropdownToggle.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        dropdownGroup.classList.toggle('open');
+        dropdownToggle.setAttribute('aria-expanded', dropdownGroup.classList.contains('open').toString());
       });
     }
 
     // --- HAMBURGER MENU LOGIC ---
-    // We check for 'data-initialized' so we don't attach multiple click listeners to the persisted header!
     if (hamburger && nav && navOverlay && !hamburger.hasAttribute("data-initialized")) {
-      hamburger.setAttribute("data-initialized", "true"); // Mark as initialized
+      hamburger.setAttribute("data-initialized", "true"); 
 
       hamburger.addEventListener("click", () => {
         nav.classList.toggle("expanded");
@@ -494,6 +566,11 @@ body:has(.nav-links.expanded) .site-header {
         navOverlay.classList.toggle("active");
         document.body.classList.toggle("menu-active");
         
+        if (!nav.classList.contains("expanded") && dropdownGroup) {
+            dropdownGroup.classList.remove('open');
+            if(dropdownToggle) dropdownToggle.setAttribute('aria-expanded', 'false');
+        }
+
         hamburger.setAttribute("aria-expanded", nav.classList.contains("expanded").toString());
       });
 
@@ -502,11 +579,9 @@ body:has(.nav-links.expanded) .site-header {
         hamburger.classList.remove("active");
         navOverlay.classList.remove("active");
         document.body.classList.remove("menu-active");
-        
         hamburger.setAttribute("aria-expanded", "false");
       });
 
-      // Close mobile menu when a link is clicked
       navLinks?.forEach((link) => {
         link.addEventListener("click", () => {
           if (nav.classList.contains("expanded")) {
@@ -514,7 +589,6 @@ body:has(.nav-links.expanded) .site-header {
             hamburger.classList.remove("active");
             navOverlay.classList.remove("active");
             document.body.classList.remove("menu-active");
-            
             hamburger.setAttribute("aria-expanded", "false");
           }
         });

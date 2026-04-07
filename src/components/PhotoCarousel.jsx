@@ -152,9 +152,10 @@ function PhotoCarousel({ images, priority = false }) {
               loading="eager"
               decoding="async"
             />
+            {/* Close button is now INSIDE the content container again */}
+            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
             <button className="lightbox-btn left" onClick={prevLightbox} aria-label="Previous">&#10094;</button>
             <button className="lightbox-btn right" onClick={nextLightbox} aria-label="Next">&#10095;</button>
-            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
           </div>
         </div>,
         document.body
