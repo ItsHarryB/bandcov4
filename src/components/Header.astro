@@ -224,7 +224,7 @@ body:has(.nav-links.expanded) .site-header {
   text-align: left;
   z-index: 1200;
   gap: 0.75rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.75rem 2.5rem;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -311,7 +311,7 @@ body:has(.nav-links.expanded) .site-header {
 /* Mobile: Chevron floating to the left of the text */
 .dropdown-toggle {
   position: absolute;
-  right: calc(95% + 1px); /* Sits in the empty space just to the left of the text */
+  left: calc(100% - 7px); /* Sits in the empty space just to the left of the text */
   top: 50%;
   transform: translateY(-50%);
   background: transparent !important;
@@ -351,7 +351,7 @@ body:has(.nav-links.expanded) .site-header {
   max-height: 0;
   opacity: 0;
   transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
-  padding-left: 0.85rem; 
+  padding-left: 0rem; 
 }
 
 .dropdown-group.open .dropdown-menu {
