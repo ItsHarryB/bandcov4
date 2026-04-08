@@ -311,7 +311,7 @@ body:has(.nav-links.expanded) .site-header {
 /* Mobile: Chevron floating to the left of the text */
 .dropdown-toggle {
   position: absolute;
-  right: calc(100% + 5px); /* Sits in the empty space just to the left of the text */
+  right: calc(95% + 1px); /* Sits in the empty space just to the left of the text */
   top: 50%;
   transform: translateY(-50%);
   background: transparent !important;
@@ -351,7 +351,7 @@ body:has(.nav-links.expanded) .site-header {
   max-height: 0;
   opacity: 0;
   transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
-  padding-left: 1.5rem; 
+  padding-left: 0.85rem; 
 }
 
 .dropdown-group.open .dropdown-menu {
@@ -462,7 +462,7 @@ body:has(.nav-links.expanded) .site-header {
   /* Desktop Hover Menu Alignment */
   .dropdown-menu {
     position: absolute;
-    top: 100% !important; /* Snaps flush to the bottom of the button */
+    top: 140% !important; /* Snaps flush to the bottom of the button */
     left: 50%;
     transform: translateX(-50%);
     background: var(--header-bg); 
