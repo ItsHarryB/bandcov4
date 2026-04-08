@@ -1,0 +1,50 @@
+---
+import { getImage } from 'astro:assets';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/about-me.css";
+import BackButton from "../../components/BackButton.astro";
+import "../../styles/blog.css";
+import PhotoCarousel from '../../components/PhotoCarousel.jsx';
+
+const pageTitle = "My Vinted"
+
+import edhardyshirtImg from '../../assets/images/vinted/edhardyshirt.jpg';
+import mnsfleeceImg from '../../assets/images/vinted/mnsfleece.jpg';
+
+const popularitemImages = await Promise.all([
+  getImage({ src: edhardyshirtImg, widths: [400, 800], format: 'avif', quality: 65 }),
+  getImage({ src: mnsfleeceImg, widths: [400, 800], format: 'avif', quality: 65 }),
+]).then(images => images.map((img, i) => ({
+  src: img.src,
+  srcSet: img.srcSet?.attribute, // Include srcset if available
+  alt: ['Ed Hardy Shirt'][i]
+})));
+---
+<BaseLayout pageTitle={pageTitle}>
+  <div class="page-center">
+    <h1>My Vinted:</h1>
+    <BackButton parent="/about-me" label="Back to About Me" />
+  </div>
+    <section class="about-cards">
+        <div class="card about-me">
+        <div class="about-content">
+            <div class="about-text">
+            <h2>My Vinted Account:</h2>
+                <p>You can find my Vinted account at <a href="https://www.vinted.co.uk/member/272494517" class="inline-link">@itsharryb1</a>, where I sell old clothes and accessories.</p>
+                <p>All the items I sell are in good condition, so that they still have plenty of life left in them, ready for their next home.</p>
+                <p>Below are a selection of items currently available to buy. </p>
+                <p>(coming soon - if you click or tap on an image, you can view more details about each item).</p>
+            </div>
+        </div>
+    </div>
+        <!-- Vinted card -->
+         <div class="card">
+            <h2>Popular Items:</h2>
+            <ul class="custom-bullets">
+                <p>These are a selection of popular items from my Vinted account:</p>
+                <li>Image 1: Ed Hardy Mount Fuji Shirt - <a href="https://www.vinted.co.uk/items/8574016502" class="inline-link" target="_blank"> View on Vinted</a></li>
+                <li>Image 2: M&S Men's Black Fleece - <a href="https://www.vinted.co.uk/items/8572115359" class="inline-link" target="_blank"> View on Vinted</a></li>
+            </ul>
+                <PhotoCarousel client:visible images={popularitemImages} />
+            </div>
+</BaseLayout>

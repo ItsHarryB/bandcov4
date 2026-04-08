@@ -37,6 +37,7 @@ const currentPath = Astro.url.pathname;
       <div class="dropdown-menu">
         <a href="/about-me/" class={currentPath === "/about-me/" || currentPath === "/about-me" ? "active" : ""}>About Me</a>
         <a href="/about-me/cv/" class={currentPath.startsWith("/about-me/cv") ? "active" : ""}>My CV</a>
+        <a href="/about-me/vinted/" class={currentPath.startsWith("/about-me/vinted") ? "active" : ""}>My Vinted</a>
       </div>
     </div>
 
