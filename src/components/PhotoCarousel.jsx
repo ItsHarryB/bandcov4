@@ -52,13 +52,14 @@ function PhotoCarousel({ images, priority = false }) {
   // Helper to get image src, srcSet, and alt
   const getImageData = useCallback((img) => {
     if (typeof img === 'string') {
-      return { src: img, srcSet: undefined, alt: '' };
+      return { src: img, srcSet: undefined, alt: '', url: null };
     }
     const srcValue = img?.src?.src || img?.src || img;
     return {
       src: typeof srcValue === 'string' ? srcValue : srcValue?.src || '',
       srcSet: img?.srcSet || undefined,
-      alt: img?.alt || ''
+      alt: img?.alt || '',
+      url: img?.url || null
     };
   }, []);
 
@@ -140,25 +141,38 @@ function PhotoCarousel({ images, priority = false }) {
       </div>
 
       {/* Lightbox Portal */}
-      {lightboxIndex !== null && createPortal(
-        <div className="lightbox-overlay" {...lightboxHandlers} onClick={closeLightbox}>
-          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
-            <img
-              src={getImageData(images[lightboxIndex]).src}
-              srcSet={getImageData(images[lightboxIndex]).srcSet} 
-              sizes="100vw"
-              alt={getImageData(images[lightboxIndex]).alt}
-              className="lightbox-image"
-              loading="eager"
-              decoding="async"
-            />
-            <button className="lightbox-btn left" onClick={prevLightbox} aria-label="Previous">&#10094;</button>
-            <button className="lightbox-btn right" onClick={nextLightbox} aria-label="Next">&#10095;</button>
-            <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
-          </div>
-        </div>,
-        document.body
-      )}
+      {lightboxIndex !== null && (() => {
+        const activeImage = getImageData(images[lightboxIndex]);
+        
+        return createPortal(
+          <div className="lightbox-overlay" {...lightboxHandlers} onClick={closeLightbox}>
+            <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+              <img
+                src={activeImage.src}
+                srcSet={activeImage.srcSet} 
+                sizes="100vw"
+                alt={activeImage.alt}
+                className="lightbox-image"
+                loading="eager"
+                decoding="async"
+                /* Changes cursor to a pointing hand ONLY if a link exists */
+                style={{ cursor: activeImage.url ? 'pointer' : 'default' }}
+                /* Opens the link in a new tab if clicked */
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (activeImage.url) {
+                    window.open(activeImage.url, '_blank');
+                  }
+                }}
+              />
+              <button className="lightbox-close" onClick={closeLightbox} aria-label="Close">&times;</button>
+              <button className="lightbox-btn left" onClick={prevLightbox} aria-label="Previous">&#10094;</button>
+              <button className="lightbox-btn right" onClick={nextLightbox} aria-label="Next">&#10095;</button>
+            </div>
+          </div>,
+          document.body
+        );
+      })()}
     </>
   );
 }

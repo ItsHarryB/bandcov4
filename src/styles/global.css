@@ -198,15 +198,37 @@ button, a { display: inline-block; width: auto; }
   transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease;
 }
 
-/* The 4-Column Grid */
+/* ===============================
+   The Global Footer Grid (Desktop)
+   =============================== */
 .footer-container {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  display: grid; /* Swapped from flex to grid to permanently kill the 3+1 wrap! */
-  grid-template-columns: repeat(4, 1fr); /* Strictly 4 equal columns on desktop */
-  gap: 2rem;
+  display: grid; 
+  /* Splits the footer: 75% space on the left, 25% space on the right */
+  grid-template-columns: 3fr 1fr; 
+  gap: 2rem 1rem;
   padding-bottom: 2rem;
+}
+
+/* Explicitly place the sections into the grid */
+.footer-section:nth-child(1) { grid-column: 1; grid-row: 1; } /* Other Sites (Top Left) */
+.footer-section:nth-child(2) { grid-column: 1; grid-row: 2; } /* Quick Links (Bottom Left) */
+.footer-section:nth-child(3) { grid-column: 2; grid-row: 1; } /* Follow Me (Top Right) */
+.footer-section:nth-child(4) { grid-column: 2; grid-row: 2; } /* Theme Toggle (Bottom Right) */
+
+/* Keep the lists flowing horizontally */
+.footer-section:nth-child(1) ul,
+.footer-section:nth-child(2) ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2.5rem; 
+}
+
+.footer-section:nth-child(1) ul li,
+.footer-section:nth-child(2) ul li {
+  margin-bottom: 0; 
 }
 
 /* Universal Column Style */
@@ -339,23 +361,36 @@ button, a { display: inline-block; width: auto; }
 /* ===============================
    Footer Responsive Layout
    =============================== */
-/* Tablet & Large Mobile: 2x2 Grid */
+/* Tablet: Switch back to full-width text and side-by-side socials */
 @media (max-width: 900px) {
-  .footer-container { 
+  .footer-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: 2.5rem 1rem; 
   }
+  
+  /* Reset the grid placement for smaller screens */
+  .footer-section:nth-child(1) { grid-column: 1 / -1; grid-row: 1; } /* Full width top */
+  .footer-section:nth-child(2) { grid-column: 1 / -1; grid-row: 2; } /* Full width middle */
+  .footer-section:nth-child(3) { grid-column: 1; grid-row: 3; }      /* Bottom left */
+  .footer-section:nth-child(4) { grid-column: 2; grid-row: 3; }      /* Bottom right */
+
+  .footer-section:nth-child(1) ul,
+  .footer-section:nth-child(2) ul { 
+    gap: 0.75rem 1.5rem; /* Tighter horizontal gap */
+  }
+
+  /* Bottom Bar */
   .footer-bottom { flex-direction: column; text-align: center; gap: 1.5rem; }
   .footer-copyright, .footer-meta { text-align: center; flex: auto; }
   #wcb #wcb_2 { display: block !important; margin-left: 0 !important; margin-top: 0.5em !important; }
 }
 
-/* Small Mobile: 1 Column */
-@media (max-width: 500px) {
+/* Micro Mobile (Under 400px): Everything stacks */
+@media (max-width: 400px) {
   .footer-container {
     grid-template-columns: 1fr;
-    gap: 2rem;
   }
+  .footer-section:nth-child(3) { grid-column: 1; grid-row: 3; }
+  .footer-section:nth-child(4) { grid-column: 1; grid-row: 4; }
 }
 /* ===============================
    Global Content Link Styles
@@ -375,6 +410,35 @@ button, a { display: inline-block; width: auto; }
 .inline-link:hover {
   color: var(--link-hover-dark);
   text-decoration-thickness: 3px;
+}
+/* ===============================
+   External Link Icons
+   =============================== */
+/* Automatically append an icon to any inline link opening in a new tab */
+.layout-content a[target="_blank"]::after,
+.inline-link[target="_blank"]::after {
+  content: "";
+  display: inline-block; /* <-- FIXED: Was inline-inline-block */
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.3em;
+  
+  /* We use the current text color so the icon matches the link exactly */
+  background-color: currentColor; 
+  
+  /* This uses a CSS mask to punch the SVG shape out of the background color */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
+  
+  vertical-align: baseline;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+/* Make it slightly more solid when hovered */
+.layout-content a[target="_blank"]:hover::after,
+.inline-link[target="_blank"]:hover::after {
+  opacity: 1;
 }
 /* ===============================
    Typography & Elements

@@ -131,22 +131,22 @@ html.dark .lightbox-close {
 .lightbox-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: #000000d9;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 9999; /* SUPER HIGH: Forces the overlay to sit on top of your sticky header! */
   overflow: hidden;
   animation: fadeIn 0.25s ease-in-out;
 }
 
 .lightbox-content {
   position: relative;
-  max-width: 90vw;
-  max-height: 90vh;
-  display: flex;
+  display: inline-flex; /* Shrink-wraps the container perfectly to the image dimensions */
   align-items: center;
   justify-content: center;
+  max-width: 90vw;
+  max-height: 85vh;
   touch-action: none;
 }
 
@@ -160,6 +160,7 @@ html.dark .lightbox-close {
   object-fit: contain;
   transition: transform 0.25s ease;
   user-select: none;
+  display: block; /* Prevents tiny gaps at the bottom of the image */
 }
 
 /* ===============================
@@ -169,7 +170,7 @@ html.dark .lightbox-close {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(0, 148, 182, 0.7);
+  background-color: #0094b6b3;
   color: #fff;
   border: none;
   border-radius: 50%;
@@ -191,33 +192,39 @@ html.dark .lightbox-close {
 .lightbox-btn.left { left: 3%; }
 .lightbox-btn.right { right: 3%; }
 
+/* ===============================
+   Lightbox Close Button
+   =============================== */
 .lightbox-close {
   position: absolute;
-  top: -40px;
-  right: -40px;
-  font-size: 2rem;
-  background: transparent;
+  top: 15px;
+  right: 15px;
+  
+  /* Geometric Centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Fix for the "Too Low" X */
+  line-height: 0;       /* Removes text-based leading */
+  
+  font-size: 2.2rem;
+  font-family: Arial, sans-serif; /* Standardizes the shape of the X */
+  
+  background: rgba(0, 0, 0, 0.5); 
   color: #fff;
   border: none;
   border-radius: 50%;
   width: 44px;
   height: 44px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.25s ease, opacity 0.2s ease;
+  transition: transform 0.25s ease, background-color 0.2s ease;
   z-index: 2100;
 }
 
 .lightbox-close:hover {
-  transform: scale(1.2);
-  opacity: 0.9;
-}
-
-.lightbox-close:active {
-  transform: scale(0.95);
-  opacity: 0.8;
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
 }
 
 /* ===============================
@@ -237,7 +244,7 @@ html.dark .lightbox-close {
   .lightbox-btn { width: 34px; height: 34px; font-size: 1rem; }
   .lightbox-btn.left { left: 1rem; }
   .lightbox-btn.right { right: 1rem; }
-  .lightbox-close { width: 36px; height: 36px; font-size: 1.6rem; top: -32px; right: -32px; }
+  .lightbox-close { width: 36px; height: 36px; font-size: 2rem; top: 15px; right: 15px; }
 }
 
 /* ===============================
