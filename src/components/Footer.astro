@@ -70,7 +70,7 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.4.2 - 08/04/2026
+      Version 26.4.3 - 09/04/2026
     </div>
   </div>
 </footer>
@@ -178,5 +178,29 @@ const currentYear = new Date().getFullYear();
   .footer-site-link:hover .footer-site-logo {
     transform: scale(1.2);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
+  }
+  /* ===============================
+     External Link Icons (Footer)
+     =============================== */
+  .footer-site-link[target="_blank"]::after {
+    content: "";
+    display: inline-block;
+    width: 0.85em;
+    height: 0.85em;
+    
+    margin-left: -0.5rem;
+    /* We use the current text color so the icon matches the link exactly */
+    background-color: currentColor; 
+    
+    /* This uses a CSS mask to punch the SVG shape out of the background color */
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
+    
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-site-link[target="_blank"]:hover::after {
+    opacity: 1;
   }
 </style>
