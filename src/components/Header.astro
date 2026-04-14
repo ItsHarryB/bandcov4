@@ -35,7 +35,6 @@ const currentPath = Astro.url.pathname;
         </button>
       </div>
       <div class="dropdown-menu">
-        <a href="/about-me/" class={currentPath === "/about-me/" || currentPath === "/about-me" ? "active" : ""}>About Me</a>
         <a href="/about-me/cv/" class={currentPath.startsWith("/about-me/cv") ? "active" : ""}>My CV</a>
         <a href="/about-me/vinted/" class={currentPath.startsWith("/about-me/vinted") ? "active" : ""}>My Vinted</a>
       </div>
@@ -247,7 +246,7 @@ body:has(.nav-links.expanded) .site-header {
 .nav-links a {
   display: block;
   width: fit-content;
-  padding: 0.5rem 0.85rem;
+  padding: 0.5rem 0.5rem;
   font-weight: bold;
   text-transform: uppercase;
   color: var(--header-text) !important;
@@ -307,27 +306,33 @@ body:has(.nav-links.expanded) .site-header {
 
 .dropdown-primary a {
   margin: 0 !important; 
-  padding-right: 0.3rem !important; /* Reduces space on the right so the arrow sits closer */
+  /* FIXED: Restored to 0.85rem so the active background highlight is perfectly symmetrical */
+  padding-right: 0.5rem !important; 
 }
 
 /* Dropdown Toggle Button */
 .dropdown-toggle {
-  position: static; /* Flows naturally in the flex container next to the link */
+  position: static; 
   background: transparent !important;
   border: none;
   color: var(--header-text);
   cursor: pointer;
   padding: 0.5rem 0.25rem;
+  
+  /* FIXED: Negative margin pulls the chevron left, sliding it perfectly over the restored padding */
+  margin-left: -0.3rem; 
+  
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncy reactivity */
-  z-index: 10;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  z-index: 10; /* Ensures the button stays clickable even when hovering over the link's padding */
 }
 
 /* Bouncy hover states */
-.dropdown-toggle:hover, .dropdown-toggle:focus {
+/* Bouncy hover states - Removed :focus so it doesn't get stuck! */
+.dropdown-toggle:hover {
   transform: scale(1.3);
 }
 .dropdown-toggle:active {
@@ -364,7 +369,7 @@ body:has(.nav-links.expanded) .site-header {
 /* Sub-links inherit perfectly aligned padding */
 .dropdown-menu a {
   font-size: 0.85rem !important; 
-  padding: 0.4rem 0.85rem !important; /* Left padding exactly matches main links (0.85rem) */
+  padding: 0.2rem 0.5rem !important; /* Left padding exactly matches main links (0.85rem) */
   margin: 0 !important;
   transform: translateY(0) scale(1) !important; 
   opacity: 1 !important;
@@ -431,7 +436,7 @@ body:has(.nav-links.expanded) .site-header {
   .nav-links a { 
     display: inline-flex; align-items: center; justify-content: center; 
     height: auto !important; 
-    padding: 0.5rem 1.2rem !important; 
+    padding: 0.4rem 0.6rem !important; 
     margin: 0 !important;
     white-space: nowrap; opacity: 1 !important; 
     transform: translateY(0) scale(var(--scale)) !important; 
@@ -463,8 +468,8 @@ body:has(.nav-links.expanded) .site-header {
   /* Desktop Hover Menu Alignment */
   .dropdown-menu {
     position: absolute;
-    top: 100% !important; /* Starts exactly at the bottom edge of the 70px header */
-    left: 0 !important; /* Aligns flush with the left edge of the 'About Me' block */
+    top: 137% !important; /* Starts exactly at the bottom edge of the 70px header */
+    left: -1.25rem !important; /* Aligns flush with the left edge of the 'About Me' block */
     transform: none !important; /* Removes centering logic */
     background: var(--header-bg) !important;
     backdrop-filter: blur(8px);
