@@ -362,7 +362,7 @@ body:has(.nav-links.expanded) .site-header {
 .dropdown-group.open .dropdown-menu {
   max-height: 200px;
   opacity: 1;
-  padding-top: 0.25rem;
+  padding-top: 0rem;
   padding-bottom: 0.5rem;
 }
 
@@ -469,7 +469,7 @@ body:has(.nav-links.expanded) .site-header {
   .dropdown-menu {
     position: absolute;
     top: 145% !important; /* Starts exactly at the bottom edge of the 70px header */
-    left: -1.25rem !important; /* Aligns flush with the left edge of the 'About Me' block */
+    left: -1.5rem !important; /* Aligns flush with the left edge of the 'About Me' block */
     transform: none !important; /* Removes centering logic */
     background: var(--header-bg) !important;
     backdrop-filter: blur(8px);
@@ -552,6 +552,16 @@ body:has(.nav-links.expanded) .site-header {
       }
     }
 
+    // --- AUTO-OPEN DROPDOWN ON SUB-PAGES ---
+    // NEW: If a sub-page is active, ensure the dropdown starts open automatically
+    if (dropdownGroup && dropdownToggle) {
+      const hasActiveSubLink = dropdownGroup.querySelector('.dropdown-menu a.active');
+      if (hasActiveSubLink) {
+        dropdownGroup.classList.add('open');
+        dropdownToggle.setAttribute('aria-expanded', 'true');
+      }
+    }
+
     // --- MOBILE DROPDOWN CLICK LOGIC ---
     if (dropdownToggle && dropdownGroup && !dropdownToggle.hasAttribute('data-initialized')) {
       dropdownToggle.setAttribute('data-initialized', 'true');
@@ -574,8 +584,12 @@ body:has(.nav-links.expanded) .site-header {
         document.body.classList.toggle("menu-active");
         
         if (!nav.classList.contains("expanded") && dropdownGroup) {
-            dropdownGroup.classList.remove('open');
-            if(dropdownToggle) dropdownToggle.setAttribute('aria-expanded', 'false');
+            // FIXED: Only collapse the dropdown if we aren't currently viewing one of its sub-pages
+            const hasActiveSubLink = dropdownGroup.querySelector('.dropdown-menu a.active');
+            if (!hasActiveSubLink) {
+                dropdownGroup.classList.remove('open');
+                if(dropdownToggle) dropdownToggle.setAttribute('aria-expanded', 'false');
+            }
         }
 
         hamburger.setAttribute("aria-expanded", nav.classList.contains("expanded").toString());
