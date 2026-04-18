@@ -1,0 +1,190 @@
+  /* ===============================
+     Bento Grid Layout
+     =============================== */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 160px; /* Controls the base height of the cells */
+    gap: 1.25rem;
+    width: 100%;
+    margin: 1rem auto 3rem auto;
+    padding: 0 1rem;
+  }
+
+/* Base Card Styling (Mouse Leave) */
+  .bento-card {
+    background-color: var(--footer-bg); 
+    border-radius: 1.5rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none !important;
+    color: var(--text-color) !important;
+    border: 1px solid transparent;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+    /* FIXED: Added !important to protect this from global link styles */
+    transition: transform 0.25s ease-in-out, 
+                box-shadow 0.25s ease-in-out, 
+                border-color 0.25s ease-in-out,
+                background 0.25s ease-in-out !important;
+  }
+
+  html.dark .bento-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-color: var(--toggle-track-border);
+  }
+
+  /* Hover State (Mouse Enter) */
+  .bento-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    
+    /* FIXED: Added !important here too */
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease !important;
+  }
+
+  html.dark .bento-card:hover { 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); /* Slightly darker shadow for dark mode visibility */
+    border-color: var(--accent-color); 
+  }
+
+  /* Hide the global external link icons inside the grid */
+  .bento-grid a::after { display: none !important; }
+
+  /* ===============================
+     Card Specifics
+     =============================== */
+  
+/* 1. Intro Card */
+  .bento-intro {
+    padding: 3rem 2rem; /* FIXED: Increases top/bottom padding for more vertical height */
+    justify-content: center; /* FIXED: Vertically centers the text within the newly enlarged box */
+  }
+
+  .bento-intro h2 { 
+    margin-top: 0; 
+    color: var(--text-color); 
+    font-size: 2.2rem; 
+    line-height: 1.1; /* FIXED: Tightens the vertical gap between the two lines */
+    margin-bottom: 1.2rem; /* Gives a little breathing room before the first paragraph */
+  }
+  
+  .bento-intro h2 .text-accent { 
+    color: var(--accent-color); 
+    display: block; /* Ensures it breaks perfectly onto the second line */
+    margin-top: 0.2rem; /* Micro-adjustment to get the exact spacing you want */
+  }
+  
+  .bento-intro p { 
+    font-size: 1.05rem; 
+    line-height: 1.6; 
+    margin-bottom: 0.5rem; 
+  }
+
+  /* 2. Photo Card */
+  .bento-photo { padding: 0; justify-content: center; align-items: center; }
+  .bento-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+  .bento-photo:hover img { transform: scale(1.05); }
+  .bento-photo-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white; font-weight: bold; font-size: 1.2rem;
+    transform: translateY(10px); opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .bento-photo:hover .bento-photo-overlay { transform: translateY(0); opacity: 1; }
+
+  /* 3. Updates Card */
+  .update-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+  .update-header h3 { margin: 0; font-size: 1.4rem; }
+  .pulse-dot { width: 12px; height: 12px; background-color: var(--accent-color); border-radius: 50%; animation: pulse 2s infinite; }
+  
+  /* FIXED: Added vertical scrolling! */
+  .update-list { 
+    list-style: none; padding: 0; margin: 0; 
+    display: flex; flex-direction: column; gap: 0.75rem; 
+    overflow-y: auto;  /* Enables scrolling */
+    flex-grow: 1;      /* Tells it to fill the newly expanded vertical space */
+    padding-right: 0.5rem; /* Prevents text from rubbing against the scrollbar */
+  }
+  
+  /* Sleek custom scrollbar for the widget */
+  .update-list::-webkit-scrollbar { width: 6px; }
+  .update-list::-webkit-scrollbar-track { background: transparent; }
+  .update-list::-webkit-scrollbar-thumb { background: var(--toggle-track-border); border-radius: 4px; }
+  .update-list::-webkit-scrollbar-thumb:hover { background: var(--accent-color); }
+  
+  .update-list li { font-size: 0.95rem; line-height: 1.5; }
+  .update-list strong { color: var(--accent-color); }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(216, 83, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(216, 83, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(216, 83, 0, 0); }
+  }
+
+  /* 4, 5, 6. Small Action Links */
+  .bento-link {
+    align-items: center; justify-content: center; text-align: center; gap: 1rem;
+    background: var(--accent-color); 
+    color: #fff !important;
+    /* FIXED: Forces the dark-mode border to stay completely invisible */
+    border-color: transparent !important; 
+  }
+  .bento-link svg { transition: transform 0.3s ease; }
+  .bento-link:hover svg { transform: scale(1.15) rotate(-5deg); }
+  .bento-link span { font-weight: bold; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
+  
+  .bento-link:not(.bento-accent) { 
+    background: var(--bg-color); 
+    color: var(--text-color) !important; 
+    border: 1px solid var(--divider-color); 
+  }
+  .bento-link:not(.bento-accent):hover { 
+    background: var(--toggle-track-bg); 
+    border-color: var(--accent-color); 
+  }
+/* ===============================
+     Responsive Grid Placements
+     =============================== */
+  
+  /* Desktop (900px and up) */
+  @media (min-width: 900px) {
+    .bento-intro { grid-column: span 2; grid-row: span 2; }
+    /* Both photos share the same class and will naturally slot into the right column */
+    .bento-photo { grid-column: span 1; grid-row: span 2; }
+    /* FIXED: Updates now spans 2 full rows, doubling its height! */
+    .bento-updates { grid-column: span 2; grid-row: span 2; }
+    .bento-link { grid-column: span 1; grid-row: span 1; padding: 1.5rem; }
+  }
+
+  /* Tablet (600px to 899px) */
+  @media (max-width: 899px) and (min-width: 600px) {
+    .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
+    .bento-intro { grid-column: span 2; grid-row: span 2; }
+    .bento-photo { grid-column: span 1; grid-row: span 2; }
+    
+    /* FIXED: Changed grid-column to 'span 1' so it slots perfectly next to the photo */
+    .bento-updates { grid-column: span 1; grid-row: span 2; }
+    
+    .bento-link { grid-column: span 1; grid-row: span 1; }
+    /* Force link 3 to span full width to fix uneven grid on tablet */
+    .bento-link:last-child { grid-column: span 2; flex-direction: row; } 
+  }
+
+  /* Mobile (Under 600px) */
+  @media (max-width: 599px) {
+    .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; gap: 1rem; }
+    .bento-card { padding: 1.5rem; }
+    .bento-photo { min-height: 350px; }
+    .bento-link { min-height: 120px; flex-direction: row; }
+    .bento-updates { max-height: 400px; } /* Prevents the scroll box from being infinitely tall on mobile */
+  }
