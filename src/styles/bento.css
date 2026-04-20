@@ -66,6 +66,7 @@
   .bento-intro {
     padding: 3rem 2rem; /* FIXED: Increases top/bottom padding for more vertical height */
     justify-content: center; /* FIXED: Vertically centers the text within the newly enlarged box */
+    text-align: left;
   }
 
   .bento-intro h2 { 
@@ -114,6 +115,7 @@
     overflow-y: auto;  /* Enables scrolling */
     flex-grow: 1;      /* Tells it to fill the newly expanded vertical space */
     padding-right: 0.5rem; /* Prevents text from rubbing against the scrollbar */
+    text-align: left;
   }
   
   /* Sleek custom scrollbar for the widget */
@@ -140,7 +142,7 @@
     border-color: transparent !important; 
   }
   .bento-link svg { transition: transform 0.3s ease; }
-  .bento-link:hover svg { transform: scale(1.15) rotate(-5deg); }
+  .bento-link:hover svg { transform: scale(1.15); }
   .bento-link span { font-weight: bold; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; }
   
   .bento-link:not(.bento-accent) { 
