@@ -24,7 +24,14 @@ import pefkosPortrait from '../assets/images/pefkosportrait.jpg';
       </div>
 
       <a href="/photography/" class="bento-card bento-photo" aria-label="View Photography">
-        <Image src={nhmSkeleton} alt="Latest Photography" loading="lazy" />
+        <Image 
+          src={nhmSkeleton} 
+          alt="Latest Photography" 
+          width={600}
+          format="avif"
+          quality={60}
+          loading="lazy" 
+        />
         <div class="bento-photo-overlay">
           <span>Latest Photography &rarr;</span>
         </div>
@@ -47,7 +54,14 @@ import pefkosPortrait from '../assets/images/pefkosportrait.jpg';
       </div>
 
       <a href="/about-me/" class="bento-card bento-photo" aria-label="About Me">
-        <Image src={pefkosPortrait} alt="About Me Portrait" loading="lazy" />
+        <Image 
+          src={pefkosPortrait} 
+          alt="About Me Portrait" 
+          width={600}
+          format="avif"
+          quality={60}
+          loading="lazy" 
+        />
         <div class="bento-photo-overlay">
           <span>About Me &rarr;</span>
         </div>
