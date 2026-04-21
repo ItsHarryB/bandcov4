@@ -70,32 +70,40 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.4.5a - 21/04/2026
+      Version 26.4.5b - 21/04/2026
     </div>
   </div>
 </footer>
 
-<script src="https://unpkg.com/website-carbon-badges@1.1.3/b.min.js" is:inline data-astro-rerun defer></script>
-
 <script>
-  // ==========================================
-  // Keep Badge Synced with Dark Mode
-  // ==========================================
-  const syncBadgeTheme = () => {
-    const el = document.getElementById("wcb");
-    if (el) {
-      if (document.documentElement.classList.contains('dark')) {
-        el.classList.add('wcb-d');
-      } else {
-        el.classList.remove('wcb-d');
-      }
+  // Wait for Astro to fully load the page and transitions
+  document.addEventListener('astro:page-load', () => {
+    
+    // 1. Inject the badge script manually so we KNOW the #wcb div exists first
+    if (!document.querySelector('script[data-carbon]')) {
+      const script = document.createElement('script');
+      script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
+      script.setAttribute('data-carbon', 'true');
+      document.body.appendChild(script);
     }
-  };
 
-  // 1. Run when the page initially loads or transitions
-  document.addEventListener('astro:page-load', syncBadgeTheme);
+    // 2. Sync Dark Mode
+    const syncBadgeTheme = () => {
+      const el = document.getElementById("wcb");
+      if (el) {
+        if (document.documentElement.classList.contains('dark')) {
+          el.classList.add('wcb-d');
+        } else {
+          el.classList.remove('wcb-d');
+        }
+      }
+    };
+    
+    // Slight delay to ensure the badge has time to render before coloring it
+    setTimeout(syncBadgeTheme, 500); 
+  });
 
-  // 2. Run whenever the ThemeToggle button is clicked
+  // 3. Listen for the ThemeToggle button click
   document.addEventListener('themechange', ((e: CustomEvent) => {
     const el = document.getElementById("wcb");
     if (el) {
