@@ -11,19 +11,32 @@ import "../styles/global.css";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Brighton and Co</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.png" />    
+    <link rel="icon" type="image/png" href="/favicon-light.png" id="dynamic-favicon" />  
     <Font cssVariable="--font-raleway" preload />
     
     <ClientRouter />
     <script is:inline>
+      // NEW: Favicon swapper function
+      const syncFavicon = (isDark) => {
+        const favicon = document.getElementById("dynamic-favicon");
+        if (favicon) {
+          favicon.href = isDark ? '/favicon-dark.png' : '/favicon-light.png';
+        }
+      };
+
       const applyTheme = () => {
         const theme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        if (theme === "dark" || (!theme && prefersDark)) {
+        const isDark = theme === "dark" || (!theme && prefersDark);
+        
+        if (isDark) {
           document.documentElement.classList.add("dark");
         } else {
           document.documentElement.classList.remove("dark");
         }
+        
+        // NEW: Apply the correct favicon instantly on page load
+        syncFavicon(isDark);
       };
 
       // 1. Run immediately on initial page load to prevent flashing
@@ -31,6 +44,11 @@ import "../styles/global.css";
 
       // 2. Run immediately on every page navigation (View Transitions)
       document.addEventListener("astro:after-swap", applyTheme);
+      
+      // 3. NEW: Listen for your ThemeToggle component's custom event to swap in real-time!
+      document.addEventListener('themechange', (e) => {
+        syncFavicon(e.detail.theme === 'dark');
+      });
     </script>
   </head>
   <body>
@@ -46,12 +64,10 @@ import "../styles/global.css";
     </div>
 
     <script type="module">
-      // 2. Changed DOMContentLoaded to astro:page-load so scripts survive transitions!
       document.addEventListener("astro:page-load", () => {
         const themeToggle = document.getElementById("theme-toggle");
         const themeIcon = themeToggle?.querySelector(".theme-icon");
 
-        // Theme toggle logic (Kept globally since it handles document body classes)
         if (themeToggle && themeIcon) {
           const spinIcon = () => {
             themeIcon.classList.add("spin");
@@ -71,10 +87,8 @@ import "../styles/global.css";
             }
           };
 
-          // Initialize theme
           setTheme(localStorage.getItem("theme") || "light");
 
-          // We must remove old event listeners first to prevent duplicates during view transitions!
           const newToggle = themeToggle.cloneNode(true);
           themeToggle.parentNode.replaceChild(newToggle, themeToggle);
 

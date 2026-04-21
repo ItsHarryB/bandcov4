@@ -11,14 +11,21 @@ const currentPath = Astro.url.pathname;
 
   <div class="site-title">
     <a href="/" class="site-logo-link">
+      
       <img 
-        src="/favicon.png" 
+        src="/favicon-light.png" 
+        class="header-logo-light" 
         alt="Site Logo" 
-        width="40" 
-         height="40" 
-           loading="eager" 
-            decoding="sync" 
+        width="40" height="40" loading="eager" decoding="sync" 
       />
+      
+      <img 
+        src="/favicon-dark.png" 
+        class="header-logo-dark" 
+        alt="Site Logo" 
+        width="40" height="40" loading="eager" decoding="sync" 
+      />
+      
       <span class="site-title-text">Brighton and Co</span>
     </a>
   </div>
@@ -133,6 +140,13 @@ body:has(.nav-links.expanded) .site-header {
   object-fit: contain;
   transition: width 0.25s ease, height 0.25s ease;
 }
+
+/* Hide the dark logo by default */
+.header-logo-dark { display: none !important; }
+
+/* When dark mode is active, hide the light logo and show the dark one */
+html.dark .header-logo-light { display: none !important; }
+html.dark .header-logo-dark { display: block !important; }
 
 .site-title a {
   height: 100%;
