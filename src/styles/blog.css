@@ -152,11 +152,11 @@ html.dark .post-card:hover h3, html.dark .blog-card:hover h3 {
 .post-category {
   font-size: 0.85rem;
   font-weight: bold;
-  color: #0078be;
+  color: #d85300;
 }
 
 html.dark .post-category {
-  color: #66aaff;
+  color: #d66700;
 }
 
 .post-date {
@@ -200,24 +200,24 @@ html.dark .post-description {
   font-size: 0.8rem;
   font-weight: bold;
   border-radius: 0.5rem;
-  background-color: #e0f0f8;
-  color: #0078be;
+  background-color: #d85300;
+  color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, color 0.3s;
 }
 
 .tag:hover {
-  background-color: #c0e4f2;
+  background-color: #ff5900;
   transform: translateY(-1px);
 }
 
 html.dark .tag {
-  background-color: #003c57;
-  color: #a1d1f0;
+  background-color: #d66700;
+  color: #ffffff;
 }
 
 html.dark .tag:hover {
-  background-color: #005080;
+  background-color: #f77700;
   color: #ffffff;
   transform: translateY(-1px);
 }

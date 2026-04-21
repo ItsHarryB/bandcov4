@@ -29,33 +29,33 @@
   align-items: center;
   justify-content: center;
   height: 40px;
-  background-color: #e0f0f8; /* light mode background */
-  color: #0078be;           /* light mode text */
+  background-color: #d85300; /* light mode background */
+  color: #ffffff;           /* light mode text */
 }
 
 .filters-row button:hover {
-  background-color: #c0e4f2;
+  background-color: #ff5900;
   transform: translateY(-1px);
 }
 
 .filters-row button.active {
-  background-color: #0078be;
+  background-color: #b85400;
   color: #ffffff;
 }
 
 /* Dark mode for category buttons */
 html.dark .filters-row button {
-  background-color: #003c57;
-  color: #a1d1f0;
+  background-color: #d66700;
+  color: #ffffff;
 }
 
 html.dark .filters-row button:hover {
-  background-color: #005080;
+  background-color: #f77700;
   color: #ffffff;
 }
 
 html.dark .filters-row button.active {
-  background-color: #66aaff;
+  background-color: #a13900;
   color: #000;
 }
 
@@ -79,24 +79,24 @@ html.dark .filters-row button.active {
   font-size: 0.8rem;
   font-weight: bold;
   border-radius: 0.5rem;
-  background-color: #e0f0f8;
-  color: #0078be;
+  background-color: #d85300;
+  color: #ffffff;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s, color 0.3s;
 }
 
 .tag-buttons button:hover {
-  background-color: #c0e4f2;
+  background-color: #ff5900;
   transform: translateY(-1px);
 }
 
 /* Dark Mode Tags */
 html.dark .tag-buttons button {
-  background-color: #003c57;
-  color: #a1d1f0;
+  background-color: #d66700;
+  color: #ffffff;
 }
 
 html.dark .tag-buttons button:hover {
-  background-color: #005080;
+  background-color: #f77700;
   color: #ffffff;
 }

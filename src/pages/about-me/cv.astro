@@ -10,8 +10,8 @@ const pageTitle = "My CV:";
 <BaseLayout pageTitle={pageTitle}>
   <div class="page-center">
     <h1>My CV:</h1>
-    <BackButton parent="/about-me" label="Back to About Me" />
   </div>
+  <BackButton parent="/about-me" label="Back to About Me" />
 
   <section class="cv-section cv-card" id="cvCard">
     <div class="viewer-controls">
@@ -147,6 +147,7 @@ const pageTitle = "My CV:";
       min-width: 130px;
       text-align: center;
       text-decoration: none;
+      font-family: inherit;
       transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -206,7 +207,7 @@ const pageTitle = "My CV:";
 
     @keyframes highlightPulse {
       0% { box-shadow: 0 0 0 rgba(0,0,0,0); }
-      50% { box-shadow: 0 0 20px rgba(0,150,182,0.5); }
+      50% { box-shadow: 0 0 20px #d85300b6; }
       100% { box-shadow: 0 0 0 rgba(0,0,0,0); }
     }
 
