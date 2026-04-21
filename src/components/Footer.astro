@@ -70,94 +70,40 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       Brighton and Co Website – Made by Harry Brighton <br />
-      Version 4.4.0 - 21/04/2026
+      Version 4.4.0a - 21/04/2026
     </div>
   </div>
 </footer>
 
 <script>
   // ==========================================
-  // Carbon Badge Injection Logic ONLY
+  // Keep Badge Synced with Dark Mode
   // ==========================================
-  const setupCarbonBadge = () => {
-    let scriptInjected = false;
-
-    const inject = () => {
-      if (document.querySelector('script[data-carbon-badge]')) return;
-      const s = document.createElement("script");
-      s.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-      s.defer = true;
-      s.setAttribute("data-carbon-badge", "true");
-      s.onerror = () => console.warn("Website Carbon Badge script failed to load");
-      document.body.appendChild(s);
-      scriptInjected = true;
-    };
-
-    inject();
-
-    let attempts = 0;
-    const maxAttempts = 2;
-    const timers: number[] = [];
-    let badgeLoaded = false;
-
-    const isLoaded = () => {
-      const el = document.getElementById("wcb");
-      return !!el?.querySelector("a[href*='websitecarbon.com'], svg") && !/no result/i.test(el.textContent || "");
-    };
-
-    const retry = () => {
-      if (badgeLoaded) return;
-      const el = document.getElementById("wcb");
-      if (!el) return;
-
-      if (isLoaded()) {
-        badgeLoaded = true;
-        // Keep badge synced with theme on initial load
-        if (document.documentElement.classList.contains('dark')) el.classList.add('wcb-d');
-        else el.classList.remove('wcb-d');
-        return;
-      }
-
-      if (attempts < maxAttempts) {
-        attempts++;
-        document.querySelectorAll('script[src*="website-carbon-badges"]').forEach((n) => n.remove());
-        el.innerHTML = "";
-        scriptInjected = false;
-        
-        timers.push(window.setTimeout(() => {
-            inject();
-            timers.push(window.setTimeout(retry, 6000));
-        }, 4000 * attempts));
+  const syncBadgeTheme = () => {
+    const el = document.getElementById("wcb");
+    if (el) {
+      if (document.documentElement.classList.contains('dark')) {
+        el.classList.add('wcb-d');
       } else {
-        el.style.display = "none";
-        el.closest('.footer-carbon-badge')?.setAttribute('style', 'display: none;');
+        el.classList.remove('wcb-d');
       }
-    };
-
-    timers.push(window.setTimeout(retry, 8000));
-
-    // Listen for the custom event fired by ThemeToggle.astro to update the badge color
-    document.addEventListener('themechange', ((e: CustomEvent) => {
-        const el = document.getElementById("wcb");
-        if (el) {
-            if (e.detail.theme === 'dark') {
-                el.classList.add('wcb-d');
-            } else {
-                el.classList.remove('wcb-d');
-            }
-        }
-    }) as EventListener);
+    }
   };
 
-  // Run scripts on load AND after view transitions
-  document.addEventListener('astro:page-load', () => {
-    setupCarbonBadge();
-  });
-  
-  // Fallback
-  if (!document.querySelector('meta[name="astro-view-transitions-enabled"]')) {
-    setupCarbonBadge();
-  }
+  // 1. Run when the page initially loads or transitions
+  document.addEventListener('astro:page-load', syncBadgeTheme);
+
+  // 2. Run whenever the ThemeToggle button is clicked
+  document.addEventListener('themechange', ((e: CustomEvent) => {
+    const el = document.getElementById("wcb");
+    if (el) {
+      if (e.detail.theme === 'dark') {
+        el.classList.add('wcb-d');
+      } else {
+        el.classList.remove('wcb-d');
+      }
+    }
+  }) as EventListener);
 </script>
 
 <style>
