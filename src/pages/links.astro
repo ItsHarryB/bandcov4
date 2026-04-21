@@ -38,31 +38,35 @@ const otherLinks = [
   </div>
 </BaseLayout>
 
-<style>
-  /* ==========================================================
-     Card Base State (The Smooth, "Parachute" Drop on Un-Hover)
+<style is:global>
+/* ==========================================================
+     Card Base State (Mouse Leave)
      ========================================================== */
   .social-cards-grid a {
-    /* We use !important to guarantee it overrides any default transitions built into the Social.astro component */
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.5s,
-                color 0.5s !important;
+    /* MATCHING BLOG.CSS: 0.25s ease-in-out drop */
+    transition: transform 0.25s ease-in-out,
+                box-shadow 0.25s ease-in-out,
+                background-color 0.25s ease-in-out,
+                color 0.25s ease-in-out !important;
   }
 
   /* ==========================================================
-     Card Hover State (The Fast, Bouncy Lift)
+     Card Hover State (Mouse Enter)
      ========================================================== */
   .social-cards-grid a:hover {
-    transform: translateY(-8px) !important;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+    /* MATCHING BLOG.CSS: -6px lift and shadow */
+    transform: translateY(-6px) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2) !important;
     
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                box-shadow 0.2s ease !important;
+    /* MATCHING BLOG.CSS: 0.3s bouncy lift */
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                box-shadow 0.3s ease,
+                background-color 0.3s ease,
+                color 0.3s ease !important;
   }
 
-  /* Deepen the shadow slightly in dark mode so the pop is still visible against dark backgrounds */
+  /* Deepen the shadow slightly in dark mode */
   html.dark .social-cards-grid a:hover {
-    box-shadow: 0 15px 30px rgba(0,0,0,0.5) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5) !important;
   }
 </style>

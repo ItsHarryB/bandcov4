@@ -1,18 +1,74 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "Brighton and Co";
+import '../styles/bento.css'; /* Your new import! */
+const pageTitle = "Home";
+import {Image} from 'astro:assets';
+import nhmSkeleton from '../assets/images/nhmskeleton.jpg';
+import pefkosPortrait from '../assets/images/pefkosportrait.jpg';
 ---
+
 <BaseLayout pageTitle={pageTitle}>
-  <!-- Add the "vert-center" class only if you want vertical centering -->
   <div class="page-center">
-    <h1>Home</h1>
+    
+    <div class="bento-grid layout-content">
+      
+      <div class="bento-card bento-intro">
+        <h2>Welcome to </h2>
+        <h2><span class="text-accent">Brighton and Co</span></h2>
+        <p>
+          This is the main, official website for Brighton and Co.
+        </p>
+        <p>
+          Brighton and Co is my personal website where I share photography and other information, showcasing my work and interests.
+        </p>
+      </div>
+
+      <a href="/photography/" class="bento-card bento-photo" aria-label="View Photography">
+        <Image src={nhmSkeleton} alt="Latest Photography" loading="lazy" />
+        <div class="bento-photo-overlay">
+          <span>Latest Photography &rarr;</span>
+        </div>
+      </a>
+
+      <div class="bento-card bento-updates">
+        <div class="update-header">
+          <span class="pulse-dot"></span>
+          <h3>Latest Updates</h3>
+        </div>
+        <ul class="update-list">
+          <li><strong>(Mid) April 2026:</strong> A new homepage is designed and launched! A lot of other design tweaks and improvements are made to the site.</li>
+          <li><strong>(Early) April 2026:</strong> Added additional pages and made changes to the navigation of the site. This includes a new Vinted page.</li>
+          <li><strong>(Late) March 2026:</strong> The website is update to Astro 6.0, with considerable improvements made to site performance and accessibility.</li>
+          <li><strong>(Late) November 2025:</strong> Significant efficiency improvements are made to the site.</li>
+          <li><strong>4 November 2025:</strong><b> Brighton and Co Version 4 (v4) is launched.</b></li>        
+        </ul>
+      </div>
+
+      <a href="/about-me/" class="bento-card bento-photo" aria-label="About Me">
+        <Image src={pefkosPortrait} alt="About Me Portrait" loading="lazy" />
+        <div class="bento-photo-overlay">
+          <span>About Me &rarr;</span>
+        </div>
+      </a>
+
+      <a href="/about-me/cv/" class="bento-card bento-link bento-accent">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <span>My CV</span>
+      </a>
+
+      <a href="/enquiries/" class="bento-card bento-link bento-accent">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        <span>Enquiries</span>
+      </a>
+
+      <a href="/blog/" class="bento-card bento-link bento-accent">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        <span>Read Blog</span>
+      </a>
+
+    </div>
   </div>
-  <h2>About This Website -</h2>
-  <p>This website is a personal project created by Harry Brighton to showcase his work and interests.</p>
-<hr class="section-divider" />
-
-
-  <h2>The Latest -</h2>
-  <p>This is the new Brighton and Co website.</p>
-   <p><a href="https://old.brightonandco.co.uk" class="inline-link" target="_blank" rel="noopener noreferrer">Access the old Brighton and Co Website</a></p>
 </BaseLayout>

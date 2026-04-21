@@ -265,12 +265,15 @@ button, a { display: inline-block; width: auto; }
   text-underline-offset: 4px;
   text-decoration-skip-ink: none;
   padding: 2px 0;
-  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
+  /* MATCHING SYSTEM: Unified 0.25s timing */
+  transition: color 0.25s ease-in-out, text-decoration-thickness 0.25s ease-in-out;
 }
 
 .footer-section ul li a:hover { 
   color: var(--link-hover-dark); 
   text-decoration-thickness: 3px;
+  /* Snappier 0.15s transition on hover */
+  transition: color 0.15s ease-in-out, text-decoration-thickness 0.15s ease-in-out;
 }
 
 /* Social Links */
@@ -290,10 +293,30 @@ button, a { display: inline-block; width: auto; }
   background: var(--social-bg);
   color: var(--social-icon);
   text-decoration: none;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  
+  /* MATCHING SYSTEM: The 0.25s smooth drop back to rest */
+  transition: transform 0.25s ease-in-out, 
+              box-shadow 0.25s ease-in-out,
+              background 0.25s ease-in-out, 
+              color 0.25s ease-in-out;
 }
 
-.social-link:hover { transform: translateY(-2px); }
+.social-link:hover { 
+  /* MATCHING SYSTEM: The -6px bouncy lift and shadow */
+  transform: translateY(-6px); 
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), 
+              box-shadow 0.3s ease, 
+              background 0.3s ease, 
+              color 0.3s ease;
+}
+
+/* Deepen the hover shadow slightly in dark mode */
+html.dark .social-link:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
 .social-link.twitter:hover { background: #1DA1F2; color: #fff; }
 .social-link.github:hover { background: #24292f; color: #fff; }
 .social-link.linkedin:hover { background: #0A66C2; color: #fff; }
@@ -403,13 +426,16 @@ button, a { display: inline-block; width: auto; }
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
   text-decoration-skip-ink: none;
-  transition: color 0.2s ease, text-decoration-thickness 0.2s ease;
+  /* MATCHING SYSTEM: Unified 0.25s timing */
+  transition: color 0.25s ease-in-out, text-decoration-thickness 0.25s ease-in-out;
 }
 
 .layout-content a:hover,
 .inline-link:hover {
   color: var(--link-hover-dark);
   text-decoration-thickness: 3px;
+  /* Snappier 0.15s transition for text hover so it feels immediately responsive */
+  transition: color 0.15s ease-in-out, text-decoration-thickness 0.15s ease-in-out;
 }
 /* ===============================
    External Link Icons
