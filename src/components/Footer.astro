@@ -70,30 +70,40 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       Brighton and Co Website – Made by Harry Brighton <br />
-      Version 4.4.1 - 21/04/2026
+      Version 4.4.1a - 21/04/2026
     </div>
   </div>
 </footer>
 
 <script>
-  // ==========================================
-  // Keep Badge Synced with Dark Mode
-  // ==========================================
-  const syncBadgeTheme = () => {
-    const el = document.getElementById("wcb");
-    if (el) {
-      if (document.documentElement.classList.contains('dark')) {
-        el.classList.add('wcb-d');
-      } else {
-        el.classList.remove('wcb-d');
-      }
+  // Wait for Astro to fully load the page and transitions
+  document.addEventListener('astro:page-load', () => {
+    
+    // 1. Inject the badge script manually so we KNOW the #wcb div exists first
+    if (!document.querySelector('script[data-carbon]')) {
+      const script = document.createElement('script');
+      script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
+      script.setAttribute('data-carbon', 'true');
+      document.body.appendChild(script);
     }
-  };
 
-  // 1. Run when the page initially loads or transitions
-  document.addEventListener('astro:page-load', syncBadgeTheme);
+    // 2. Sync Dark Mode
+    const syncBadgeTheme = () => {
+      const el = document.getElementById("wcb");
+      if (el) {
+        if (document.documentElement.classList.contains('dark')) {
+          el.classList.add('wcb-d');
+        } else {
+          el.classList.remove('wcb-d');
+        }
+      }
+    };
+    
+    // Slight delay to ensure the badge has time to render before coloring it
+    setTimeout(syncBadgeTheme, 500); 
+  });
 
-  // 2. Run whenever the ThemeToggle button is clicked
+  // 3. Listen for the ThemeToggle button click
   document.addEventListener('themechange', ((e: CustomEvent) => {
     const el = document.getElementById("wcb");
     if (el) {
@@ -125,6 +135,19 @@ const currentYear = new Date().getFullYear();
     transform: scale(1.2);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
   }
+  /* ===============================
+     Website Carbon Badge Fixes
+     =============================== */
+  /* 1. Forces the badge into a neat inline pill shape */
+  #wcb.carbonbadge { display: inline-block !important; text-align: center !important; margin: 0 !important; }
+  #wcb.carbonbadge style { display: none !important; }
+  #wcb #wcb_g, #wcb #wcb_a { display: inline-flex !important; width: auto !important; margin: 0 !important; }
+  #wcb #wcb_g { border-radius: 0.3em 0 0 0.3em !important; border-right: 0 !important; }
+  #wcb #wcb_a { border-radius: 0 0.3em 0.3em 0 !important; border-left: 0 !important; }
+  #wcb #wcb_2 { display: inline-flex !important; margin-left: 0.5em !important; }
+
+  /* 2. Instantly hides the ugly "No Result" text if the API fails or you are on an untested sub-page */
+  #wcb.carbonbadge:not(:has(#wcb_g)) { display: none !important; }
   /* ===============================
      External Link Icons (Footer)
      =============================== */
