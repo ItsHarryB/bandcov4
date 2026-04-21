@@ -16,7 +16,11 @@ const currentYear = new Date().getFullYear();
       <ul aria-labelledby="other-sites-heading">
         <li>
           <a href="https://web.brightonandco.co.uk" target="_blank" rel="noopener noreferrer" class="footer-site-link">
-            <img src="/webfavicon.png" alt="" class="footer-site-logo" width="28" height="28" loading="lazy" decoding="async" />
+            
+            <img src="/webfavicon-light.png" alt="" class="footer-site-logo footer-web-light" width="28" height="28" loading="lazy" decoding="async" />
+            
+            <img src="/webfavicon-dark.png" alt="" class="footer-site-logo footer-web-dark" width="28" height="28" loading="lazy" decoding="async" />
+            
             Brighton and Co
           </a>
         </li>
@@ -70,7 +74,7 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.4.5b - 21/04/2026
+      Version 26.4.5c - 21/04/2026
     </div>
   </div>
 </footer>
@@ -130,6 +134,30 @@ const currentYear = new Date().getFullYear();
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
   }
+  /* ===============================
+     Website Carbon Badge Fixes
+     =============================== */
+  /* 1. Forces the badge into a neat inline pill shape */
+  #wcb.carbonbadge { display: inline-block !important; text-align: center !important; margin: 0 !important; }
+  #wcb.carbonbadge style { display: none !important; }
+  #wcb #wcb_g, #wcb #wcb_a { display: inline-flex !important; width: auto !important; margin: 0 !important; }
+  #wcb #wcb_g { border-radius: 0.3em 0 0 0.3em !important; border-right: 0 !important; }
+  #wcb #wcb_a { border-radius: 0 0.3em 0.3em 0 !important; border-left: 0 !important; }
+  #wcb #wcb_2 { display: inline-flex !important; margin-left: 0.5em !important; }
+
+  /* 2. Instantly hides the ugly "No Result" text if the API fails or you are on an untested sub-page */
+  #wcb.carbonbadge:not(:has(#wcb_g)) { display: none !important; }
+  /* ===============================
+     Dynamic Footer Logos
+     =============================== */
+  /* Hide the dark logo by default */
+  .footer-web-dark { display: none !important; }
+
+  /* When dark mode is active, hide the light logo and show the dark one */
+  html.dark .footer-web-light { display: none !important; }
+  
+  /* Use inline-block so it perfectly maintains its position next to the text */
+  html.dark .footer-web-dark { display: inline-block !important; }
 
   .footer-site-link:hover .footer-site-logo {
     transform: scale(1.2);
