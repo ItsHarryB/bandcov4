@@ -23,11 +23,10 @@ const { parent = '/blog', label = 'Back' } = Astro.props;
      =============================== */
   .back-btn-wrapper {
     width: 100%;
-    max-width: 100ch; /* Matches your global .layout-content width! */
-    margin: 0 auto 1.5rem auto; /* Centers the wrapper, adds space below */
-    padding: 0 1rem; /* Matches your global layout padding */
+    margin-bottom: 1.5rem; 
     display: flex;
-    justify-content: flex-start; /* Forces the button to snap to the left edge */
+    justify-content: flex-start;
+    /* Removed the max-width and padding so it perfectly aligns inside the blog post container! */
   }
 
   /* ===============================
@@ -36,25 +35,23 @@ const { parent = '/blog', label = 'Back' } = Astro.props;
   .back-btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 1rem 0.5rem 0.75rem; /* Slightly less padding on the left to balance the icon */
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem 0.5rem 0.8rem;
     border-radius: 999px; /* Perfect pill shape */
-    background-color: var(--social-bg); /* Inherits your subtle grey from global.css */
-    color: var(--text-color) !important;
+    border: 2px solid var(--toggle-track-border);
+    background-color: var(--social-bg);
+    color: var(--text-color) !important; /* The !important shields it from global styles */
     font-weight: bold;
     font-size: 0.95rem;
     text-decoration: none !important; /* Kills global link underlines */
     
-    /* Smooth, bouncy physics */
-    /* Decoupled physics: Fast bouncy lift, but a slow, smooth color fade */
-    transition: background-color 0.5s ease-in-out, 
-                color 0.5s ease-in-out, 
-                transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-                box-shadow 0.5s ease-in-out;
+    /* MATCHING SYSTEM: Unified 0.25s timing */
+    transition: all 0.25s ease-in-out !important;
   }
 
   html.dark .back-btn {
-    background-color: var(--toggle-track-bg); /* Dark mode subtle background */
+    background-color: var(--footer-bg);
+    border-color: var(--toggle-track-border);
   }
 
   /* ===============================
@@ -62,20 +59,29 @@ const { parent = '/blog', label = 'Back' } = Astro.props;
      =============================== */
   .back-btn:hover {
     background-color: var(--accent-color);
+    border-color: var(--accent-color);
     color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   }
 
   html.dark .back-btn:hover {
     background-color: var(--accent-color);
+    border-color: var(--accent-color);
     color: #ffffff !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Deeper shadow for dark mode */
   }
 
   .back-btn svg {
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease-in-out;
   }
 
   .back-btn:hover svg {
     transform: translateX(-3px); /* Nudges the arrow even further left on hover */
+  }
+  
+  /* Force hide any global external link icons that might try to attach */
+  .back-btn::after {
+    display: none !important;
   }
 </style>
 
