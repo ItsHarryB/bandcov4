@@ -5,6 +5,39 @@ import shopLogo from '../assets/images/shopbnco.png';
 
 import { TbBrandVinted } from "react-icons/tb";
 import { SiEbay } from "react-icons/si";
+
+// 1. Transplanted: Import your PhotoCarousel
+import PhotoCarousel from '../components/PhotoCarousel.jsx';
+
+// 2. Transplanted: Import your JSON database
+import rawVintedData from '../data/vinted.json';
+
+// 3. Transplanted: TypeScript blueprint
+interface VintedItem {
+  title: string;
+  url: string;
+  imageUrl: string;
+}
+
+interface VintedData {
+  popularItems: VintedItem[];
+  moreItems: VintedItem[];
+}
+
+// 4. Transplanted: Data mapping for the carousels
+const vintedData = rawVintedData as VintedData;
+
+const popularCarouselImages = vintedData.popularItems.map((item: VintedItem) => ({
+  src: item.imageUrl,
+  alt: item.title,
+  url: item.url
+}));
+
+const moreCarouselImages = vintedData.moreItems.map((item: VintedItem) => ({
+  src: item.imageUrl,
+  alt: item.title,
+  url: item.url
+}));
 ---
 
 <BaseLayout pageTitle="SHOP: Brighton and Co">
@@ -39,7 +72,7 @@ import { SiEbay } from "react-icons/si";
       </div>
     </section>
 
-    <!-- Bento Grid for the Stores -->
+    <!-- Main Storefront Portals -->
     <section class="store-grid fade-in">
       
       <!-- VINTED CARD -->
@@ -53,7 +86,6 @@ import { SiEbay } from "react-icons/si";
           
           <h2>Vinted</h2>
 
-          <!-- NEW: Vinted Achievement Badges -->
           <div class="card-badges">
             <span class="card-badge vinted-badge">✨ Frequent Uploads</span>
             <span class="card-badge vinted-badge">🚚 Speedy Shipping</span>
@@ -84,7 +116,6 @@ import { SiEbay } from "react-icons/si";
           
           <h2>eBay</h2>
           
-          <!-- Invisible spacer to keep titles perfectly aligned with Vinted if desired, or let flex-grow handle it naturally! -->
           <div class="card-badges-spacer"></div>
 
           <h3>Tech, Media & Collectibles</h3>
@@ -99,6 +130,54 @@ import { SiEbay } from "react-icons/si";
           <a href="YOUR_EBAY_URL_HERE" target="_blank" rel="noopener noreferrer" class="shop-btn gradient-btn">
             Shop my eBay
           </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- NEW: Featured Inventory Bento Grid -->
+    <div class="inventory-divider fade-in">
+      <h2>Featured Vinted Highlights</h2>
+      <p>Scroll through a selection of currently available items</p>
+    </div>
+
+    <section class="store-grid inventory-grid fade-in">
+      
+      <!-- POPULAR ITEMS CARD -->
+      <div class="store-card showcase-card">
+        <h3>🔥 Popular Items</h3>
+        <p class="showcase-subtitle">These are a selection of popular items currently available on my Vinted account:</p>
+        
+        <ul class="item-list">
+          {vintedData.popularItems.map((item: VintedItem, index: number) => (
+            <li>
+              <strong>Item {index + 1}:</strong> {item.title} — 
+              <a href={item.url} class="inline-link" target="_blank" rel="noopener noreferrer">View on Vinted</a>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="carousel-wrapper">
+          <PhotoCarousel client:visible images={popularCarouselImages} theme="shop" />
+        </div>
+      </div>
+
+      <!-- MORE ITEMS CARD -->
+      <div class="store-card showcase-card">
+        <h3>🛍️ More Items</h3>
+        <p class="showcase-subtitle">These are a selection of other items currently available on my Vinted account:</p>
+        
+        <ul class="item-list">
+          {vintedData.moreItems.map((item: VintedItem, index: number) => (
+            <li>
+              <strong>Item {index + 1}:</strong> {item.title} — 
+              <a href={item.url} class="inline-link" target="_blank" rel="noopener noreferrer">View on Vinted</a>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="carousel-wrapper">
+          <PhotoCarousel client:visible images={moreCarouselImages} theme="shop" />
         </div>
       </div>
 
@@ -298,7 +377,7 @@ html.dark .store-card:hover .ebay-icon {
 .store-card h2 { margin: 0; font-size: 2rem; color: var(--text-color); }
 .store-card h3 { font-size: 1.1rem; color: #ff0055; margin-bottom: 1.5rem; font-weight: 600; }
 
-/* NEW: Internal Card Badges */
+/* Internal Card Badges */
 .card-badges {
   display: flex;
   flex-wrap: wrap;
@@ -309,7 +388,7 @@ html.dark .store-card:hover .ebay-icon {
 }
 
 .card-badges-spacer {
-  height: 1.8rem; /* Keeps the eBay card layout perfectly balanced with Vinted */
+  height: 1.8rem; 
 }
 
 .card-badge {
@@ -321,7 +400,6 @@ html.dark .store-card:hover .ebay-icon {
   letter-spacing: 0.5px;
 }
 
-/* Vinted Teal Tint */
 .vinted-badge {
   background-color: rgba(0, 119, 130, 0.1);
   color: #007782;
@@ -351,6 +429,69 @@ html.dark .vinted-badge {
 html.dark .store-card p { color: #aaa; }
 
 /* ===============================
+   Transplanted Inventory Section
+   =============================== */
+.inventory-divider {
+  text-align: center;
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--toggle-track-border);
+}
+
+.inventory-divider h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-color); }
+.inventory-divider p { color: #555; font-size: 1rem; }
+html.dark .inventory-divider p { color: #aaa; }
+
+/* The showcase cards override the default store-card text alignment so lists look neat */
+.showcase-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2.5rem;
+}
+
+.showcase-card h3 { color: var(--text-color); font-size: 1.5rem; margin-bottom: 0.5rem; }
+.showcase-subtitle { font-size: 0.9rem !important; margin-bottom: 1.5rem !important; }
+
+/* Transplanted List Styling */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.item-list li {
+  font-size: 0.95rem;
+  color: #555;
+  background-color: var(--bg-color); /* Subtle contrast against the card */
+  padding: 0.8rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--toggle-track-border);
+}
+html.dark .item-list li { color: #aaa; background-color: rgba(0,0,0,0.2); }
+
+.inline-link {
+  color: #ff0055;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+.inline-link:hover { color: #ff2e43; text-decoration: underline; }
+html.dark .inline-link { color: #ff5258; }
+
+.carousel-wrapper {
+  margin-top: auto; 
+  padding-top: 1.5rem; /* Replaces the old margin to give space below your lists */
+  width: 100%;
+  display: flex; /* Forces the container to shrink-wrap perfectly */
+  /* FIXED: Removed the conflicting border-radius, background, and shadow! */
+}
+
+/* ===============================
    Gradient Shop Buttons
    =============================== */
 .shop-btn {
@@ -376,7 +517,8 @@ html.dark .store-card p { color: #aaa; }
   box-shadow: 0 8px 25px rgba(255, 0, 85, 0.5);
 }
 
-.shop-btn[target="_blank"]::after {
+/* Shared External Link Icons for both the Main Buttons and Inline Links */
+.shop-btn[target="_blank"]::after, .inline-link[target="_blank"]::after {
   content: "";
   display: inline-block;
   width: 0.85em;
@@ -389,7 +531,7 @@ html.dark .store-card p { color: #aaa; }
   transition: transform 0.2s ease;
 }
 
-.shop-btn[target="_blank"]:hover::after {
+.shop-btn[target="_blank"]:hover::after, .inline-link[target="_blank"]:hover::after {
   transform: translateX(2px) translateY(-2px); 
 }
 
@@ -403,6 +545,8 @@ html.dark .store-card p { color: #aaa; }
 }
 
 .store-grid { animation-delay: 0.2s; }
+.inventory-divider { animation-delay: 0.3s; }
+.inventory-grid { animation-delay: 0.4s; }
 
 @keyframes fadeInUp {
   to { opacity: 1; transform: translateY(0); }
@@ -420,6 +564,9 @@ html.dark .store-card p { color: #aaa; }
   }
   .banner-title {
     font-size: 2rem;
+  }
+  .showcase-card { 
+    padding: 1.5rem; 
   }
 }
 </style>

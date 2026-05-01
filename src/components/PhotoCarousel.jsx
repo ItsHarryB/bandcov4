@@ -3,8 +3,7 @@ import { memo, createPortal } from "preact/compat";
 import { useSwipeable } from "react-swipeable";
 import "../styles/photocarousel.css";
 
-function PhotoCarousel({ images, priority = false }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+function PhotoCarousel({ images, priority = false, theme = "default" }) {  const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState(null);
   const [isDark, setIsDark] = useState(false);
   const total = images.length;
@@ -82,9 +81,9 @@ function PhotoCarousel({ images, priority = false }) {
 
   return (
     <>
-      {/* Main Carousel */}
+      {/* 2. Add theme-${theme} to the main carousel wrapper */}
       <div 
-        className={`carousel ${isDark ? 'dark-mode' : ''}`} 
+        className={`carousel ${isDark ? 'dark-mode' : ''} theme-${theme}`} 
         {...carouselHandlers}
         onMouseEnter={handleInteractionPrefetch} 
         onTouchStart={handleInteractionPrefetch} 
@@ -145,7 +144,7 @@ function PhotoCarousel({ images, priority = false }) {
         const activeImage = getImageData(images[lightboxIndex]);
         
         return createPortal(
-          <div className="lightbox-overlay" {...lightboxHandlers} onClick={closeLightbox}>
+          <div className={`lightbox-overlay theme-${theme}`} {...lightboxHandlers} onClick={closeLightbox}>
             <div className="lightbox-content" onClick={e => e.stopPropagation()}>
               <img
                 src={activeImage.src}
