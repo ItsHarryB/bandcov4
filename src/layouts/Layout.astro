@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import { SimpleAnalytics } from 'astro-simpleanalytics-plugin';
 ---
 <!doctype html>
 <html lang="en">
@@ -14,6 +15,9 @@ import { Font } from 'astro:assets';
     </head>
     <body>
         <slot />
+        <SimpleAnalytics 
+        collectDNT={true}
+        />
     </body>
 </html>
 

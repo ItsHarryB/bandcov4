@@ -1,7 +1,7 @@
 {
   "name": "galactic-group",
   "type": "module",
-  "version": "26.5.0a",
+  "version": "26.5.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -16,6 +16,7 @@
     "@fontsource-variable/raleway": "^5.2.8",
     "@fontsource/raleway": "^5.2.8",
     "astro": "^6.0.8",
+    "astro-simpleanalytics-plugin": "^0.3.22",
     "lucide-preact": "^0.544.0",
     "lucide-react": "^0.544.0",
     "mdx": "^0.2.3",

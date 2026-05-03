@@ -1,6 +1,6 @@
 ---
 import Social from "./Social.astro";
-import ThemeToggle from "./ThemeToggle.astro"; // <-- Imported here!
+import ThemeToggle from "./ThemeToggle.astro"; 
 import "../styles/global.css";
 
 const currentYear = new Date().getFullYear();
@@ -16,11 +16,8 @@ const currentYear = new Date().getFullYear();
       <ul aria-labelledby="other-sites-heading">
         <li>
           <a href="https://web.brightonandco.co.uk" target="_blank" rel="noopener noreferrer" class="footer-site-link">
-            
             <img src="/webfavicon-light.png" alt="" class="footer-site-logo footer-web-light" width="28" height="28" loading="lazy" decoding="async" />
-            
             <img src="/webfavicon-dark.png" alt="" class="footer-site-logo footer-web-dark" width="28" height="28" loading="lazy" decoding="async" />
-            
             Brighton and Co
           </a>
         </li>
@@ -58,7 +55,8 @@ const currentYear = new Date().getFullYear();
     <div class="footer-section">
       <h4 id="theme-toggle-heading">Toggle Theme:</h4>
       <div class="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
-        <ThemeToggle /> </div>
+        <ThemeToggle /> 
+      </div>
     </div>
 
   </div> 
@@ -68,13 +66,14 @@ const currentYear = new Date().getFullYear();
       &copy; {currentYear} Brighton and Co. All rights reserved.
     </div>
 
+    <!-- The Carbon Badge Container -->
     <div class="footer-carbon-badge">
       <div id="wcb" class="carbonbadge"></div>
     </div>
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.5.0a - 01/05/2026
+      Version 26.5.1 - 03/05/2026
     </div>
   </div>
 </footer>
@@ -82,32 +81,51 @@ const currentYear = new Date().getFullYear();
 <script>
   // Wait for Astro to fully load the page and transitions
   document.addEventListener('astro:page-load', () => {
-    
-    // 1. Inject the badge script manually so we KNOW the #wcb div exists first
-    if (!document.querySelector('script[data-carbon]')) {
-      const script = document.createElement('script');
-      script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-      script.setAttribute('data-carbon', 'true');
-      document.body.appendChild(script);
-    }
+    const wcbContainer = document.getElementById('wcb');
+    if (!wcbContainer) return;
 
-    // 2. Sync Dark Mode
-    const syncBadgeTheme = () => {
-      const el = document.getElementById("wcb");
-      if (el) {
+    // 1. Hide the container immediately to prevent the "No Result" flash
+    wcbContainer.style.display = 'none';
+    wcbContainer.innerHTML = ''; 
+
+    // 2. Remove the OLD script so we force the widget to re-evaluate on this new page!
+    const existingScript = document.querySelector('script[data-carbon]');
+    if (existingScript) existingScript.remove();
+
+    // 3. Inject a fresh script instance
+    const script = document.createElement('script');
+    script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
+    script.setAttribute('data-carbon', 'true');
+    document.body.appendChild(script);
+
+    // 4. Set up an observer to watch for the exact moment the API responds
+    const observer = new MutationObserver(() => {
+      const html = wcbContainer.innerHTML;
+      
+      // If the API injects the graphic element (#wcb_g), it was a SUCCESS!
+      if (html.includes('wcb_g')) { 
+        wcbContainer.style.display = 'inline-block'; // Reveal the badge
+        
+        // Sync the Dark Mode theme instantly
         if (document.documentElement.classList.contains('dark')) {
-          el.classList.add('wcb-d');
+          wcbContainer.classList.add('wcb-d');
         } else {
-          el.classList.remove('wcb-d');
+          wcbContainer.classList.remove('wcb-d');
         }
+        
+        observer.disconnect(); // Task finished, stop observing
+      } 
+      // If the API injects the text "No Result", keep it permanently hidden
+      else if (html.includes('No Result')) { 
+        wcbContainer.style.display = 'none'; 
+        observer.disconnect(); // Task finished, stop observing
       }
-    };
-    
-    // Slight delay to ensure the badge has time to render before coloring it
-    setTimeout(syncBadgeTheme, 500); 
+    });
+
+    observer.observe(wcbContainer, { childList: true, subtree: true });
   });
 
-  // 3. Listen for the ThemeToggle button click
+  // Listen for the ThemeToggle button click
   document.addEventListener('themechange', ((e: CustomEvent) => {
     const el = document.getElementById("wcb");
     if (el) {
@@ -134,35 +152,54 @@ const currentYear = new Date().getFullYear();
     filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
   }
+
   /* ===============================
      Website Carbon Badge Fixes
      =============================== */
-  /* 1. Forces the badge into a neat inline pill shape */
-  #wcb.carbonbadge { display: inline-block !important; text-align: center !important; margin: 0 !important; }
+  .footer-carbon-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 36px; /* Prevents layout shifting when the badge suddenly appears */
+  }
+
+  #wcb.carbonbadge { 
+    text-align: center !important; 
+    margin: 0 auto !important; 
+  }
+  
   #wcb.carbonbadge style { display: none !important; }
-  #wcb #wcb_g, #wcb #wcb_a { display: inline-flex !important; width: auto !important; margin: 0 !important; }
+  
+  #wcb #wcb_p { 
+    display: inline-flex !important; 
+    align-items: center !important; 
+  }
+
+  #wcb #wcb_g, #wcb #wcb_a { 
+    display: inline-flex !important; 
+    align-items: center !important; 
+    width: auto !important; 
+    margin: 0 !important; 
+    padding: 0.3em 0.6em !important;
+    line-height: 1.1 !important;
+  }
+  
   #wcb #wcb_g { border-radius: 0.3em 0 0 0.3em !important; border-right: 0 !important; }
   #wcb #wcb_a { border-radius: 0 0.3em 0.3em 0 !important; border-left: 0 !important; }
   #wcb #wcb_2 { display: inline-flex !important; margin-left: 0.5em !important; }
 
-  /* 2. Instantly hides the ugly "No Result" text if the API fails or you are on an untested sub-page */
-  #wcb.carbonbadge:not(:has(#wcb_g)) { display: none !important; }
   /* ===============================
      Dynamic Footer Logos
      =============================== */
-  /* Hide the dark logo by default */
   .footer-web-dark { display: none !important; }
-
-  /* When dark mode is active, hide the light logo and show the dark one */
   html.dark .footer-web-light { display: none !important; }
-  
-  /* Use inline-block so it perfectly maintains its position next to the text */
   html.dark .footer-web-dark { display: inline-block !important; }
 
   .footer-site-link:hover .footer-site-logo {
     transform: scale(1.2);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
   }
+
   /* ===============================
      External Link Icons (Footer)
      =============================== */
@@ -171,15 +208,10 @@ const currentYear = new Date().getFullYear();
     display: inline-block;
     width: 0.85em;
     height: 0.85em;
-    
     margin-left: -0.5rem;
-    /* We use the current text color so the icon matches the link exactly */
     background-color: currentColor; 
-    
-    /* This uses a CSS mask to punch the SVG shape out of the background color */
     -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
     mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
-    
     opacity: 0.75;
     transition: opacity 0.2s ease;
   }
