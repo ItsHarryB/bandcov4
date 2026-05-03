@@ -73,7 +73,7 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.5.2b - 03/05/2026
+      Version 26.5.2c - 03/05/2026
     </div>
   </div>
 </footer>
@@ -92,24 +92,36 @@ const currentYear = new Date().getFullYear();
   };
 
   // 2. Run on every page load/transition
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener('astro:page-load', async () => {
     // Sync theme immediately
     syncBadgeTheme();
 
-    // NEW: Clear the old badge HTML so the script knows it needs to rebuild it!
+    // Clear the old badge HTML so the script knows it needs to rebuild it
     const badge = document.getElementById('wcb');
     if (badge) badge.innerHTML = '';
 
-    // Remove the old script to force the official widget to re-evaluate this new page
+    // Remove the old script tag to keep the DOM clean
     const oldScript = document.getElementById('official-wcb-script');
     if (oldScript) oldScript.remove();
 
-    // Inject the official Website Carbon script
-    const script = document.createElement('script');
-    script.id = 'official-wcb-script';
-    script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-    script.defer = true;
-    document.body.appendChild(script);
+    try {
+      // Fetch the raw code of the official script
+      const response = await fetch("https://unpkg.com/website-carbon-badges@1.1.3/b.min.js");
+      const scriptCode = await response.text();
+
+      // Create a new script tag
+      const script = document.createElement('script');
+      script.id = 'official-wcb-script';
+      
+      // THE MAGIC FIX: Wrap the official code in a local scope bubble `(() => { ... })();`
+      // This stops 'const wcID' from crashing the site on page transitions!
+      script.textContent = `(() => { ${scriptCode} })();`;
+      
+      // Inject and run it
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error("Failed to load the Website Carbon script:", error);
+    }
   });
 
   // 3. Listen to your existing ThemeToggle event to flip colors instantly
@@ -132,21 +144,45 @@ const currentYear = new Date().getFullYear();
   }
 
   /* ===============================
+     Footer Bottom Row Alignment
+     =============================== */
+  .footer-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem; /* Adjust this to match your site's existing spacing */
+  }
+
+  /* On desktop, align everything perfectly on one line */
+  @media (min-width: 900px) {
+    .footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center; /* Vertically centers the text with the badge */
+      gap: 1rem;
+    }
+
+    /* By giving the outer text equal flex values, the badge stays dead-center! */
+    .footer-copyright { flex: 1; text-align: left; }
+    .footer-carbon-badge { flex: 0 0 auto; }
+    .footer-meta { flex: 1; text-align: right; }
+  }
+
+  /* ===============================
      Official Carbon Badge Responsive Overrides
      =============================== */
   .footer-carbon-badge {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    min-height: 40px; /* Prevents the footer from jumping when the script loads */
-    margin-bottom: 1rem;
+    /* FIXED: Removed width: 100% and margin-bottom to allow horizontal alignment */
+    min-height: 40px; 
   }
 
   /* Force the official badge to scale smoothly on smaller devices */
   #wcb.carbonbadge {
     margin: 0 auto !important;
-    /* clamp(MIN, PREFERRED, MAX). Shrinks smoothly on mobile! */
     font-size: clamp(11px, 3.5vw, 15px) !important; 
   }
 

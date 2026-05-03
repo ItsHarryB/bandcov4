@@ -4,6 +4,9 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+
+// 1. IMPORT THE COMPONENT HERE
+import { SimpleAnalytics } from 'astro-simpleanalytics-plugin';
 ---
 
 <html lang="en">
@@ -11,15 +14,17 @@ import "../styles/global.css";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>TEST: Brighton and Co</title>
-    <!-- YOUR NEW BULLETPROOF CSP -->
+    
+    <!-- BULLETPROOF CSP: Still completely valid and necessary! -->
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'self'; 
-      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com https://api.websitecarbon.com; 
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com https://api.websitecarbon.com https://scripts.simpleanalyticscdn.com; 
       style-src 'self' 'unsafe-inline'; 
-      connect-src 'self' https://cloudflareinsights.com https://api.websitecarbon.com; 
+      connect-src 'self' https://cloudflareinsights.com https://api.websitecarbon.com https://queue.simpleanalyticscdn.com; 
       font-src 'self' data: https://fonts.gstatic.com; 
-      img-src 'self' data: blob: https:;
+      img-src 'self' data: blob: https: https://queue.simpleanalyticscdn.com https://simpleanalyticsbadges.com;
     ">
+    
     <link rel="icon" href="/favicon.png" type="image/png" />
     
     <Font cssVariable="--font-raleway" preload />
@@ -59,7 +64,7 @@ import "../styles/global.css";
         const themeToggle = document.getElementById("theme-toggle");
         const themeIcon = themeToggle?.querySelector(".theme-icon");
 
-        // Theme toggle logic (Kept globally since it handles document body classes)
+        // Theme toggle logic
         if (themeToggle && themeIcon) {
           const spinIcon = () => {
             themeIcon.classList.add("spin");
@@ -82,7 +87,7 @@ import "../styles/global.css";
           // Initialize theme
           setTheme(localStorage.getItem("theme") || "light");
 
-          // We must remove old event listeners first to prevent duplicates during view transitions!
+          // Remove old event listeners first to prevent duplicates
           const newToggle = themeToggle.cloneNode(true);
           themeToggle.parentNode.replaceChild(newToggle, themeToggle);
 
@@ -93,5 +98,10 @@ import "../styles/global.css";
         }
       });
     </script>
+    
+    <!-- 2. PLACE THE COMPONENT HERE! -->
+    <SimpleAnalytics
+    collectDNT={true}
+     />
   </body>
 </html>
