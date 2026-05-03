@@ -73,7 +73,7 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.5.1a - 03/05/2026
+      Version 26.5.1b - 03/05/2026
     </div>
   </div>
 </footer>
@@ -88,45 +88,51 @@ const currentYear = new Date().getFullYear();
     wcbContainer.innerHTML = '';
     wcbContainer.style.display = 'none';
 
-    // 2. Replicate the official widget's Localhost testing behavior
     const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    let carbonData = null;
 
     try {
+      let percentage = 0;
+      let grams = "0.00";
+
       if (isLocal) {
-        // Fake success data for local development
-        carbonData = {
-          cleanerThan: 0.85,
-          statistics: { co2: { grid: { grams: 0.07 } } }
-        };
+        // Fake success data for local development testing
+        percentage = 85;
+        grams = "0.04";
       } else {
-        // Fetch real data directly from the Website Carbon API
-        const response = await fetch(`https://api.websitecarbon.com/site?url=${encodeURIComponent(window.location.href)}`);
-        if (response.ok) {
-          carbonData = await response.json();
+        // Sanitize URL: Strip query params (?) and hashes (#) for perfect database matching
+        const cleanUrl = window.location.href.split('?')[0].split('#')[0];
+
+        // Fetch using the lightweight '/b' endpoint (Instant response, used by the official widget)
+        const response = await fetch(`https://api.websitecarbon.com/b?url=${encodeURIComponent(cleanUrl)}`);
+        
+        if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
+        
+        const data = await response.json();
+
+        // The lightweight endpoint returns { c: grams, p: percentage }
+        if ('c' in data && 'p' in data) {
+          percentage = data.p;
+          grams = data.c;
+        } else {
+          throw new Error('Data format missing required fields.');
         }
       }
 
-      // 3. Render the custom badge ONLY if we have valid, successful data
-      if (carbonData && carbonData.statistics) {
-        const percentage = Math.round((carbonData.cleanerThan || 0) * 100);
-        const grams = carbonData.statistics.co2.grid.grams.toFixed(2);
+      // 3. Render the custom badge
+      wcbContainer.innerHTML = `
+        <div class="wcb-inner">
+          <span class="wcb-left">${percentage}% cleaner</span>
+          <a href="https://www.websitecarbon.com/website/${window.location.hostname}/" target="_blank" rel="noopener noreferrer" class="wcb-right">
+            ${grams}g CO₂/view
+          </a>
+        </div>
+      `;
+      // Reveal the badge
+      wcbContainer.style.display = 'inline-block'; 
 
-        wcbContainer.innerHTML = `
-          <div class="wcb-inner">
-            <span class="wcb-left">${percentage}% cleaner</span>
-            <a href="https://www.websitecarbon.com/website/${window.location.hostname}/" target="_blank" rel="noopener noreferrer" class="wcb-right">
-              ${grams}g CO₂/view
-            </a>
-          </div>
-        `;
-        // Reveal the badge
-        wcbContainer.style.display = 'inline-block'; 
-      }
     } catch (error) {
-      // If the API fails or the site is untested, it catches the error silently
-      // and the badge stays permanently invisible. No ugly text!
-      console.log('Website Carbon data unavailable for this page.');
+      // If it fails (untested page, timeout), it stays invisible but logs a warning so you can see why!
+      console.warn('Website Carbon Badge Hidden: Page untested or API failed.', error);
     }
   });
 </script>
