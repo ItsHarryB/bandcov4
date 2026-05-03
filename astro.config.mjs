@@ -32,7 +32,7 @@ export default defineConfig({
       
       // FIXED: Using Astro's Array syntax bypasses the TypeScript object-key errors entirely!
       directives: [
-        "connect-src 'self' https://cloudflareinsights.com"
+        "connect-src 'self' https://cloudflareinsights.com https://api.websitecarbon.com"
       ]
     }
   },
