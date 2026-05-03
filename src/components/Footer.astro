@@ -34,15 +34,16 @@ const currentYear = new Date().getFullYear();
       <h4 id="quick-links-heading">Quick Links:</h4>
       <!-- We add a wrapper class here to control the layout -->
       <ul aria-labelledby="quick-links-heading" class="quick-links-grid">
-        <li><a href="/">Home</a></li>
-        <li><a href="/shop/">Shop: B&Co</a></li>
-        <li><a href="/about-me/">About Me</a></li>
-        <li><a href="/blog/">Blog</a></li>
-        <li><a href="/photography/">Photography</a></li>
-        <li><a href="/links/">Links</a></li>
-        <li><a href="/enquiries/">Enquiries</a></li>
-        <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
-      </ul>
+  <!-- Add data-astro-reload to force a hard refresh when clicking Home or Shop -->
+  <li><a href="/" data-astro-reload>Home</a></li>
+  <li><a href="/shop/" data-astro-reload>Shop: B&Co</a></li>
+  <li><a href="/about-me/">About Me</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/photography/">Photography</a></li>
+  <li><a href="/links/">Links</a></li>
+  <li><a href="/enquiries/">Enquiries</a></li>
+  <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
+</ul>
     </div>
     
     <div class="footer-section">

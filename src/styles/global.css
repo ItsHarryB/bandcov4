@@ -523,3 +523,20 @@ ul.custom-bullets li ul li ul li::before {
     animation: none !important;
   }
 }
+/* ===============================
+   Custom Shop Button Theme (Global Override)
+   =============================== */
+/* Placed in global.css to bypass Astro View Transition loading delays */
+a.bento-link.bento-shop {
+  background-color: #e11d48 !important; 
+}
+
+/* Dark Mode variant */
+html.dark a.bento-link.bento-shop {
+  background-color: #f43f5e !important; 
+}
+
+/* Hover state */
+a.bento-link.bento-shop:hover {
+  box-shadow: 0 10px 25px rgba(225, 29, 72, 0.35) !important;
+}
