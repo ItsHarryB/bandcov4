@@ -66,76 +66,69 @@ const currentYear = new Date().getFullYear();
       &copy; {currentYear} Brighton and Co. All rights reserved.
     </div>
 
-    <!-- The Carbon Badge Container -->
+    <!-- The Custom Carbon Badge Container -->
     <div class="footer-carbon-badge">
-      <div id="wcb" class="carbonbadge"></div>
+      <div id="wcb" style="display: none;"></div>
     </div>
 
     <div class="footer-meta">
       TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.5.1 - 03/05/2026
+      Version 26.5.1a - 03/05/2026
     </div>
   </div>
 </footer>
 
 <script>
-  // Wait for Astro to fully load the page and transitions
-  document.addEventListener('astro:page-load', () => {
+  // 1. Wait for Astro to fully load the page AND transitions
+  document.addEventListener('astro:page-load', async () => {
     const wcbContainer = document.getElementById('wcb');
     if (!wcbContainer) return;
 
-    // 1. Hide the container immediately to prevent the "No Result" flash
+    // Reset and hide initially on every transition
+    wcbContainer.innerHTML = '';
     wcbContainer.style.display = 'none';
-    wcbContainer.innerHTML = ''; 
 
-    // 2. Remove the OLD script so we force the widget to re-evaluate on this new page!
-    const existingScript = document.querySelector('script[data-carbon]');
-    if (existingScript) existingScript.remove();
+    // 2. Replicate the official widget's Localhost testing behavior
+    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    let carbonData = null;
 
-    // 3. Inject a fresh script instance
-    const script = document.createElement('script');
-    script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-    script.setAttribute('data-carbon', 'true');
-    document.body.appendChild(script);
-
-    // 4. Set up an observer to watch for the exact moment the API responds
-    const observer = new MutationObserver(() => {
-      const html = wcbContainer.innerHTML;
-      
-      // If the API injects the graphic element (#wcb_g), it was a SUCCESS!
-      if (html.includes('wcb_g')) { 
-        wcbContainer.style.display = 'inline-block'; // Reveal the badge
-        
-        // Sync the Dark Mode theme instantly
-        if (document.documentElement.classList.contains('dark')) {
-          wcbContainer.classList.add('wcb-d');
-        } else {
-          wcbContainer.classList.remove('wcb-d');
-        }
-        
-        observer.disconnect(); // Task finished, stop observing
-      } 
-      // If the API injects the text "No Result", keep it permanently hidden
-      else if (html.includes('No Result')) { 
-        wcbContainer.style.display = 'none'; 
-        observer.disconnect(); // Task finished, stop observing
-      }
-    });
-
-    observer.observe(wcbContainer, { childList: true, subtree: true });
-  });
-
-  // Listen for the ThemeToggle button click
-  document.addEventListener('themechange', ((e: CustomEvent) => {
-    const el = document.getElementById("wcb");
-    if (el) {
-      if (e.detail.theme === 'dark') {
-        el.classList.add('wcb-d');
+    try {
+      if (isLocal) {
+        // Fake success data for local development
+        carbonData = {
+          cleanerThan: 0.85,
+          statistics: { co2: { grid: { grams: 0.07 } } }
+        };
       } else {
-        el.classList.remove('wcb-d');
+        // Fetch real data directly from the Website Carbon API
+        const response = await fetch(`https://api.websitecarbon.com/site?url=${encodeURIComponent(window.location.href)}`);
+        if (response.ok) {
+          carbonData = await response.json();
+        }
       }
+
+      // 3. Render the custom badge ONLY if we have valid, successful data
+      if (carbonData && carbonData.statistics) {
+        const percentage = Math.round((carbonData.cleanerThan || 0) * 100);
+        const grams = carbonData.statistics.co2.grid.grams.toFixed(2);
+
+        wcbContainer.innerHTML = `
+          <div class="wcb-inner">
+            <span class="wcb-left">${percentage}% cleaner</span>
+            <a href="https://www.websitecarbon.com/website/${window.location.hostname}/" target="_blank" rel="noopener noreferrer" class="wcb-right">
+              ${grams}g CO₂/view
+            </a>
+          </div>
+        `;
+        // Reveal the badge
+        wcbContainer.style.display = 'inline-block'; 
+      }
+    } catch (error) {
+      // If the API fails or the site is untested, it catches the error silently
+      // and the badge stays permanently invisible. No ugly text!
+      console.log('Website Carbon data unavailable for this page.');
     }
-  }) as EventListener);
+  });
 </script>
 
 <style>
@@ -154,39 +147,67 @@ const currentYear = new Date().getFullYear();
   }
 
   /* ===============================
-     Website Carbon Badge Fixes
+     Custom Native Carbon Badge
      =============================== */
   .footer-carbon-badge {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 36px; /* Prevents layout shifting when the badge suddenly appears */
+    min-height: 36px; /* Prevents layout shifting when the badge suddenly loads in */
   }
 
-  #wcb.carbonbadge { 
-    text-align: center !important; 
-    margin: 0 auto !important; 
-  }
-  
-  #wcb.carbonbadge style { display: none !important; }
-  
-  #wcb #wcb_p { 
-    display: inline-flex !important; 
-    align-items: center !important; 
+  #wcb {
+    /* Base light theme colors mapped to CSS Variables */
+    --wcb-bg-left: #0e11a8;
+    --wcb-text-left: #ffffff;
+    --wcb-bg-right: #ffffff;
+    --wcb-text-right: #0e11a8;
+    --wcb-border: #0e11a8;
   }
 
-  #wcb #wcb_g, #wcb #wcb_a { 
-    display: inline-flex !important; 
-    align-items: center !important; 
-    width: auto !important; 
-    margin: 0 !important; 
-    padding: 0.3em 0.6em !important;
-    line-height: 1.1 !important;
+  html.dark #wcb {
+    /* NATIVE DARK MODE: Colors flip instantly when html gets the .dark class */
+    --wcb-bg-left: #00ffbc;
+    --wcb-text-left: #111928;
+    --wcb-bg-right: #111928;
+    --wcb-text-right: #00ffbc;
+    --wcb-border: #00ffbc;
   }
-  
-  #wcb #wcb_g { border-radius: 0.3em 0 0 0.3em !important; border-right: 0 !important; }
-  #wcb #wcb_a { border-radius: 0 0.3em 0.3em 0 !important; border-left: 0 !important; }
-  #wcb #wcb_2 { display: inline-flex !important; margin-left: 0.5em !important; }
+
+  .wcb-inner {
+    display: inline-flex;
+    align-items: stretch;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid var(--wcb-border);
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .wcb-left {
+    background-color: var(--wcb-bg-left);
+    color: var(--wcb-text-left);
+    padding: 0.4em 0.8em;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .wcb-right {
+    background-color: var(--wcb-bg-right);
+    color: var(--wcb-text-right);
+    padding: 0.4em 0.8em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .wcb-right:hover {
+    opacity: 0.85;
+  }
 
   /* ===============================
      Dynamic Footer Logos
