@@ -17,8 +17,10 @@ export default defineConfig({
         resources: [
           "'self'", 
           "'unsafe-inline'", // Allows dynamically injected scripts like the Carbon Badge
+          "'unsafe-eval'",   // Allows eval() for certain libraries that use it (use with caution)
           "https://unpkg.com", 
-          "https://static.cloudflareinsights.com"
+          "https://static.cloudflareinsights.com",
+          "https://api.websitecarbon.com"
         ]
       },
       
@@ -26,7 +28,8 @@ export default defineConfig({
       styleDirective: {
         resources: [
           "'self'", 
-          "'unsafe-inline'" 
+          "'unsafe-inline'",
+          "'unsafe-hashes'", // Allows styles with hashes, needed for some libraries
         ]
       },
       
