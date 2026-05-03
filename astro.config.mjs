@@ -8,12 +8,13 @@ import preact from '@astrojs/preact';
 export default defineConfig({
   security: {
     csp: {
-      algorithm: 'SHA-512',
+      // 1. REMOVE the algorithm property entirely!
+      // This stops Astro from automatically hashing inline styles and scripts.
       
       scriptDirective: {
         resources: [
           "'self'", 
-          "'unsafe-inline'", 
+          "'unsafe-inline'", // Now this actually works because there are no hashes!
           "'unsafe-eval'", 
           "https://unpkg.com", 
           "https://static.cloudflareinsights.com",
@@ -24,14 +25,12 @@ export default defineConfig({
       styleDirective: {
         resources: [
           "'self'", 
-          "'unsafe-inline'",
-          // FIXED: Moved 'unsafe-hashes' up here where Astro expects style rules!
-          "'unsafe-hashes'" 
+          "'unsafe-inline'", // This now allows Preact to use style="..." attributes!
+          // We no longer need 'unsafe-hashes' because we aren't using hashes anymore
         ]
       },
       
       directives: [
-        // FIXED: Removed the unrecognised style-src-attr rule
         "connect-src 'self' https://cloudflareinsights.com https://api.websitecarbon.com"
       ]
     }
