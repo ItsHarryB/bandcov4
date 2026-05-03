@@ -3,8 +3,6 @@ import { defineConfig, fontProviders } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import sitemap from '@astrojs/sitemap';
 import mdx from '@astrojs/mdx';
-
-// 1. Swap the React import for Preact
 import preact from '@astrojs/preact';
 
 export default defineConfig({
@@ -12,29 +10,28 @@ export default defineConfig({
     csp: {
       algorithm: 'SHA-512',
       
-      // Astro requires scripts to be configured in this special dedicated object
       scriptDirective: {
         resources: [
           "'self'", 
-          "'unsafe-inline'", // Allows dynamically injected scripts like the Carbon Badge
-          "'unsafe-eval'",   // Allows eval() for certain libraries that use it (use with caution)
+          "'unsafe-inline'", 
+          "'unsafe-eval'", 
           "https://unpkg.com", 
           "https://static.cloudflareinsights.com",
           "https://api.websitecarbon.com"
         ]
       },
       
-      // Astro requires styles to be configured in this special dedicated object
       styleDirective: {
         resources: [
           "'self'", 
           "'unsafe-inline'",
-          "'unsafe-hashes'", // Allows styles with hashes, needed for some libraries
+          // FIXED: Moved 'unsafe-hashes' up here where Astro expects style rules!
+          "'unsafe-hashes'" 
         ]
       },
       
-      // FIXED: Using Astro's Array syntax bypasses the TypeScript object-key errors entirely!
       directives: [
+        // FIXED: Removed the unrecognised style-src-attr rule
         "connect-src 'self' https://cloudflareinsights.com https://api.websitecarbon.com"
       ]
     }
@@ -45,10 +42,8 @@ export default defineConfig({
   site: 'https://test.brightonandco.co.uk',
   integrations: [
     preact({ compat: true }), 
-    mdx(),     
-    sitemap({
-      // configuration options
-    }),
+    mdx(),    
+    sitemap({}),
   ],
   redirects: {
     '/cv': '/about-me/cv/',
