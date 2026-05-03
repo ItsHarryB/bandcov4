@@ -25,7 +25,7 @@ const currentPath = Astro.url.pathname;
 
   <nav class="nav-links" id="nav" aria-label="Main navigation">
     <a href="/" class={currentPath === "/" ? "active" : ""} aria-current={currentPath === "/" ? "page" : undefined}>Home</a>
-    <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
+    <a href="/shop/" class={currentPath.startsWith("/shop") ? "active" : ""} aria-current={currentPath.startsWith("/shop") ? "page" : undefined}>Shop</a>
     
     <div class="dropdown-group" id="about-dropdown">
       <div class="dropdown-primary">
@@ -36,13 +36,13 @@ const currentPath = Astro.url.pathname;
       </div>
       <div class="dropdown-menu">
         <a href="/about-me/cv/" class={currentPath.startsWith("/about-me/cv") ? "active" : ""}>My CV</a>
-        <a href="/about-me/vinted/" class={currentPath.startsWith("/about-me/vinted") ? "active" : ""}>My Vinted</a>
       </div>
     </div>
 
     <a href="/blog/" class={currentPath.startsWith("/blog") ? "active" : ""} aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Blog</a>
     <a href="/photography/" class={currentPath.startsWith("/photography") ? "active" : ""} aria-current={currentPath.startsWith("/photography") ? "page" : undefined}>Photography</a>
     <a href="/links/" class={currentPath.startsWith("/links") ? "active" : ""} aria-current={currentPath.startsWith("/links") ? "page" : undefined}>Links</a>
+    <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
   </nav>
 
   <div class="nav-overlay" id="nav-overlay"></div>
@@ -481,7 +481,7 @@ body:has(.nav-links.expanded) .site-header {
   .dropdown-menu {
     position: absolute;
     top: 145% !important; /* Starts exactly at the bottom edge of the 70px header */
-    left: -1.5rem !important; /* Aligns flush with the left edge of the 'About Me' block */
+    left: -1.85rem !important; /* Aligns flush with the left edge of the 'About Me' block */
     transform: none !important; /* Removes centering logic */
     background: var(--header-bg) !important;
     backdrop-filter: blur(8px);

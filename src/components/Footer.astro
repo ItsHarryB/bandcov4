@@ -32,13 +32,15 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-section">
       <h4 id="quick-links-heading">Quick Links:</h4>
-      <ul aria-labelledby="quick-links-heading">
+      <!-- We add a wrapper class here to control the layout -->
+      <ul aria-labelledby="quick-links-heading" class="quick-links-grid">
         <li><a href="/">Home</a></li>
-        <li><a href="/enquiries/">Enquiries</a></li>
+        <li><a href="/shop/">Shop: B&Co</a></li>
         <li><a href="/about-me/">About Me</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/photography/">Photography</a></li>
         <li><a href="/links/">Links</a></li>
+        <li><a href="/enquiries/">Enquiries</a></li>
         <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
       </ul>
     </div>
@@ -62,20 +64,31 @@ const currentYear = new Date().getFullYear();
   </div> 
   
   <div class="footer-bottom">
-    <div class="footer-copyright">
-      &copy; {currentYear} Brighton and Co. All rights reserved.
+  <div class="footer-bottom-inner">
+    
+    <!-- LEFT COLUMN: Text -->
+    <div class="footer-text-column">
+      <div class="footer-meta">
+        TEST: Brighton and Co Website – Made by Harry Brighton <br />
+        Version 26.5.3 - 03/05/2026
+      </div>
+      <div class="footer-copyright">
+        &copy; {currentYear} Brighton and Co. All rights reserved.
+      </div>
     </div>
 
-    <!-- The Custom Carbon Badge Container -->
-    <div class="footer-carbon-badge">
+    <!-- RIGHT COLUMN: Badges -->
+    <div class="footer-badge-column">
       <div id="wcb" class="carbonbadge"></div>
+
+      <a href="https://dashboard.simpleanalytics.com/?utm_source=test.brightonandco.co.uk&utm_content=badge&affiliate=redid-sir" referrerpolicy="origin" target="_blank" class="sa-badge-link">
+        <img src="https://simpleanalyticsbadges.com/test.brightonandco.co.uk?mode=light&radius=4&background=ffffff&text=1a1a1a&logo=e65100" class="sa-badge-light" alt="Simple Analytics Badge" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" />
+        <img src="https://simpleanalyticsbadges.com/test.brightonandco.co.uk?mode=dark&radius=4&background=111928&text=ffffff&logo=e65100" class="sa-badge-dark" alt="Simple Analytics Badge" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" />
+      </a>
     </div>
 
-    <div class="footer-meta">
-      TEST: Brighton and Co Website – Made by Harry Brighton <br />
-      Version 26.5.2d - 03/05/2026
-    </div>
   </div>
+</div>
 </footer>
 
 <script>
@@ -129,6 +142,37 @@ const currentYear = new Date().getFullYear();
 </script>
 
 <style>
+  /* ===============================
+     Quick Links Grid Layout
+     =============================== */
+  .quick-links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem; /* Matches the spacing of 'My Other Websites' */
+    max-width: 500px;    /* Restricts width on desktop to force the two-row look */
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Desktop: Use a grid to ensure perfect alignment in 2 rows */
+  @media (min-width: 900px) {
+    .quick-links-grid {
+      display: grid;
+      grid-template-columns: repeat(4, auto); 
+      justify-content: start;
+    }
+  }
+
+  /* Mobile: Restore horizontal wrapping (intended behavior) */
+  @media (max-width: 600px) {
+    .quick-links-grid {
+      display: flex;
+      flex-direction: row; /* FIX: Changed from column to row */
+      flex-wrap: wrap;     /* FIX: Ensures links wrap to the next line */
+      gap: 0.75rem 1.5rem;  /* Slightly tighter gap for mobile screens */
+      max-width: 100%;     /* Ensure it uses the full mobile width */
+    }
+  }
   .footer-site-link {
     display: inline-flex;
     align-items: center;
@@ -144,61 +188,13 @@ const currentYear = new Date().getFullYear();
   }
 
   /* ===============================
-     Footer Bottom Row Alignment
+     THEME SYNC: Favicons
      =============================== */
-  .footer-bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem; /* Adjust this to match your site's existing spacing */
-  }
-
-  /* On desktop, align everything perfectly on one line */
-  @media (min-width: 900px) {
-    .footer-bottom {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center; /* Vertically centers the text with the badge */
-      gap: 1rem;
-    }
-
-    /* By giving the outer text equal flex values, the badge stays dead-center! */
-    .footer-copyright { flex: 1; text-align: left; }
-    .footer-carbon-badge { flex: 0 0 auto; }
-    .footer-meta { flex: 1; text-align: right; }
-  }
-
-  /* ===============================
-     Official Carbon Badge Responsive Overrides
-     =============================== */
-  .footer-carbon-badge {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* FIXED: Removed width: 100% and margin-bottom to allow horizontal alignment */
-    min-height: 40px; 
-  }
-
-  /* Force the official badge to scale smoothly on smaller devices */
-  #wcb.carbonbadge {
-    margin: 0 auto !important;
-    font-size: clamp(11px, 3.5vw, 15px) !important; 
-  }
-
-  /* Ensures the badge doesn't break its flex layout if squeezed too hard */
-  #wcb #wcb_p {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  /* ===============================
-     Dynamic Footer Logos
-     =============================== */
-  .footer-web-dark { display: none !important; }
-  html.dark .footer-web-light { display: none !important; }
-  html.dark .footer-web-dark { display: inline-block !important; }
+  :global(html:not(.dark)) .footer-web-dark { display: none !important; }
+  :global(html:not(.dark)) .footer-web-light { display: inline-block !important; }
+  
+  :global(html.dark) .footer-web-light { display: none !important; }
+  :global(html.dark) .footer-web-dark { display: inline-block !important; }
 
   .footer-site-link:hover .footer-site-logo {
     transform: scale(1.2);
@@ -206,22 +202,145 @@ const currentYear = new Date().getFullYear();
   }
 
   /* ===============================
-     External Link Icons (Footer)
+     Footer Bottom Layout
      =============================== */
-  .footer-site-link[target="_blank"]::after {
-    content: "";
-    display: inline-block;
-    width: 0.85em;
-    height: 0.85em;
-    margin-left: -0.5rem;
-    background-color: currentColor; 
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
-    opacity: 0.75;
-    transition: opacity 0.2s ease;
+  .footer-bottom {
+    width: 90%;
+    max-width: 1200px;
+    margin: 1.5rem auto 0 auto; 
+    padding-top: 2rem;
+    border-top: 1px solid var(--divider-color);
   }
 
-  .footer-site-link[target="_blank"]:hover::after {
-    opacity: 1;
+  .footer-bottom-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .footer-bottom-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer-text-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .footer-text-column {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+
+  .footer-meta,
+  .footer-copyright {
+    font-size: 0.85rem;
+    color: var(--footer-meta-text);
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+
+  /* ===============================
+     RIGHT COLUMN: Badges Alignment
+     =============================== */
+  .footer-badge-column {
+    display: flex;
+    /* Stack badges vertically on mobile */
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    gap: 1rem; /* Vertical space between stacked badges */
+    flex-wrap: nowrap;
+  }
+
+  @media (min-width: 900px) {
+    .footer-badge-column {
+      /* Side-by-side on desktop */
+      flex-direction: row; 
+      justify-content: flex-end; 
+      gap: 1.25rem; /* Horizontal space on desktop */
+    }
+  }
+
+  /* Website Carbon Badge Normalization */
+  #wcb.carbonbadge {
+    margin: 0 !important;
+    display: flex !important; 
+    align-items: center !important;
+  }
+
+  #wcb #wcb_p {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  #wcb #wcb_g, 
+  #wcb #wcb_a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    padding: 0 10px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  #wcb #wcb_g { border-radius: 4px 0 0 4px !important; }
+  #wcb #wcb_a { border-radius: 0 4px 4px 0 !important; }
+  #wcb #wcb_2 { display: none !important; }
+
+  /* Simple Analytics Badge Normalization */
+  .sa-badge-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    text-decoration: none !important;
+  }
+
+  .sa-badge-link img {
+    height: 32px !important;
+    width: auto !important;
+    display: block !important;
+    transition: transform 0.2s ease;
+  }
+
+  /* ===============================
+     THEME SYNC: Simple Analytics Badges
+     Strictly using :global to prevent hashing interference
+     =============================== */
+  
+  /* Light Mode State */
+  :global(html:not(.dark)) .sa-badge-dark { 
+    display: none !important; 
+  }
+  :global(html:not(.dark)) .sa-badge-light { 
+    display: block !important; 
+  }
+
+  /* Dark Mode State */
+  :global(html.dark) .sa-badge-light { 
+    display: none !important; 
+  }
+  :global(html.dark) .sa-badge-dark { 
+    display: block !important; 
+  }
+
+  .sa-badge-link:hover img {
+    transform: translateY(-2px);
   }
 </style>
