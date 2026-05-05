@@ -153,19 +153,25 @@ html.dark .tag a:hover {
 }
 </style>
 
-<script type="module">
-  // Observe elements with the .fade-in class
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.1 }
-  );
+<script>
+  // Wrap the observer logic in a function
+  const initFadeIn = () => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target); // Stop observing once visible
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
 
-  document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+    // Find all fade-in elements on the CURRENT page and observe them
+    document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+  };
+
+  // Run this function every time Astro completes a page transition or initial load
+  document.addEventListener('astro:page-load', initFadeIn);
 </script>

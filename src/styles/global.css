@@ -15,7 +15,7 @@
   --header-text: #ffffff;
   --hamburger-color: #ffffff;
   --nav-hover-bg: #ff5900; 
-  --nav-active-bg: #b85400; 
+  --nav-active-bg: #ff5900; /* FIXED: Changed from #b85400 to match the bright hover orange */
   --nav-outline: rgba(255, 255, 255, 0.6);
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --switcher-toggle-bg: rgba(255, 255, 255, 0.15);
@@ -75,7 +75,7 @@ html.dark {
   --header-text: #ffffff;
   --hamburger-color: #ffffff;
   --nav-hover-bg: #c14400; 
-  --nav-active-bg: #a13900; 
+  --nav-active-bg: #c14400; /* FIXED: Changed from #a13900 to match the bright hover orange */ 
   --nav-outline: #ff922c;
   --overlay-bg: rgba(0, 0, 0, 0.6);
   --switcher-toggle-bg: rgba(255, 255, 255, 0.1);

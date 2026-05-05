@@ -71,7 +71,7 @@ const currentYear = new Date().getFullYear();
     <div class="footer-text-column">
       <div class="footer-meta">
         TEST: Brighton and Co Website – Made by Harry Brighton <br />
-        Version 26.5.3 - 03/05/2026
+        Version 26.5.3b - 05/05/2026
       </div>
       <div class="footer-copyright">
         &copy; {currentYear} Brighton and Co. All rights reserved.
@@ -121,17 +121,27 @@ const currentYear = new Date().getFullYear();
     try {
       // Fetch the raw code of the official script
       const response = await fetch("https://unpkg.com/website-carbon-badges@1.1.3/b.min.js");
-      const scriptCode = await response.text();
+      let scriptCode = await response.text();
+
+      // THE MAGIC FIX: Intercept Website Carbon's URL checker.
+      // We replace their native URL grabber with our own custom variable.
+      scriptCode = scriptCode
+        .replace(/window\.location\.href/g, 'wcbCleanUrl')
+        .replace(/location\.href/g, 'wcbCleanUrl');
 
       // Create a new script tag
       const script = document.createElement('script');
       script.id = 'official-wcb-script';
       
-      // THE MAGIC FIX: Wrap the official code in a local scope bubble `(() => { ... })();`
-      // This stops 'const wcID' from crashing the site on page transitions!
-      script.textContent = `(() => { ${scriptCode} })();`;
+      // Inject and run it inside a protected scope
+      script.textContent = `(() => { 
+        // Create a clean URL: strip trailing slashes, queries, and hashes
+        // This forces the API to recognize the cached version you already tested!
+        const wcbCleanUrl = window.location.href.split('?')[0].split('#')[0].replace(/\\/$/, '');
+        
+        ${scriptCode} 
+      })();`;
       
-      // Inject and run it
       document.body.appendChild(script);
     } catch (error) {
       console.error("Failed to load the Website Carbon script:", error);
@@ -259,7 +269,7 @@ const currentYear = new Date().getFullYear();
     flex-direction: column; 
     align-items: center; 
     justify-content: center;
-    gap: 1rem; /* Vertical space between stacked badges */
+    gap: 1.25rem; /* Slightly increased gap for mobile so the extra text doesn't overlap SA */
     flex-wrap: nowrap;
   }
 
@@ -268,29 +278,41 @@ const currentYear = new Date().getFullYear();
       /* Side-by-side on desktop */
       flex-direction: row; 
       justify-content: flex-end; 
-      gap: 1.25rem; /* Horizontal space on desktop */
+      
+      /* THE FIX: Align to the top edge. 
+         This locks the two 32px badges together perfectly, 
+         letting the text drop down safely. */
+      align-items: flex-start; 
+      
+      gap: 1.25rem; 
     }
   }
 
-  /* Website Carbon Badge Normalization */
-  #wcb.carbonbadge {
+  /* ===============================
+     Website Carbon Badge Normalization
+     =============================== */
+  :global(#wcb.carbonbadge) {
     margin: 0 !important;
     display: flex !important; 
+    flex-direction: column !important; /* Stack the badge and extra text vertically */
     align-items: center !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
   }
 
-  #wcb #wcb_p {
+  /* THE FIX: :global() forces Astro to apply this to the dynamically injected JS elements */
+  :global(#wcb.carbonbadge #wcb_p) {
     display: inline-flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
+    flex-direction: row !important; /* Forces the pill side-by-side */
+    flex-wrap: nowrap !important;   /* Never wrap */
     align-items: center !important;
     margin: 0 !important;
     padding: 0 !important;
     line-height: 1 !important;
   }
 
-  #wcb #wcb_g, 
-  #wcb #wcb_a {
+  :global(#wcb.carbonbadge #wcb_g), 
+  :global(#wcb.carbonbadge #wcb_a) {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -298,11 +320,28 @@ const currentYear = new Date().getFullYear();
     padding: 0 10px !important;
     margin: 0 !important;
     box-sizing: border-box !important;
+    white-space: nowrap !important; /* Prevents text inside from squishing */
   }
 
-  #wcb #wcb_g { border-radius: 4px 0 0 4px !important; }
-  #wcb #wcb_a { border-radius: 0 4px 4px 0 !important; }
-  #wcb #wcb_2 { display: none !important; }
+  /* Restore the flat edges where the two halves touch */
+  :global(#wcb.carbonbadge #wcb_g) { 
+    border-radius: 4px 0 0 4px !important; 
+    border-right: none !important;
+  }
+  :global(#wcb.carbonbadge #wcb_a) { 
+    border-radius: 0 4px 4px 0 !important; 
+    border-left: none !important;
+  }
+  
+  /* The "Cleaner than 95%..." Text */
+  :global(#wcb.carbonbadge #wcb_2) { 
+    display: block !important; 
+    font-size: 0.75rem !important; 
+    line-height: 1.2 !important;
+    text-align: center !important;
+    margin: 0 !important;
+    opacity: 0.9 !important;
+  }
 
   /* Simple Analytics Badge Normalization */
   .sa-badge-link {
