@@ -15,7 +15,7 @@
   --header-text: #ffffff;
   --hamburger-color: #ffffff;
   --nav-hover-bg: #005a7a; 
-  --nav-active-bg: #00a8d2; /* Matches the active button in your screenshot */
+  --nav-active-bg: #00a8d2; 
   --nav-outline: rgba(255, 255, 255, 0.6);
   --overlay-bg: rgba(0, 0, 0, 0.4);
   --switcher-toggle-bg: rgba(255, 255, 255, 0.15);
@@ -322,51 +322,6 @@ html.dark .social-link:hover {
 .social-link.linkedin:hover { background: #0A66C2; color: #fff; }
 
 /* ===============================
-   Footer Bottom Bar (Meta & Copyright)
-   =============================== */
-.footer-bottom {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-  border-top: 1px solid var(--divider-color);
-  padding-top: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.footer-copyright {
-  flex: 1 1 250px;
-  text-align: left;
-  color: var(--footer-text);
-  font-size: 0.85rem;
-}
-
-.footer-carbon-badge {
-  flex: 0 1 auto;
-  margin: 0;
-  text-align: center;
-}
-
-/* Forces Carbon badge to stay inline */
-#wcb.carbonbadge { display: inline-block !important; text-align: center !important; margin: 0 !important; }
-#wcb.carbonbadge style { display: none !important; }
-#wcb #wcb_g, #wcb #wcb_a { display: inline-flex !important; width: auto !important; margin: 0 !important; }
-#wcb #wcb_g { border-radius: 0.3em 0 0 0.3em !important; border-right: 0 !important; }
-#wcb #wcb_a { border-radius: 0 0.3em 0.3em 0 !important; border-left: 0 !important; }
-#wcb #wcb_2 { display: inline-flex !important; margin-left: 0.5em !important; }
-
-.footer-meta {
-  flex: 1 1 250px;
-  text-align: right; 
-  font-size: 0.8rem;
-  color: var(--footer-meta-text);
-  line-height: 1.5;
-}
-
-/* ===============================
    Footer Theme Toggle Switch
    =============================== */
 .theme-toggle-switch { display: inline-flex; align-items: center; justify-content: flex-start; margin-top: 0.25rem; }
@@ -400,11 +355,6 @@ html.dark .social-link:hover {
   .footer-section:nth-child(2) ul { 
     gap: 0.75rem 1.5rem; /* Tighter horizontal gap */
   }
-
-  /* Bottom Bar */
-  .footer-bottom { flex-direction: column; text-align: center; gap: 1.5rem; }
-  .footer-copyright, .footer-meta { text-align: center; flex: auto; }
-  #wcb #wcb_2 { display: block !important; margin-left: 0 !important; margin-top: 0.5em !important; }
 }
 
 /* Micro Mobile (Under 400px): Everything stacks */
@@ -415,6 +365,7 @@ html.dark .social-link:hover {
   .footer-section:nth-child(3) { grid-column: 1; grid-row: 3; }
   .footer-section:nth-child(4) { grid-column: 1; grid-row: 4; }
 }
+
 /* ===============================
    Global Content Link Styles
    =============================== */
@@ -437,6 +388,7 @@ html.dark .social-link:hover {
   /* Snappier 0.15s transition for text hover so it feels immediately responsive */
   transition: color 0.15s ease-in-out, text-decoration-thickness 0.15s ease-in-out;
 }
+
 /* ===============================
    External Link Icons
    =============================== */
@@ -444,7 +396,7 @@ html.dark .social-link:hover {
 .layout-content a[target="_blank"]::after,
 .inline-link[target="_blank"]::after {
   content: "";
-  display: inline-block; /* <-- FIXED: Was inline-inline-block */
+  display: inline-block; 
   width: 0.85em;
   height: 0.85em;
   margin-left: 0.3em;
@@ -466,6 +418,7 @@ html.dark .social-link:hover {
 .inline-link[target="_blank"]:hover::after {
   opacity: 1;
 }
+
 /* ===============================
    Typography & Elements
    =============================== */
@@ -480,7 +433,6 @@ html.dark .social-link:hover {
 
 @media (max-width: 768px) { .section-divider { width: 100%; margin: 2rem auto; } }
 @media (max-width: 480px) { .section-divider { width: 100%; margin: 1.5rem auto; height: 1.5px; } }
-
 
 /* Custom bullet points with nested support */
 ul.custom-bullets { list-style: none; padding-left: 0; margin: 0; }
@@ -567,4 +519,22 @@ ul.custom-bullets li ul li ul li::before {
     transition: none !important;
     animation: none !important;
   }
+}
+
+/* ===============================
+   Custom Shop Button Theme (Global Override)
+   =============================== */
+/* Placed in global.css to bypass Astro View Transition loading delays */
+a.bento-link.bento-shop {
+  background-color: #e11d48 !important; 
+}
+
+/* Dark Mode variant */
+html.dark a.bento-link.bento-shop {
+  background-color: #f43f5e !important; 
+}
+
+/* Hover state */
+a.bento-link.bento-shop:hover {
+  box-shadow: 0 10px 25px rgba(225, 29, 72, 0.35) !important;
 }

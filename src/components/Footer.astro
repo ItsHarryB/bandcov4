@@ -1,6 +1,6 @@
 ---
 import Social from "./Social.astro";
-import ThemeToggle from "./ThemeToggle.astro"; // <-- Imported here!
+import ThemeToggle from "./ThemeToggle.astro"; 
 import "../styles/global.css";
 
 const currentYear = new Date().getFullYear();
@@ -31,15 +31,18 @@ const currentYear = new Date().getFullYear();
 
     <div class="footer-section">
       <h4 id="quick-links-heading">Quick Links:</h4>
-      <ul aria-labelledby="quick-links-heading">
-        <li><a href="/">Home</a></li>
-        <li><a href="/enquiries/">Enquiries</a></li>
-        <li><a href="/about-me/">About Me</a></li>
-        <li><a href="/blog/">Blog</a></li>
-        <li><a href="/photography/">Photography</a></li>
-        <li><a href="/links/">Links</a></li>
-        <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
-      </ul>
+      <!-- We add a wrapper class here to control the layout -->
+      <ul aria-labelledby="quick-links-heading" class="quick-links-grid">
+  <!-- Add data-astro-reload to force a hard refresh when clicking Home or Shop -->
+  <li><a href="/" data-astro-reload>Home</a></li>
+  <li><a href="/shop/" data-astro-reload>Shop: B&Co</a></li>
+  <li><a href="/about-me/">About Me</a></li>
+  <li><a href="/blog/">Blog</a></li>
+  <li><a href="/photography/">Photography</a></li>
+  <li><a href="/links/">Links</a></li>
+  <li><a href="/enquiries/">Enquiries</a></li>
+  <li><a href="/terms-and-conditions/">Terms and Conditions</a></li>
+</ul>
     </div>
     
     <div class="footer-section">
@@ -54,69 +57,132 @@ const currentYear = new Date().getFullYear();
     <div class="footer-section">
       <h4 id="theme-toggle-heading">Toggle Theme:</h4>
       <div class="theme-toggle-switch" aria-labelledby="theme-toggle-heading">
-        <ThemeToggle /> </div>
+        <ThemeToggle /> 
+      </div>
     </div>
 
   </div> 
   
   <div class="footer-bottom">
-    <div class="footer-copyright">
-      &copy; {currentYear} Brighton and Co. All rights reserved.
+  <div class="footer-bottom-inner">
+    
+    <!-- LEFT COLUMN: Text -->
+    <div class="footer-text-column">
+      <div class="footer-meta">
+        Brighton and Co Website – Made by Harry Brighton <br />
+        Version 4.5.0 - 05/05/2026
+      </div>
+      <div class="footer-copyright">
+        &copy; {currentYear} Brighton and Co. All rights reserved.
+      </div>
     </div>
 
-    <div class="footer-carbon-badge">
+    <!-- RIGHT COLUMN: Badges -->
+    <div class="footer-badge-column">
       <div id="wcb" class="carbonbadge"></div>
+
+      <a href="https://dashboard.simpleanalytics.com/?utm_source=test.brightonandco.co.uk&utm_content=badge&affiliate=redid-sir" referrerpolicy="origin" target="_blank" class="sa-badge-link">
+        <img src="https://simpleanalyticsbadges.com/test.brightonandco.co.uk?mode=light&radius=4&background=ffffff&text=1a1a1a&logo=e65100" class="sa-badge-light" alt="Simple Analytics Badge" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" />
+        <img src="https://simpleanalyticsbadges.com/test.brightonandco.co.uk?mode=dark&radius=4&background=111928&text=ffffff&logo=e65100" class="sa-badge-dark" alt="Simple Analytics Badge" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" />
+      </a>
     </div>
 
-    <div class="footer-meta">
-      Brighton and Co Website – Made by Harry Brighton <br />
-      Version 4.4.1a - 21/04/2026
-    </div>
   </div>
+</div>
 </footer>
 
 <script>
-  // Wait for Astro to fully load the page and transitions
-  document.addEventListener('astro:page-load', () => {
-    
-    // 1. Inject the badge script manually so we KNOW the #wcb div exists first
-    if (!document.querySelector('script[data-carbon]')) {
-      const script = document.createElement('script');
-      script.src = "https://unpkg.com/website-carbon-badges@1.1.3/b.min.js";
-      script.setAttribute('data-carbon', 'true');
-      document.body.appendChild(script);
-    }
+  // 1. Function to check the HTML tag and apply the dark mode class to the badge
+  const syncBadgeTheme = () => {
+    const badge = document.getElementById('wcb');
+    if (!badge) return;
 
-    // 2. Sync Dark Mode
-    const syncBadgeTheme = () => {
-      const el = document.getElementById("wcb");
-      if (el) {
-        if (document.documentElement.classList.contains('dark')) {
-          el.classList.add('wcb-d');
-        } else {
-          el.classList.remove('wcb-d');
-        }
-      }
-    };
-    
-    // Slight delay to ensure the badge has time to render before coloring it
-    setTimeout(syncBadgeTheme, 500); 
+    if (document.documentElement.classList.contains('dark')) {
+      badge.classList.add('wcb-d');
+    } else {
+      badge.classList.remove('wcb-d');
+    }
+  };
+
+  // 2. Run on every page load/transition
+  document.addEventListener('astro:page-load', async () => {
+    // Sync theme immediately
+    syncBadgeTheme();
+
+    // Clear the old badge HTML so the script knows it needs to rebuild it
+    const badge = document.getElementById('wcb');
+    if (badge) badge.innerHTML = '';
+
+    // Remove the old script tag to keep the DOM clean
+    const oldScript = document.getElementById('official-wcb-script');
+    if (oldScript) oldScript.remove();
+
+    try {
+      // Fetch the raw code of the official script
+      const response = await fetch("https://unpkg.com/website-carbon-badges@1.1.3/b.min.js");
+      let scriptCode = await response.text();
+
+      // THE MAGIC FIX: Intercept Website Carbon's URL checker.
+      // We replace their native URL grabber with our own custom variable.
+      scriptCode = scriptCode
+        .replace(/window\.location\.href/g, 'wcbCleanUrl')
+        .replace(/location\.href/g, 'wcbCleanUrl');
+
+      // Create a new script tag
+      const script = document.createElement('script');
+      script.id = 'official-wcb-script';
+      
+      // Inject and run it inside a protected scope
+      script.textContent = `(() => { 
+        // Create a clean URL: strip trailing slashes, queries, and hashes
+        // This forces the API to recognize the cached version you already tested!
+        const wcbCleanUrl = window.location.href.split('?')[0].split('#')[0].replace(/\\/$/, '');
+        
+        ${scriptCode} 
+      })();`;
+      
+      document.body.appendChild(script);
+    } catch (error) {
+      console.error("Failed to load the Website Carbon script:", error);
+    }
   });
 
-  // 3. Listen for the ThemeToggle button click
-  document.addEventListener('themechange', ((e: CustomEvent) => {
-    const el = document.getElementById("wcb");
-    if (el) {
-      if (e.detail.theme === 'dark') {
-        el.classList.add('wcb-d');
-      } else {
-        el.classList.remove('wcb-d');
-      }
-    }
-  }) as EventListener);
+  // 3. Listen to your existing ThemeToggle event to flip colors instantly
+  document.addEventListener('themechange', syncBadgeTheme);
 </script>
 
 <style>
+  /* ===============================
+     Quick Links Grid Layout
+     =============================== */
+  .quick-links-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2.5rem; /* Matches the spacing of 'My Other Websites' */
+    max-width: 500px;    /* Restricts width on desktop to force the two-row look */
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Desktop: Use a grid to ensure perfect alignment in 2 rows */
+  @media (min-width: 900px) {
+    .quick-links-grid {
+      display: grid;
+      grid-template-columns: repeat(4, auto); 
+      justify-content: start;
+    }
+  }
+
+  /* Mobile: Restore horizontal wrapping (intended behavior) */
+  @media (max-width: 600px) {
+    .quick-links-grid {
+      display: flex;
+      flex-direction: row; /* FIX: Changed from column to row */
+      flex-wrap: wrap;     /* FIX: Ensures links wrap to the next line */
+      gap: 0.75rem 1.5rem;  /* Slightly tighter gap for mobile screens */
+      max-width: 100%;     /* Ensure it uses the full mobile width */
+    }
+  }
   .footer-site-link {
     display: inline-flex;
     align-items: center;
@@ -131,45 +197,189 @@ const currentYear = new Date().getFullYear();
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
   }
 
+  /* ===============================
+     THEME SYNC: Favicons
+     =============================== */
+  :global(html:not(.dark)) .footer-web-dark { display: none !important; }
+  :global(html:not(.dark)) .footer-web-light { display: inline-block !important; }
+  
+  :global(html.dark) .footer-web-light { display: none !important; }
+  :global(html.dark) .footer-web-dark { display: inline-block !important; }
+
   .footer-site-link:hover .footer-site-logo {
     transform: scale(1.2);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25));
   }
-  /* ===============================
-     Website Carbon Badge Fixes
-     =============================== */
-  /* 1. Forces the badge into a neat inline pill shape */
-  #wcb.carbonbadge { display: inline-block !important; text-align: center !important; margin: 0 !important; }
-  #wcb.carbonbadge style { display: none !important; }
-  #wcb #wcb_g, #wcb #wcb_a { display: inline-flex !important; width: auto !important; margin: 0 !important; }
-  #wcb #wcb_g { border-radius: 0.3em 0 0 0.3em !important; border-right: 0 !important; }
-  #wcb #wcb_a { border-radius: 0 0.3em 0.3em 0 !important; border-left: 0 !important; }
-  #wcb #wcb_2 { display: inline-flex !important; margin-left: 0.5em !important; }
 
-  /* 2. Instantly hides the ugly "No Result" text if the API fails or you are on an untested sub-page */
-  #wcb.carbonbadge:not(:has(#wcb_g)) { display: none !important; }
   /* ===============================
-     External Link Icons (Footer)
+     Footer Bottom Layout
      =============================== */
-  .footer-site-link[target="_blank"]::after {
-    content: "";
-    display: inline-block;
-    width: 0.85em;
-    height: 0.85em;
-    
-    margin-left: -0.5rem;
-    /* We use the current text color so the icon matches the link exactly */
-    background-color: currentColor; 
-    
-    /* This uses a CSS mask to punch the SVG shape out of the background color */
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
-    
-    opacity: 0.75;
-    transition: opacity 0.2s ease;
+  .footer-bottom {
+    width: 90%;
+    max-width: 1200px;
+    margin: 1.5rem auto 0 auto; 
+    padding-top: 2rem;
+    border-top: 1px solid var(--divider-color);
   }
 
-  .footer-site-link[target="_blank"]:hover::after {
-    opacity: 1;
+  .footer-bottom-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .footer-bottom-inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .footer-text-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .footer-text-column {
+      text-align: left;
+      align-items: flex-start;
+    }
+  }
+
+  .footer-meta,
+  .footer-copyright {
+    font-size: 0.85rem;
+    color: var(--footer-meta-text);
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+
+  /* ===============================
+     RIGHT COLUMN: Badges Alignment
+     =============================== */
+  .footer-badge-column {
+    display: flex;
+    /* Stack badges vertically on mobile */
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    gap: 1.25rem; /* Slightly increased gap for mobile so the extra text doesn't overlap SA */
+    flex-wrap: nowrap;
+  }
+
+  @media (min-width: 900px) {
+    .footer-badge-column {
+      /* Side-by-side on desktop */
+      flex-direction: row; 
+      justify-content: flex-end; 
+      
+      /* THE FIX: Align to the top edge. 
+         This locks the two 32px badges together perfectly, 
+         letting the text drop down safely. */
+      align-items: flex-start; 
+      
+      gap: 1.25rem; 
+    }
+  }
+
+  /* ===============================
+     Website Carbon Badge Normalization
+     =============================== */
+  :global(#wcb.carbonbadge) {
+    margin: 0 !important;
+    display: flex !important; 
+    flex-direction: column !important; /* Stack the badge and extra text vertically */
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.35rem !important;
+  }
+
+  /* THE FIX: :global() forces Astro to apply this to the dynamically injected JS elements */
+  :global(#wcb.carbonbadge #wcb_p) {
+    display: inline-flex !important;
+    flex-direction: row !important; /* Forces the pill side-by-side */
+    flex-wrap: nowrap !important;   /* Never wrap */
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  :global(#wcb.carbonbadge #wcb_g), 
+  :global(#wcb.carbonbadge #wcb_a) {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    padding: 0 10px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    white-space: nowrap !important; /* Prevents text inside from squishing */
+  }
+
+  /* Restore the flat edges where the two halves touch */
+  :global(#wcb.carbonbadge #wcb_g) { 
+    border-radius: 4px 0 0 4px !important; 
+    border-right: none !important;
+  }
+  :global(#wcb.carbonbadge #wcb_a) { 
+    border-radius: 0 4px 4px 0 !important; 
+    border-left: none !important;
+  }
+  
+  /* The "Cleaner than 95%..." Text */
+  :global(#wcb.carbonbadge #wcb_2) { 
+    display: block !important; 
+    font-size: 0.75rem !important; 
+    line-height: 1.2 !important;
+    text-align: center !important;
+    margin: 0 !important;
+    opacity: 0.9 !important;
+  }
+
+  /* Simple Analytics Badge Normalization */
+  .sa-badge-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    text-decoration: none !important;
+  }
+
+  .sa-badge-link img {
+    height: 32px !important;
+    width: auto !important;
+    display: block !important;
+    transition: transform 0.2s ease;
+  }
+
+  /* ===============================
+     THEME SYNC: Simple Analytics Badges
+     Strictly using :global to prevent hashing interference
+     =============================== */
+  
+  /* Light Mode State */
+  :global(html:not(.dark)) .sa-badge-dark { 
+    display: none !important; 
+  }
+  :global(html:not(.dark)) .sa-badge-light { 
+    display: block !important; 
+  }
+
+  /* Dark Mode State */
+  :global(html.dark) .sa-badge-light { 
+    display: none !important; 
+  }
+  :global(html.dark) .sa-badge-dark { 
+    display: block !important; 
+  }
+
+  .sa-badge-link:hover img {
+    transform: translateY(-2px);
   }
 </style>

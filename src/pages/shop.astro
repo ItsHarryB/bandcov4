@@ -1,0 +1,573 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image as AstroImage } from 'astro:assets';
+import shopLogo from '../assets/images/shopbnco.png';
+
+import { TbBrandVinted } from "react-icons/tb";
+import { SiEbay } from "react-icons/si";
+
+// 1. Transplanted: Import your PhotoCarousel
+import PhotoCarousel from '../components/PhotoCarousel.jsx';
+
+// 2. Transplanted: Import your JSON database
+import rawVintedData from '../data/vinted.json';
+
+// 3. Transplanted: TypeScript blueprint
+interface VintedItem {
+  title: string;
+  url: string;
+  imageUrl: string;
+}
+
+interface VintedData {
+  popularItems: VintedItem[];
+  moreItems: VintedItem[];
+}
+
+// 4. Transplanted: Data mapping for the carousels
+const vintedData = rawVintedData as VintedData;
+
+const popularCarouselImages = vintedData.popularItems.map((item: VintedItem) => ({
+  src: item.imageUrl,
+  alt: item.title,
+  url: item.url
+}));
+
+const moreCarouselImages = vintedData.moreItems.map((item: VintedItem) => ({
+  src: item.imageUrl,
+  alt: item.title,
+  url: item.url
+}));
+---
+
+<BaseLayout pageTitle="SHOP: Brighton and Co">
+  <div class="shop-container">
+    
+    <!-- Hero Banner Section -->
+    <section class="shop-hero fade-in">
+      <div class="banner-content">
+        
+        <!-- The White Circle Logo Wrapper -->
+        <div class="logo-circle">
+          <AstroImage 
+            src={shopLogo} 
+            alt="SHOP: Brighton and Co" 
+            class="shop-main-logo" 
+            loading="eager" 
+          />
+        </div>
+        
+        <h1 class="banner-title">SHOP: Brighton and Co</h1>
+        <p class="banner-subtitle">
+          Welcome to my digital storefront. Whether you're hunting for pre-loved wardrobe staples or browsing for refurbished tech and media, choose your department below.
+        </p>
+        
+        <!-- Trust Banner (Frosted Glass Style) -->
+        <div class="trust-badges">
+          <span class="badge">⭐ 5 Star Rated</span>
+          <span class="badge">📦 Fast Despatch</span>
+          <span class="badge">♻️ Pre-loved & Sustainable</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Main Storefront Portals -->
+    <section class="store-grid fade-in">
+      
+      <!-- VINTED CARD -->
+      <div class="store-card vinted-card">
+        <div class="card-content">
+          <div class="icon-container">
+            <div class="store-icon vinted-icon">
+              <TbBrandVinted size={50} />
+            </div>
+          </div>
+          
+          <h2>Vinted</h2>
+
+          <div class="card-badges">
+            <span class="card-badge vinted-badge">✨ Frequent Uploads</span>
+            <span class="card-badge vinted-badge">🚚 Speedy Shipping</span>
+          </div>
+
+          <h3>Pre-loved Fashion & Wardrobe Clears</h3>
+          
+          <div class="store-description">
+            <p><a href="https://www.vinted.co.uk/member/272494517" class="inline-link" target="_blank" rel="noopener noreferrer">@itsharryb1</a></p>
+            <p>I have a wide range and variety of clothing items available.</p>
+            <p>All items are in excellent condition, unless otherwise stated, and are accurately described with detailed photos.</p>
+            <p>All orders are despatched quickly and packaged securely.</p>
+          </div>
+          
+          <a href="https://www.vinted.co.uk/member/272494517" target="_blank" rel="noopener noreferrer" class="shop-btn gradient-btn">
+            Shop my Vinted
+          </a>
+        </div>
+      </div>
+
+      <!-- EBAY CARD -->
+      <div class="store-card ebay-card">
+        <div class="card-content">
+          <div class="icon-container">
+            <div class="store-icon ebay-icon">
+              <SiEbay size={50} />
+            </div>
+          </div>
+          
+          <h2>eBay</h2>
+          
+          <div class="card-badges-spacer"></div>
+
+          <h3>Tech, Media & Collectibles</h3>
+          
+          <div class="store-description">
+            <p>
+              A small selection of pre-loved electronics and other items.
+              Fully tested, accurately graded, and securely packaged.
+            </p>
+          </div>
+          
+          <a href="YOUR_EBAY_URL_HERE" target="_blank" rel="noopener noreferrer" class="shop-btn gradient-btn">
+            Shop my eBay
+          </a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- NEW: Featured Inventory Bento Grid -->
+    <div class="inventory-divider fade-in">
+      <h2>Featured Vinted Highlights</h2>
+      <p>Scroll through a selection of currently available items</p>
+    </div>
+
+    <section class="store-grid inventory-grid fade-in">
+      
+      <!-- POPULAR ITEMS CARD -->
+      <div class="store-card showcase-card">
+        <h3>🔥 Popular Items</h3>
+        <p class="showcase-subtitle">These are a selection of popular items currently available on my Vinted account:</p>
+        
+        <ul class="item-list">
+          {vintedData.popularItems.map((item: VintedItem, index: number) => (
+            <li>
+              <strong>Item {index + 1}:</strong> {item.title} — 
+              <a href={item.url} class="inline-link" target="_blank" rel="noopener noreferrer">View on Vinted</a>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="carousel-wrapper">
+          <PhotoCarousel client:visible images={popularCarouselImages} theme="shop" />
+        </div>
+      </div>
+
+      <!-- MORE ITEMS CARD -->
+      <div class="store-card showcase-card">
+        <h3>🛍️ More Items</h3>
+        <p class="showcase-subtitle">These are a selection of other items currently available on my Vinted account:</p>
+        
+        <ul class="item-list">
+          {vintedData.moreItems.map((item: VintedItem, index: number) => (
+            <li>
+              <strong>Item {index + 1}:</strong> {item.title} — 
+              <a href={item.url} class="inline-link" target="_blank" rel="noopener noreferrer">View on Vinted</a>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="carousel-wrapper">
+          <PhotoCarousel client:visible images={moreCarouselImages} theme="shop" />
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+/* ===============================
+   Layout & Container
+   =============================== */
+.shop-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+/* ===============================
+   Hero Banner (New Design)
+   =============================== */
+.shop-hero {
+  width: 100%;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, #ff0055, #ff2e43);
+  padding: 3rem 2rem;
+  box-shadow: 0 10px 30px rgba(255, 0, 85, 0.2);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+html.dark .shop-hero {
+  box-shadow: 0 10px 30px rgba(255, 0, 85, 0.15);
+}
+
+.banner-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.logo-circle {
+  background-color: #ffffff;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  margin-bottom: 1.5rem;
+  animation: floatIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.shop-main-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.banner-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.banner-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+
+/* ===============================
+   Trust Badges (Frosted Glass)
+   =============================== */
+.trust-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.badge {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #ffffff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ===============================
+   Store Bento Grid
+   =============================== */
+.store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.store-card {
+  background-color: #f8fcfd;
+  border-radius: 1.5rem;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 2px solid transparent;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+html.dark .store-card {
+  background-color: #222;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.store-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(255, 0, 85, 0.15);
+  border-color: rgba(255, 0, 85, 0.3);
+}
+
+html.dark .store-card:hover {
+  box-shadow: 0 15px 30px rgba(255, 0, 85, 0.25);
+}
+
+/* ===============================
+   App-Style Gradient Icons
+   =============================== */
+.icon-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.store-icon { 
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 1.25rem; 
+  background: linear-gradient(135deg, #ff0055, #ff2e43); 
+  color: #ffffff !important; 
+  margin-bottom: 1.5rem; 
+  box-shadow: 0 6px 15px rgba(255, 0, 85, 0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.store-card:hover .vinted-icon { 
+  background: #007782; 
+  box-shadow: 0 10px 25px rgba(0, 119, 130, 0.3);
+  transform: scale(1.1) translateY(-4px); 
+}
+
+.store-card:hover .ebay-icon { 
+  background: #0064d2; 
+  box-shadow: 0 10px 25px rgba(0, 100, 210, 0.3);
+  transform: scale(1.1) translateY(-4px); 
+}
+
+html.dark .store-card:hover .vinted-icon { 
+  background: #09b1ba; 
+  box-shadow: 0 10px 25px rgba(9, 177, 186, 0.3);
+}
+html.dark .store-card:hover .ebay-icon { 
+  background: #3385ff; 
+  box-shadow: 0 10px 25px rgba(51, 133, 255, 0.3);
+}
+
+/* ===============================
+   Card Content & Typography
+   =============================== */
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.store-card h2 { margin: 0; font-size: 2rem; color: var(--text-color); }
+.store-card h3 { font-size: 1.1rem; color: #ff0055; margin-bottom: 1.5rem; font-weight: 600; }
+
+/* Internal Card Badges */
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.card-badges-spacer {
+  height: 1.8rem; 
+}
+
+.card-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vinted-badge {
+  background-color: rgba(0, 119, 130, 0.1);
+  color: #007782;
+  border: 1px solid rgba(0, 119, 130, 0.2);
+}
+
+html.dark .vinted-badge {
+  background-color: rgba(9, 177, 186, 0.15);
+  color: #09b1ba;
+  border-color: rgba(9, 177, 186, 0.3);
+}
+
+.store-description {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; 
+  margin-bottom: 2rem; 
+}
+
+.store-card p { 
+  font-size: 0.95rem; 
+  color: #555; 
+  line-height: 1.6; 
+  margin: 0; 
+}
+html.dark .store-card p { color: #aaa; }
+
+/* ===============================
+   Transplanted Inventory Section
+   =============================== */
+.inventory-divider {
+  text-align: center;
+  margin-top: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--toggle-track-border);
+}
+
+.inventory-divider h2 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-color); }
+.inventory-divider p { color: #555; font-size: 1rem; }
+html.dark .inventory-divider p { color: #aaa; }
+
+/* The showcase cards override the default store-card text alignment so lists look neat */
+.showcase-card {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 2.5rem;
+}
+
+.showcase-card h3 { color: var(--text-color); font-size: 1.5rem; margin-bottom: 0.5rem; }
+.showcase-subtitle { font-size: 0.9rem !important; margin-bottom: 1.5rem !important; }
+
+/* Transplanted List Styling */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.item-list li {
+  font-size: 0.95rem;
+  color: #555;
+  background-color: var(--bg-color); /* Subtle contrast against the card */
+  padding: 0.8rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--toggle-track-border);
+}
+html.dark .item-list li { color: #aaa; background-color: rgba(0,0,0,0.2); }
+
+.inline-link {
+  color: #ff0055;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+.inline-link:hover { color: #ff2e43; text-decoration: underline; }
+html.dark .inline-link { color: #ff5258; }
+
+.carousel-wrapper {
+  margin-top: auto; 
+  padding-top: 1.5rem; /* Replaces the old margin to give space below your lists */
+  width: 100%;
+  display: flex; /* Forces the container to shrink-wrap perfectly */
+  /* FIXED: Removed the conflicting border-radius, background, and shadow! */
+}
+
+/* ===============================
+   Gradient Shop Buttons
+   =============================== */
+.shop-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 2rem;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #ffffff !important;
+  text-decoration: none !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.gradient-btn {
+  background: linear-gradient(135deg, #ff0055, #ff2e43);
+  box-shadow: 0 4px 15px rgba(255, 0, 85, 0.3);
+}
+
+.gradient-btn:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 0, 85, 0.5);
+}
+
+/* Shared External Link Icons for both the Main Buttons and Inline Links */
+.shop-btn[target="_blank"]::after, .inline-link[target="_blank"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.4em;
+  background-color: currentColor; 
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'%3E%3C/path%3E%3Cpolyline points='15 3 21 3 21 9'%3E%3C/polyline%3E%3Cline x1='10' y1='14' x2='21' y2='3'%3E%3C/line%3E%3C/svg%3E") no-repeat center / contain;
+  vertical-align: baseline;
+  transition: transform 0.2s ease;
+}
+
+.shop-btn[target="_blank"]:hover::after, .inline-link[target="_blank"]:hover::after {
+  transform: translateX(2px) translateY(-2px); 
+}
+
+/* ===============================
+   Animations
+   =============================== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.store-grid { animation-delay: 0.2s; }
+.inventory-divider { animation-delay: 0.3s; }
+.inventory-grid { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatIn {
+  0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+  .shop-hero {
+    padding: 2rem 1rem;
+  }
+  .banner-title {
+    font-size: 2rem;
+  }
+  .showcase-card { 
+    padding: 1.5rem; 
+  }
+}
+</style>

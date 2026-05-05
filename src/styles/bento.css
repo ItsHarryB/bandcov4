@@ -138,7 +138,7 @@
     align-items: center; justify-content: center; text-align: center; gap: 1rem;
     background: var(--accent-color); 
     color: #fff !important;
-    /* FIXED: Forces the dark-mode border to stay completely invisible */
+    /* Forces the dark-mode border to stay completely invisible */
     border-color: transparent !important; 
   }
   .bento-link svg { transition: transform 0.3s ease; }
@@ -154,6 +154,7 @@
     background: var(--toggle-track-bg); 
     border-color: var(--accent-color); 
   }
+
 /* ===============================
      Responsive Grid Placements
      =============================== */

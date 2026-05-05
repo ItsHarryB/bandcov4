@@ -11,28 +11,36 @@ const currentPath = Astro.url.pathname;
 
   <div class="site-title">
     <a href="/" class="site-logo-link">
-      
-      <img 
-        src="/favicon-light.png" 
-        class="header-logo-light" 
-        alt="Site Logo" 
-        width="40" height="40" loading="eager" decoding="sync" 
+      <img
+
+        src="/favicon-light.png"
+
+        class="header-logo-light"
+
+        alt="Site Logo"
+
+        width="40" height="40" loading="eager" decoding="sync"
+
       />
-      
-      <img 
-        src="/favicon-dark.png" 
-        class="header-logo-dark" 
-        alt="Site Logo" 
-        width="40" height="40" loading="eager" decoding="sync" 
+
+      <img
+
+        src="/favicon-dark.png"
+
+        class="header-logo-dark"
+
+        alt="Site Logo"
+
+        width="40" height="40" loading="eager" decoding="sync"
+
       />
-      
       <span class="site-title-text">Brighton and Co</span>
     </a>
   </div>
 
   <nav class="nav-links" id="nav" aria-label="Main navigation">
     <a href="/" class={currentPath === "/" ? "active" : ""} aria-current={currentPath === "/" ? "page" : undefined}>Home</a>
-    <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
+    <a href="/shop/" class={currentPath.startsWith("/shop") ? "active" : ""} aria-current={currentPath.startsWith("/shop") ? "page" : undefined}>Shop</a>
     
     <div class="dropdown-group" id="about-dropdown">
       <div class="dropdown-primary">
@@ -43,13 +51,13 @@ const currentPath = Astro.url.pathname;
       </div>
       <div class="dropdown-menu">
         <a href="/about-me/cv/" class={currentPath.startsWith("/about-me/cv") ? "active" : ""}>My CV</a>
-        <a href="/about-me/vinted/" class={currentPath.startsWith("/about-me/vinted") ? "active" : ""}>My Vinted</a>
       </div>
     </div>
 
     <a href="/blog/" class={currentPath.startsWith("/blog") ? "active" : ""} aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Blog</a>
     <a href="/photography/" class={currentPath.startsWith("/photography") ? "active" : ""} aria-current={currentPath.startsWith("/photography") ? "page" : undefined}>Photography</a>
     <a href="/links/" class={currentPath.startsWith("/links") ? "active" : ""} aria-current={currentPath.startsWith("/links") ? "page" : undefined}>Links</a>
+    <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
   </nav>
 
   <div class="nav-overlay" id="nav-overlay"></div>
@@ -141,12 +149,9 @@ body:has(.nav-links.expanded) .site-header {
   transition: width 0.25s ease, height 0.25s ease;
 }
 
-/* Hide the dark logo by default */
-.header-logo-dark { display: none !important; }
-
-/* When dark mode is active, hide the light logo and show the dark one */
+/* THE FIX: Header Logo Theme Sync */
+html:not(.dark) .header-logo-dark { display: none !important; }
 html.dark .header-logo-light { display: none !important; }
-html.dark .header-logo-dark { display: block !important; }
 
 .site-title a {
   height: 100%;
@@ -275,9 +280,9 @@ html.dark .header-logo-dark { display: block !important; }
 
 .nav-links a[aria-current="page"],
 .nav-links a.active {
-  background: var(--nav-active-bg);
+  background-color: var(--nav-active-bg) !important; /* FIXED: Added !important */
   color: var(--header-text) !important;
-  border-radius: 8px;
+  border-radius: 8px !important;
 }
 
 .nav-links.expanded a, .nav-links.expanded .dropdown-group { animation: fadeInUp 0.3s forwards; }
@@ -495,7 +500,7 @@ html.dark .header-logo-dark { display: block !important; }
   .dropdown-menu {
     position: absolute;
     top: 145% !important; /* Starts exactly at the bottom edge of the 70px header */
-    left: -1.5rem !important; /* Aligns flush with the left edge of the 'About Me' block */
+    left: -1.85rem !important; /* Aligns flush with the left edge of the 'About Me' block */
     transform: none !important; /* Removes centering logic */
     background: var(--header-bg) !important;
     backdrop-filter: blur(8px);
@@ -509,25 +514,26 @@ html.dark .header-logo-dark { display: block !important; }
     margin-top: 0 !important; 
   }
   
-  /* Open the menu on HOVER */
-  .dropdown-group:hover .dropdown-menu,
-  .dropdown-group:focus-within .dropdown-menu {
+  /* Open the menu on HOVER (Unless force-closed after a click) */
+  .dropdown-group:not(.force-close):hover .dropdown-menu,
+  .dropdown-group:not(.force-close):focus-within .dropdown-menu {
     max-height: 200px !important;
     opacity: 1 !important;
     padding: 0.5rem !important;
     pointer-events: auto !important;
   }
-  /* FIXED: Force the menu closed on desktop if not hovered, ignoring the mobile .open class */
+
+  /* Force the menu closed on desktop if not hovered */
   .dropdown-group:not(:hover):not(:focus-within) .dropdown-menu {
     max-height: 0 !important;
     opacity: 0 !important;
     padding: 0 !important;
     pointer-events: none !important;
   }
-  /* Keep the pill button highlighted ONLY when hovered */
-  /* FIXED: Removed the .open class from this rule so it doesn't get stuck */
-  .dropdown-group:hover .dropdown-primary a,
-  .dropdown-group:focus-within .dropdown-primary a {
+
+  /* Keep the pill button highlighted ONLY when hovered (Unless force-closed) */
+  .dropdown-group:not(.force-close):hover .dropdown-primary a,
+  .dropdown-group:not(.force-close):focus-within .dropdown-primary a {
     background-color: var(--nav-hover-bg);
     color: var(--header-text) !important;
     --scale: 1.05; 
@@ -536,25 +542,22 @@ html.dark .header-logo-dark { display: block !important; }
   }
 
   /* Desktop Sub-links perfectly matched to Left Alignment (1.2rem padding) */
-  .dropdown-menu a { width: 100% !important; justify-content: flex-start !important; padding: 0.8rem 1.2rem !important; border-radius: 6px !important; }
+  .dropdown-menu a { 
+    width: 100% !important; 
+    justify-content: flex-start !important; 
+    padding: 0.8rem 1.2rem !important; 
+    border-radius: 6px !important; 
+  }
+} /* <-- Closes the @media (min-width: 1600px) block */
+
+/* ===============================
+   Dropdown Force-Close Helpers
+   =============================== */
+/* Kills the invisible hover bridge while closed so it doesn't snag the cursor! */
+.dropdown-group.force-close::after {
+  display: none !important;
 }
-  /* FIXED: Overrides the hover state immediately after a link is clicked */
-  .dropdown-group.force-close .dropdown-menu {
-    max-height: 0 !important;
-    opacity: 0 !important;
-    padding: 0 !important;
-    pointer-events: none !important;
-  }
-  
-  .dropdown-group.force-close .dropdown-primary a {
-    background: transparent !important;
-    color: var(--header-text) !important;
-    border-radius: 8px !important;
-  }
-  /* NEW: Kills the invisible hover bridge while closed so it doesn't snag the cursor! */
-  .dropdown-group.force-close::after {
-    display: none !important;
-  }
+
 @media (prefers-reduced-motion: reduce) {
   .hamburger, .hamburger .line, .nav-links, .nav-links a, .nav-overlay, .dropdown-menu, .dropdown-toggle .chevron { transition: none !important; animation: none !important; }
 }
@@ -572,7 +575,10 @@ html.dark .header-logo-dark { display: block !important; }
 
     // --- SMART ACTIVE LINK HIGHLIGHTING ---
     if (navLinks) {
-      const currentPath = window.location.pathname;
+      // 1. Normalize paths by stripping trailing slashes (unless it's just "/")
+      const normalize = (p) => p.length > 1 && p.endsWith('/') ? p.slice(0, -1) : p;
+      
+      const currentPath = normalize(window.location.pathname);
       
       navLinks.forEach(link => {
         link.classList.remove("active");
@@ -582,8 +588,9 @@ html.dark .header-logo-dark { display: block !important; }
       let bestMatchPath = "";
       let longestMatchLength = 0;
 
+      // 2. Find the deepest matching path using normalized strings
       navLinks.forEach((link) => {
-        const linkPath = new URL(link.href).pathname;
+        const linkPath = normalize(new URL(link.href).pathname);
         const isMatch = linkPath === "/" ? currentPath === "/" : currentPath.startsWith(linkPath);
         
         if (isMatch && linkPath.length > longestMatchLength) {
@@ -592,43 +599,50 @@ html.dark .header-logo-dark { display: block !important; }
         }
       });
 
-      if (bestMatchPath) {
+      // 3. Apply active class to ALL prefix matches
+      if (bestMatchPath || bestMatchPath === "") {
         navLinks.forEach(link => {
-           if (new URL(link.href).pathname === bestMatchPath) {
+           const linkPath = normalize(new URL(link.href).pathname);
+           const isMatch = linkPath === "/" ? currentPath === "/" : currentPath.startsWith(linkPath);
+           
+           if (isMatch) {
               link.classList.add("active");
-              link.setAttribute("aria-current", "page");
+              // Only give the exact current page the aria accessibility tag
+              if (linkPath === bestMatchPath) {
+                 link.setAttribute("aria-current", "page");
+              }
            }
         });
       }
     }
 
     // --- DESKTOP DROPDOWN AUTO-CLOSE & FOCUS FIX ---
-    // FIXED: Now targets both the sub-links AND the primary "About Me" link
     const dropdownLinks = document.querySelectorAll('.dropdown-menu a, .dropdown-primary a');
     
     dropdownLinks.forEach(link => {
-      link.addEventListener('click', () => {
+      // PREVENT DUPLICATES ON VIEW TRANSITIONS
+      if (!link.hasAttribute('data-initialized')) {
+        link.setAttribute('data-initialized', 'true');
         
-        // FIXED: Force the browser to drop focus so :focus-within doesn't keep the menu stuck open!
-        link.blur();
+        link.addEventListener('click', () => {
+          link.blur();
 
-        if (dropdownGroup && window.innerWidth >= 1600) {
-          // Lock the menu closed
-          dropdownGroup.classList.add('force-close');
-          
-          // Create a global mouse tracker
-          const unlockHover = (e) => {
-            if (!dropdownGroup.contains(e.target)) {
-              dropdownGroup.classList.remove('force-close');
-              document.removeEventListener('mousemove', unlockHover);
-            }
-          };
+          if (dropdownGroup && window.innerWidth >= 1600) {
+            dropdownGroup.classList.add('force-close');
+            
+            const unlockHover = (e) => {
+              if (!dropdownGroup.contains(e.target)) {
+                dropdownGroup.classList.remove('force-close');
+                document.removeEventListener('mousemove', unlockHover);
+              }
+            };
 
-          setTimeout(() => {
-            document.addEventListener('mousemove', unlockHover);
-          }, 100);
-        }
-      });
+            setTimeout(() => {
+              document.addEventListener('mousemove', unlockHover);
+            }, 100);
+          }
+        });
+      }
     });
 
     // --- AUTO-OPEN DROPDOWN ON SUB-PAGES (MOBILE ONLY) ---

@@ -4,6 +4,9 @@ import { Font } from 'astro:assets';
 import Header from '../components/Header.astro';
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
+
+// 1. IMPORT THE COMPONENT HERE
+import { SimpleAnalytics } from 'astro-simpleanalytics-plugin';
 ---
 
 <html lang="en">
@@ -11,17 +14,41 @@ import "../styles/global.css";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Brighton and Co</title>
-    <link rel="icon" type="image/png" href="/favicon-light.png" id="dynamic-favicon" />  
+    
+    <!-- BULLETPROOF CSP -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self'; 
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://unpkg.com https://static.cloudflareinsights.com https://api.websitecarbon.com https://scripts.simpleanalyticscdn.com; 
+      style-src 'self' 'unsafe-inline'; 
+      connect-src 'self' https://cloudflareinsights.com https://api.websitecarbon.com https://queue.simpleanalyticscdn.com https://unpkg.com; 
+      font-src 'self' data: https://fonts.gstatic.com; 
+      img-src 'self' data: blob: https: https://queue.simpleanalyticscdn.com https://simpleanalyticsbadges.com;
+      frame-src 'self' https://docs.google.com; 
+    ">
+    
+    <!-- Single Targetable Favicon -->
+    <link rel="icon" type="image/png" href="/favicon-light.png" id="dynamic-favicon" />
+    
     <Font cssVariable="--font-raleway" preload />
     
     <ClientRouter />
     <script is:inline>
-      // NEW: Favicon swapper function
-      const syncFavicon = (isDark) => {
-        const favicon = document.getElementById("dynamic-favicon");
-        if (favicon) {
-          favicon.href = isDark ? '/favicon-dark.png' : '/favicon-light.png';
-        }
+      // Global function to forcefully replace the favicon
+      window.updateFavicon = (isDark) => {
+        // 1. Find and completely destroy ALL existing favicon tags
+        document.querySelectorAll('link[rel~="icon"]').forEach(link => link.remove());
+
+        // 2. Build a brand-new tag from scratch
+        const newFavicon = document.createElement('link');
+        newFavicon.rel = 'icon';
+        newFavicon.type = 'image/png';
+        
+        // 3. Use Math.random() to create an un-ignorable cache-buster
+        const cacheBuster = "?v=" + Math.random().toString(36).substring(2, 8);
+        newFavicon.href = (isDark ? "/favicon-dark.png" : "/favicon-light.png") + cacheBuster;
+
+        // 4. Inject it into the document
+        document.head.appendChild(newFavicon);
       };
 
       const applyTheme = () => {
@@ -29,26 +56,20 @@ import "../styles/global.css";
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         const isDark = theme === "dark" || (!theme && prefersDark);
         
+        // Apply the CSS class
         if (isDark) {
           document.documentElement.classList.add("dark");
         } else {
           document.documentElement.classList.remove("dark");
         }
         
-        // NEW: Apply the correct favicon instantly on page load
-        syncFavicon(isDark);
+        // Call our nuke-and-replace function
+        window.updateFavicon(isDark);
       };
 
-      // 1. Run immediately on initial page load to prevent flashing
+      // Run on initial load and every Astro View Transition
       applyTheme();
-
-      // 2. Run immediately on every page navigation (View Transitions)
       document.addEventListener("astro:after-swap", applyTheme);
-      
-      // 3. NEW: Listen for your ThemeToggle component's custom event to swap in real-time!
-      document.addEventListener('themechange', (e) => {
-        syncFavicon(e.detail.theme === 'dark');
-      });
     </script>
   </head>
   <body>
@@ -56,7 +77,7 @@ import "../styles/global.css";
     <Header />
 
     <div class="page-wrapper">
-      <main class="layout-content" transition:animate={fade({ duration: '0.4s' })}>
+      <main class="layout-content" transition:animate={fade({ duration: '0.4s' })}>        
         <slot />
       </main>
 
@@ -68,15 +89,19 @@ import "../styles/global.css";
         const themeToggle = document.getElementById("theme-toggle");
         const themeIcon = themeToggle?.querySelector(".theme-icon");
 
+        // Theme toggle logic
         if (themeToggle && themeIcon) {
           const spinIcon = () => {
             themeIcon.classList.add("spin");
             setTimeout(() => themeIcon.classList.remove("spin"), 500);
           };
 
-          const setTheme = (theme) => {
+          // THE FIX: We added an `isClick` flag to prevent rate-limiting on page load!
+          const setTheme = (theme, isClick = false) => {
             spinIcon();
-            if (theme === "dark") {
+            const isDark = theme === "dark";
+
+            if (isDark) {
               document.documentElement.classList.add("dark");
               themeIcon.textContent = "🌙";
               localStorage.setItem("theme", "dark");
@@ -85,19 +110,30 @@ import "../styles/global.css";
               themeIcon.textContent = "☀️";
               localStorage.setItem("theme", "light");
             }
+
+            // ONLY update the favicon if the user physically clicked the button
+            if (isClick && window.updateFavicon) {
+              window.updateFavicon(isDark);
+            }
           };
 
-          setTheme(localStorage.getItem("theme") || "light");
+          // Initialize theme WITHOUT triggering the favicon update
+          setTheme(localStorage.getItem("theme") || "light", false);
 
+          // Remove old event listeners first to prevent duplicates
           const newToggle = themeToggle.cloneNode(true);
           themeToggle.parentNode.replaceChild(newToggle, themeToggle);
 
           newToggle.addEventListener("click", () => {
             const current = document.documentElement.classList.contains("dark") ? "dark" : "light";
-            setTheme(current === "dark" ? "light" : "dark");
+            // Pass 'true' to confirm this was a click!
+            setTheme(current === "dark" ? "light" : "dark", true);
           });
         }
       });
     </script>
+    
+    <!-- 2. PLACE THE COMPONENT HERE! -->
+    <SimpleAnalytics collectDNT={true} />
   </body>
 </html>
