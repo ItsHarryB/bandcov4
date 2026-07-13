@@ -111,7 +111,6 @@ export default function Footer() {
           <h4 id="quick-links-heading">Quick Links:</h4>
           <ul aria-labelledby="quick-links-heading">
             <li><a href="/">Home</a></li>
-            <li><a href="/enquiries/">Enquiries</a></li>
             <li><a href="/about-me/">About Me</a></li>
             <li><a href="/blog/">Blog</a></li>
             <li><a href="/photography/">Photography</a></li>
