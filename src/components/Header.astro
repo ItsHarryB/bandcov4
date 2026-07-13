@@ -45,19 +45,13 @@ const currentPath = Astro.url.pathname;
     <div class="dropdown-group" id="about-dropdown">
       <div class="dropdown-primary">
         <a href="/about-me/" class={currentPath === "/about-me/" || currentPath === "/about-me" ? "active" : ""} aria-current={currentPath === "/about-me/" || currentPath === "/about-me" ? "page" : undefined}>About Me</a>
-        <button class="dropdown-toggle" aria-expanded="false" aria-label="Toggle About Me sub-menu">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </button>
-      </div>
-      <div class="dropdown-menu">
-        <a href="/about-me/cv/" class={currentPath.startsWith("/about-me/cv") ? "active" : ""}>My CV</a>
+        
       </div>
     </div>
 
     <a href="/blog/" class={currentPath.startsWith("/blog") ? "active" : ""} aria-current={currentPath.startsWith("/blog") ? "page" : undefined}>Blog</a>
     <a href="/photography/" class={currentPath.startsWith("/photography") ? "active" : ""} aria-current={currentPath.startsWith("/photography") ? "page" : undefined}>Photography</a>
     <a href="/links/" class={currentPath.startsWith("/links") ? "active" : ""} aria-current={currentPath.startsWith("/links") ? "page" : undefined}>Links</a>
-    <a href="/enquiries/" class={currentPath.startsWith("/enquiries") ? "active" : ""} aria-current={currentPath.startsWith("/enquiries") ? "page" : undefined}>Enquiries</a>
   </nav>
 
   <div class="nav-overlay" id="nav-overlay"></div>

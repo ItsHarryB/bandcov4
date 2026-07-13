@@ -7,13 +7,13 @@ import PhotoCarousel from '../components/PhotoCarousel.jsx';
 const pageTitle = "About Me";
 
 // Import images
-import graduationPhoto from '../assets/images/harry-brighton-graduation-2024.jpg';
 import pennyImg from '../assets/images/penny.jpg';
 import poppyImg from '../assets/images/poppy.jpg';
 import lunaImg from '../assets/images/luna.jpg';
 import badmintonImg from '../assets/images/badminton.jpg';
 import mycomputerImg from '../assets/images/mycomputer.jpg';
 import atgymImg from '../assets/images/atgym.jpg';
+import memojiPhoto from '../assets/images/wavememoji.PNG';
 
 // Pre-process images with aggressive optimization
 const petImages = await Promise.all([
@@ -52,16 +52,16 @@ const hobbiesImages = await Promise.all([
         </div>
         <figure class="about-photo">
           <Image 
-            src={graduationPhoto} 
-            alt="Harry Brighton portrait"
-            width={600}
-            height={600}
-            quality={65}
+            src={memojiPhoto} 
+            alt="Harry Brighton Memoji"
+            width={300}
+            height={300}
+            quality={85}
             format="avif"
             loading="eager"
             densities={[1, 2]}
           />
-          <figcaption>My Graduation photo from 2024.</figcaption>
+          <figcaption>Hi, I'm Harry!</figcaption>
         </figure>
       </div>
     </div>
@@ -71,7 +71,7 @@ const hobbiesImages = await Promise.all([
       <h2>My Vinted:</h2>
       <a href="/about-me/vinted/" class="inline-link">View my Vinted</a>
       <ul class="custom-bullets">
-        <li>I have a Vinted account - <a href="https://www.vinted.co.uk/member/272494517" class="inline-link" target="_blank" rel="noopener noreferrer">@itsharryb1</a> - where I sell old clothes and accessories.</li>
+        <li>I have a Vinted account - <a href="https://www.vinted.co.uk/member/272494517" class="inline-link" target="_blank" rel="noopener noreferrer">@shop-bandco</a> - where I sell old clothes and accessories.</li>
         <li>You can find out more information about the items I sell by checking out my Vinted page on this website.</li>
         <li>I make sure all the items I sell are in good condition, so that they still have plenty of life left in them, ready for their next home.</li>
       </ul>
@@ -80,7 +80,6 @@ const hobbiesImages = await Promise.all([
     <!-- Professional Interests card -->
     <div class="card">
       <h2>Professional Interests:</h2>
-      <a href="/about-me/cv/" class="inline-link">View my CV</a>
       <ul class="custom-bullets">
         <li>Policymaking and analysis on matters including transport, regeneration, local government and assurance.</li>
         <li>The focus of my Master's dissertation was on the public transport systems of Greater Manchester and Greater London, judging them through the lens of Positive Public Policy, within the context of English Devolution.</li>

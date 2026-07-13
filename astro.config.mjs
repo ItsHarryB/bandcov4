@@ -15,9 +15,7 @@ export default defineConfig({
     mdx(),    
     sitemap({}),
   ],
-  redirects: {
-    '/cv': '/about-me/cv/',
-  },
+  
   fonts: [
     {
       name: 'Raleway',
