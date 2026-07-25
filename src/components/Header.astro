@@ -40,7 +40,6 @@ const currentPath = Astro.url.pathname;
 
   <nav class="nav-links" id="nav" aria-label="Main navigation">
     <a href="/" class={currentPath === "/" ? "active" : ""} aria-current={currentPath === "/" ? "page" : undefined}>Home</a>
-    <a href="/shop/" class={currentPath.startsWith("/shop") ? "active" : ""} aria-current={currentPath.startsWith("/shop") ? "page" : undefined}>Shop</a>
     
     <div class="dropdown-group" id="about-dropdown">
       <div class="dropdown-primary">
